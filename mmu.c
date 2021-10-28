@@ -17,7 +17,7 @@ gb_mmu_t *mmu_init()
 		printf("MMU Size not correct, expected 0x10000 got 0x%lu instead! Exiting...\n",
 		 sizeof(gb_mmu->gb_mmap));
 
-		return EXIT_FAILURE;
+		exit(EXIT_FAILURE);
 	}
 
 	gb_mmu->gb_bootrom_end = gb_mmu->gb_address_space + 0xFF50;

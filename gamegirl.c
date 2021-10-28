@@ -4,7 +4,4 @@
 int main(int argc, char **argv)
 {
 	printf("GameGirl - A C-21 Multiplatform Game Boy Emulator\n");
-
-	// Declare a new MMU
-	gb_mmu_t mmu;
 }
