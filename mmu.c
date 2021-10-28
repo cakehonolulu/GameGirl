@@ -3,23 +3,29 @@
 
 gb_mmu_t *mmu_init()
 {
+	// Allocate a new MMU
 	gb_mmu_t *gb_mmu = (gb_mmu_t*)malloc(sizeof(gb_mmu_t));
 
+	// Check if malloc() succeeded
 	if (!gb_mmu)
 	{
-		printf("MMU Structure can't be allocated, exiting...");
+		printf("\033[0;31mMMU Structure can't be allocated, exiting...\033[0;37m");
+		exit(EXIT_FAILURE);
 	}
 
+	// Check if the size of the MMAP equals to the GameBoy's Address Space
 	if (sizeof(gb_mmu->gb_mmap) == GB_ADDRSPC_SIZE)
 	{
 		printf("MMU Size: 0x%lx\n", sizeof(gb_mmu->gb_mmap));
 	} else {
-		printf("MMU Size not correct, expected 0x10000 got 0x%lu instead! Exiting...\n",
+		printf("\033[0;31mMMU Size not correct, expected 0x10000 got 0x%lu instead! Exiting...\033[0;37m\n",
 		 sizeof(gb_mmu->gb_mmap));
 
+		// Exit if we exceed or cut short on MMAP space
 		exit(EXIT_FAILURE);
 	}
 
+	// Set the bootrom end at $FF50
 	gb_mmu->gb_bootrom_end = gb_mmu->gb_address_space + 0xFF50;
 
 	return gb_mmu;
@@ -27,6 +33,12 @@ gb_mmu_t *mmu_init()
 
 void mmu_halt(gb_mmu_t *gb_mmu)
 {
+	if (!gb_mmu)
+	{
+		printf("MMU not found, exiting...\n");
+		exit(EXIT_FAILURE);
+	}
+
 	free(gb_mmu);
 	gb_mmu = NULL;
 }
