@@ -2,10 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-// GameBoy's Bootrom Size is 256 bytes
-#define GB_BOOTROM_SIZE 256
-
-static const uint8_t GB_BIOS[GB_BOOTROM_SIZE] =
+static const uint8_t GB_BIOS[0x100] =
 {
 	0x31, 0xFE, 0xFF, 0xAF,
 	0x21, 0xFF, 0x9F, 0x32,
