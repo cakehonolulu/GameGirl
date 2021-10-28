@@ -14,7 +14,7 @@ gb_mmu_t *mmu_init()
 	}
 
 	// Check if the size of the MMAP equals to the GameBoy's Address Space
-	if (sizeof(gb_mmu->gb_mmap) == GB_ADDRSPC_SIZE)
+	if (sizeof(gb_mmu->gb_mmap) != GB_ADDRSPC_SIZE)
 	{
 		printf("MMU Size: 0x%lx\n", sizeof(gb_mmu->gb_mmap));
 	} else {
