@@ -6,6 +6,9 @@ int main(int argc, char **argv)
 	printf("GameGirl - A C-21 Multiplatform Game Boy Emulator\n");
 
 	// Init MMU
-	mmu_init();
+	gb_mmu_t *mmu = mmu_init();
+
+	// Load Bootrom
+	m_load_bootrom(mmu);
 
 }
