@@ -1,4 +1,7 @@
 #include <stdint.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include <stdbool.h>
 
 // GameBoy's Bootrom Size is 256 bytes
 #define GB_BOOTROM_SIZE 256
