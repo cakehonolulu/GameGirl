@@ -12,4 +12,10 @@ int main(int argc, char **argv)
 	}
 
 
+	const char *m_filename = argv[1];
+
+	printf("Progname: %s\n", m_filename);
+
+	FILE *m_prg;
+	m_prg = fopen(m_filename, "rb");
 }
