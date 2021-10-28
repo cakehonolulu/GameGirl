@@ -1,0 +1,7 @@
+# Compiled Files
+*.out
+*.exe
+gamegirl
+
+# ROM Files
+*.gb
