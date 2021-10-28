@@ -11,4 +11,9 @@ int main(int argc, char **argv)
 	// Load Bootrom
 	m_load_bootrom(mmu);
 
+	uint8_t opcode = mmu_read_addr8(mmu, 0x0000);
+
+	mmu_halt(mmu);
+
+	return EXIT_SUCCESS;
 }
