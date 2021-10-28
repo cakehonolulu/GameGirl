@@ -70,8 +70,8 @@ void mmu_write_addr16(gb_mmu_t *gb_mmu, uint16_t m_addr, uint16_t m_data)
 	*m_pos = m_data;
 }
 
-void m_load_bootrom(gb_mmu_t *gb_mmu)
+void m_load_bootrom(gb_mmu_t *gb_mmu, unsigned char *m_bootrom)
 {
-	memcpy((void*)gb_mmu->gb_bootrom, (const void*)GB_BIOS, sizeof(GB_BIOS));
+	memcpy((void*)gb_mmu->gb_bootrom, (const void*)m_bootrom, sizeof(m_bootrom));
 	(*gb_mmu->gb_bootrom_end) = false;
 }
