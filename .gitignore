@@ -5,3 +5,6 @@ gamegirl
 
 # ROM Files
 *.gb
+
+# BIN Files
+*.bin
