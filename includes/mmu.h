@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <string.h>
 
 // GameBoy's Bootrom Size is 256 bytes
 #define GB_BOOTROM_SIZE 256
@@ -96,3 +97,11 @@ typedef struct gb_mmu
 	
 	uint8_t *gb_bootrom_end;
 } gb_mmu_t;
+
+gb_mmu_t *mmu_init();
+void mmu_halt(gb_mmu_t *gb_mmu);
+uint8_t mmu_read_addr8(gb_mmu_t *gb_mmu, uint16_t m_addr);
+void mmu_write_addr8(gb_mmu_t *gb_mmu, uint16_t m_addr, uint8_t m_data);
+uint16_t mmu_read_addr16(gb_mmu_t *gb_mmu, uint16_t m_addr);
+void mmu_write_addr16(gb_mmu_t *gb_mmu, uint16_t m_addr, uint16_t m_data);
+void mmu_load_bios(gb_mmu_t *gb_mmu);
