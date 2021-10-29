@@ -27,6 +27,13 @@ uint8_t m_fetch(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 {
 	uint8_t m_opcode = m_fetch(gb_mmu, m_regs);
-	printf("Opcode: 0x%x\n", m_opcode);
+
+	switch (m_opcode)
+	{
+		default:
+			printf("Unimplemented Opcode: 0x%x!\n", m_opcode);
+			break;
+	}
+	
 
 }
