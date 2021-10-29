@@ -30,7 +30,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 
 	printf("Current opcode: 0x%x\n", m_opcode);
 
-	switch (m_opcode & 0xFF00)
+	switch (m_opcode)
 	{
 		/*
 			LD SP, d16
@@ -50,7 +50,6 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 #ifdef OPCODE_DEBUG
 			printf("Obtained Address: 0x%x\n", m_addr);
 #endif
-
 			break;
 
 		default:
