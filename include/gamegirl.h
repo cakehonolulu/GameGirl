@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define GB_INITIAL_PC 0x0000
 
@@ -50,6 +51,8 @@ typedef struct gb_registers {
 	
 	uint16_t sp;
 	uint16_t pc;
+
+	bool isUnimplemented;
 } gb_registers_t;
 
 #endif

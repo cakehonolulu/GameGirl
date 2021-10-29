@@ -90,8 +90,19 @@ int main(int argc, char **argv)
 	// Initialize Registers
 	m_init_registers(&m_regs);
 
-	// Start fetching & executing instructions
-	m_exec(mmu, &m_regs);
+	m_regs.isUnimplemented = false;
+
+	while (true)
+	{
+		// Start fetching & executing instructions
+		m_exec(mmu, &m_regs);
+
+		if (m_regs.isUnimplemented == true)
+		{
+			printf("Exiting...\n");
+			exit(EXIT_FAILURE);
+		}
+	}
 
 	// Free MMU data
 	mmu_halt(mmu);
