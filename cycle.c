@@ -47,9 +47,13 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 #endif
 			uint16_t m_addr = mmu_read_addr16(gb_mmu, (m_regs->pc + 1));
 
+			m_regs->sp = m_addr;
+
 #ifdef OPCODE_DEBUG
 			printf("Obtained Address: 0x%x\n", m_addr);
 #endif
+			m_regs->pc += 3;
+			
 			break;
 
 		default:
