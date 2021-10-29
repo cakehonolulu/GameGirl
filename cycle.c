@@ -35,6 +35,17 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 	switch (m_opcode)
 	{
 		/*
+			NOP
+			Opcode: 0x0
+			Number of Bytes: 1
+			Number of Cycles: 1
+
+			Only advances the program counter by 1. Performs no other operations that would have an effect.
+		*/
+		case 0x0:
+			m_regs->pc += 1;
+			break;
+		/*
 			LD HL, d16
 			Opcode: 0x21
 			Number of Bytes: 3
