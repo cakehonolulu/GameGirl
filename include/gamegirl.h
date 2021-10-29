@@ -63,5 +63,5 @@ typedef struct gb_registers {
 } gb_registers_t;
 
 #define FLAG_SET(x) (m_regs->flags | x)
-
+#define FLAG_UNSET(x) (m_regs->flags ^ x)
 #endif

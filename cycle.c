@@ -95,7 +95,15 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 		case 0xAF:
 			m_regs->a ^= m_regs->a;
 			m_regs->flags = FLAG_SET(FLAGS_ZERO);
+#ifdef OPCODE_DEBUG
 			printf("Flags: 0x%02x\n", m_regs->flags);
+#endif
+			m_regs->flags = FLAG_UNSET(FLAGS_SUBS);
+			m_regs->flags = FLAG_UNSET(FLAGS_HALF);
+			m_regs->flags = FLAG_UNSET(FLAGS_CRRY);
+#ifdef OPCODE_DEBUG
+			printf("Flags: 0x%02x\n", m_regs->flags);
+#endif
 			m_regs->pc += 1;
 			break;
 
