@@ -16,6 +16,8 @@ void m_init_registers(gb_registers_t *m_regs)
 
 	m_regs->pc = 0;
 	m_regs->sp = 0;
+
+	m_regs->flags = 0;
 }
 
 uint8_t m_fetch(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
