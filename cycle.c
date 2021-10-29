@@ -33,6 +33,29 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 	switch (m_opcode)
 	{
 		/*
+			LD HL, d16
+			Opcode: 0x21
+			Number of Bytes: 3
+			Number of Cycles: 3
+
+			Load the 2 bytes of immediate data into register pair HL.
+			The first byte of immediate data is the lower byte (i.e., bits 0-7),
+			and the second byte of immediate data is the higher byte (i.e., bits 8-15).
+		*/
+		case 0x21:
+			uint16_t m_address = mmu_read_addr16(gb_mmu, (m_regs->pc + 1));
+
+#ifdef OPCODE_DEBUG
+			printf("Address: 0x%04x\n", m_address);
+#endif
+
+			m_regs->l = (m_address & 0xFF);
+			m_regs->h = (m_address >> 8);
+
+			m_regs->pc += 3;
+			break;
+
+		/*
 			LD SP, d16
 			Number of Bytes: 3
 			Number of Cycles: 3
@@ -54,6 +77,20 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 #endif
 			m_regs->pc += 3;
 
+			break;
+
+		/*
+			XOR A
+			Number of Bytes: 1
+			Number of Cycles: 1
+			Flags: Z 0 0 0
+
+			Take the logical exclusive-OR for each bit of the contents of register A
+			and the contents of register A, and store the results in register A.
+		*/
+		case 0xAF:
+			m_regs->a ^= m_regs->a;
+			m_regs->pc += 1;
 			break;
 
 		default:
