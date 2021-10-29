@@ -52,6 +52,8 @@ typedef struct gb_registers {
 	uint16_t sp;
 	uint16_t pc;
 
+	uint8_t flags;
+
 	bool isUnimplemented;
 } gb_registers_t;
 
