@@ -133,6 +133,41 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 			m_regs->pc += 1;
 			break;
 
+		case 0xCB:
+			uint8_t m_cbvariant = mmu_read_addr8(gb_mmu, m_regs->pc + 1);
+
+			switch (m_cbvariant)
+			{
+				/*
+					BIT 7, H
+					Opcode: 0xCB7C
+					Number of Bytes: 2
+					Number of Cycles: 2
+
+					Copy the complement of the contents of bit 7 in register H
+					to the Z flag of the program status word (PSW).
+				*/
+				case 0x7C:
+					uint8_t m_bit = (m_regs->h >> 7) & 0x1;
+
+					if (m_bit == 1)
+					{
+						FLAG_SET(7);
+					} else {
+						FLAG_UNSET(7);
+					}
+#ifdef OPCODE_DEBUG
+					printf("Flags: 0x%02x\n", m_regs->flags);
+#endif
+					m_regs->pc += 2;
+					break;
+
+				default:
+					break;
+			}
+
+			break;
+
 		default:
 			printf("Unimplemented Opcode: 0x%x!\n", m_opcode);
 			m_printregs(m_regs);

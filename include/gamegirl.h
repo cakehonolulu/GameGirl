@@ -64,6 +64,7 @@ typedef struct gb_registers {
 	bool isUnimplemented;
 } gb_registers_t;
 
-#define FLAG_SET(x) (m_regs->flags ^= 1 << x)
-#define FLAG_UNSET(x) (m_regs->flags &= (~1 << ~x))
+#define FLAGS (m_regs->flags)
+#define FLAG_SET(n) (FLAGS ^= (1 << n))
+#define FLAG_UNSET(n) (FLAGS &= ~(1 << n))
 #endif
