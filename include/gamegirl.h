@@ -13,6 +13,8 @@
 #define FLAGS_HALF 0b00100000
 #define FLAGS_CRRY 0b00010000
 
+#define GB_BOOTROM_SZ 0x100
+
 typedef struct gb_registers {
 	struct {
 		union {

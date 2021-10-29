@@ -72,6 +72,15 @@ void mmu_write_addr16(gb_mmu_t *gb_mmu, uint16_t m_addr, uint16_t m_data)
 
 void m_load_bootrom(gb_mmu_t *gb_mmu, unsigned char *m_bootrom)
 {
-	memcpy((void*)gb_mmu->gb_bootrom, (const void*)m_bootrom, sizeof(m_bootrom));
+	memcpy((void*)gb_mmu->gb_bootrom, (const void*)m_bootrom, GB_BOOTROM_SZ);
 	(*gb_mmu->gb_bootrom_end) = false;
+
+#ifdef OPCODE_DEBUG
+	printf("BootROM Dump:\n");
+	for (size_t i = 0; i < GB_BOOTROM_SZ; i++)
+	{
+		printf("0x%x ", gb_mmu->gb_bootrom[i]);
+	}
+	printf("\n");
+#endif
 }

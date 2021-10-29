@@ -36,7 +36,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 	{
 		/*
 			NOP
-			Opcode: 0x0
+			Opcode: 0x00
 			Number of Bytes: 1
 			Number of Cycles: 1
 
@@ -105,7 +105,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 		case 0x32:
 			mmu_write_addr16(gb_mmu, m_regs->hl, m_regs->a);
 			m_regs->hl--;
-			m_regs->pc += 3;
+			m_regs->pc += 1;
 			break;
 
 		/*
