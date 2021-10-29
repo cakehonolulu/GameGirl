@@ -65,7 +65,6 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 	
 }
 
-
 void m_printregs(gb_registers_t *m_regs)
 {
 	printf("\n\033[1;31mGeneral-Prupose Registers:\033[0m\n");
