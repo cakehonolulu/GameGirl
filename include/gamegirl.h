@@ -1,3 +1,6 @@
+#ifndef GAMEGIRL_H
+#define GAMEGIRL_H
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -48,3 +51,5 @@ typedef struct gb_registers {
 	uint16_t sp;
 	uint16_t pc;
 } gb_registers_t;
+
+#endif
