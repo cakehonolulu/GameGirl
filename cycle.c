@@ -83,6 +83,21 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 			break;
 
 		/*
+			LD (HL-), A
+			Opcode: 0x32
+			Number of Bytes: 1
+			Number of Cycles: 2
+
+			Store the contents of register A into the memory location specified
+			by register pair HL, and simultaneously decrement the contents of HL.
+		*/
+		case 0x32:
+			mmu_write_addr16(gb_mmu, m_regs->hl, m_regs->a);
+			m_regs->hl--;
+			m_regs->pc += 3;
+			break;
+
+		/*
 			XOR A
 			Opcode: 0xAF
 			Number of Bytes: 1
