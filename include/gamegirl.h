@@ -8,6 +8,11 @@
 
 #define GB_INITIAL_PC 0x0000
 
+#define FLAGS_ZERO 7
+#define FLAGS_SUBS 6
+#define FLAGS_HALF 5
+#define FLAGS_CRRY 4
+
 typedef struct gb_registers {
 	struct {
 		union {
