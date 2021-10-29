@@ -8,10 +8,10 @@
 
 #define GB_INITIAL_PC 0x0000
 
-#define FLAGS_ZERO 7
-#define FLAGS_SUBS 6
-#define FLAGS_HALF 5
-#define FLAGS_CRRY 4
+#define FLAGS_ZERO 0b10000000
+#define FLAGS_SUBS 0b01000000
+#define FLAGS_HALF 0b00100000
+#define FLAGS_CRRY 0b00010000
 
 typedef struct gb_registers {
 	struct {
@@ -61,5 +61,7 @@ typedef struct gb_registers {
 
 	bool isUnimplemented;
 } gb_registers_t;
+
+#define FLAG_SET(x) (m_regs->flags | x)
 
 #endif

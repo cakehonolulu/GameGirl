@@ -97,7 +97,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 			// XX00
 			// XX
 			// 0000 0000
-			m_regs->flags = m_regs->flags | 0b10000000;
+			m_regs->flags = FLAG_SET(FLAGS_ZERO);
 			printf("Flags: 0x%02x\n", m_regs->flags);
 			m_regs->pc += 1;
 			break;
