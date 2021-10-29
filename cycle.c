@@ -57,6 +57,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 
 		/*
 			LD SP, d16
+			Opcode: 0x31
 			Number of Bytes: 3
 			Number of Cycles: 3
 
@@ -81,6 +82,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 
 		/*
 			XOR A
+			Opcode: 0xAF
 			Number of Bytes: 1
 			Number of Cycles: 1
 			Flags: Z 0 0 0
