@@ -1,5 +1,6 @@
-#include "includes/gamegirl.h"
-#include "includes/mmu.h"
+#include "include/gamegirl.h"
+#include "include/mmu.h"
+#include "include/cycle.h"
 
 int main(int argc, char **argv)
 {

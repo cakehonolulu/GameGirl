@@ -1,5 +1,5 @@
-#include "includes/mmu.h"
-#include "includes/gamegirl.h"
+#include "include/mmu.h"
+#include "include/gamegirl.h"
 
 gb_mmu_t *mmu_init()
 {
