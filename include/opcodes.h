@@ -5,6 +5,7 @@
 
 struct m_sharp_lr35902_instr {
 	char *m_instr;
+	uint8_t m_operand;
 	void *m_funct;
 } extern const m_gb_instr[256];
 
@@ -25,3 +26,6 @@ void m_ld_hlminus_a();
 
 // 0xAF
 void m_xor_a();
+
+// 0xCB
+extern void m_cb_ext();

@@ -1,262 +1,262 @@
 #include "include/opcodes.h"
 
 const struct m_sharp_lr35902_instr m_gb_instr[256] = {
-	{"NOP", m_nop},							// 0x00
-	{NULL, NULL},                           // 0x01
-	{NULL, NULL},                           // 0x02
-	{NULL, NULL},                           // 0x03
-	{NULL, NULL},                           // 0x04
-	{NULL, NULL},                           // 0x05
-	{NULL, NULL},                           // 0x06
-	{NULL, NULL},                           // 0x07
-	{NULL, NULL},                           // 0x08
-	{NULL, NULL},                           // 0x09
-	{NULL, NULL},                           // 0x0A
-	{NULL, NULL},                           // 0x0B
-	{NULL, NULL},                           // 0x0C
-	{NULL, NULL},                           // 0x0D
-	{NULL, NULL},                           // 0x0E
-	{NULL, NULL},                           // 0x0F
-	{NULL, NULL},                           // 0x10
-	{NULL, NULL},                           // 0x11
-	{NULL, NULL},                           // 0x12
-	{NULL, NULL},                           // 0x13
-	{NULL, NULL},                           // 0x14
-	{NULL, NULL},                           // 0x15
-	{NULL, NULL},                           // 0x16
-	{NULL, NULL},                           // 0x17
-	{NULL, NULL},                           // 0x18
-	{NULL, NULL},                           // 0x19
-	{NULL, NULL},                           // 0x1A
-	{NULL, NULL},                           // 0x1B
-	{NULL, NULL},                           // 0x1C
-	{NULL, NULL},                           // 0x1D
-	{NULL, NULL},							// 0x1E
-	{NULL, NULL},                           // 0x1F
-	{"JR NZ, s8", m_jr_nz_s8},				// 0x20
-	{"LD HL, d16", m_ld_hl_d16},			// 0x21
-	{NULL, NULL},                           // 0x22
-	{NULL, NULL},                           // 0x23
-	{NULL, NULL},                           // 0x24
-	{NULL, NULL},                           // 0x25
-	{NULL, NULL},                           // 0x26
-	{NULL, NULL},                           // 0x27
-	{NULL, NULL},                           // 0x28
-	{NULL, NULL},                           // 0x29
-	{NULL, NULL},                           // 0x2A
-	{NULL, NULL},                           // 0x2B
-	{NULL, NULL},                           // 0x2C
-	{NULL, NULL},                           // 0x2D
-	{NULL, NULL},                           // 0x2E
-	{NULL, NULL},                           // 0x2F
-	{NULL, NULL},							// 0x30
-	{"LD SP, d16", m_ld_sp_d16},			// 0x31
-	{"LD (HL-), A", m_ld_hlminus_a},		// 0x32
-	{NULL, NULL},                           // 0x33
-	{NULL, NULL},                           // 0x34
-	{NULL, NULL},                           // 0x35
-	{NULL, NULL},                           // 0x36
-	{NULL, NULL},                           // 0x37
-	{NULL, NULL},                           // 0x38
-	{NULL, NULL},                           // 0x39
-	{NULL, NULL},                           // 0x3A
-	{NULL, NULL},                           // 0x3B
-	{NULL, NULL},                           // 0x3C
-	{NULL, NULL},                           // 0x3D
-	{NULL, NULL},                           // 0x3E
-	{NULL, NULL},                           // 0x3F
-	{NULL, NULL},                           // 0x40
-	{NULL, NULL},                           // 0x41
-	{NULL, NULL},                           // 0x42
-	{NULL, NULL},                           // 0x43
-	{NULL, NULL},                           // 0x44
-	{NULL, NULL},                           // 0x45
-	{NULL, NULL},                           // 0x46
-	{NULL, NULL},                           // 0x47
-	{NULL, NULL},                           // 0x48
-	{NULL, NULL},                           // 0x49
-	{NULL, NULL},                           // 0x4A
-	{NULL, NULL},                           // 0x4B
-	{NULL, NULL},                           // 0x4C
-	{NULL, NULL},                           // 0x4D
-	{NULL, NULL},                           // 0x4E
-	{NULL, NULL},                           // 0x4F
-	{NULL, NULL},                           // 0x50
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x5F
-	{NULL, NULL},                           // 0x60
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x6F
-	{NULL, NULL},                           // 0x70
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x7F
-	{NULL, NULL},                           // 0x80
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x8F
-	{NULL, NULL},                           // 0x90
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x9F
-	{NULL, NULL},                           // 0xA0
-	{NULL, NULL},                           // 0xA2
-	{NULL, NULL},                           // 0xA3
-	{NULL, NULL},                           // 0xA4
-	{NULL, NULL},                           // 0xA5
-	{NULL, NULL},                           // 0xA6
-	{NULL, NULL},                           // 0xA7
-	{NULL, NULL},                           // 0xA8
-	{NULL, NULL},                           // 0xA9
-	{NULL, NULL},                           // 0xAA
-	{NULL, NULL},                           // 0xAB
-	{NULL, NULL},                           // 0xAC
-	{NULL, NULL},                           // 0xAD
-	{NULL, NULL},							// 0xAF
-	{NULL, NULL},                           // 0x00
-	{"XOR A", m_xor_a},						// 0xAF
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL}                           	// 0x00
+	{"NOP", 0, m_nop},							// 0x00
+	{NULL, 0, NULL},                           // 0x01
+	{NULL, 0, NULL},                           // 0x02
+	{NULL, 0, NULL},                           // 0x03
+	{NULL, 0, NULL},                           // 0x04
+	{NULL, 0, NULL},                           // 0x05
+	{NULL, 0, NULL},                           // 0x06
+	{NULL, 0, NULL},                           // 0x07
+	{NULL, 0, NULL},                           // 0x08
+	{NULL, 0, NULL},                           // 0x09
+	{NULL, 0, NULL},                           // 0x0A
+	{NULL, 0, NULL},                           // 0x0B
+	{NULL, 0, NULL},                           // 0x0C
+	{NULL, 0, NULL},                           // 0x0D
+	{NULL, 0, NULL},                           // 0x0E
+	{NULL, 0, NULL},                           // 0x0F
+	{NULL, 0, NULL},                           // 0x10
+	{NULL, 0, NULL},                           // 0x11
+	{NULL, 0, NULL},                           // 0x12
+	{NULL, 0, NULL},                           // 0x13
+	{NULL, 0, NULL},                           // 0x14
+	{NULL, 0, NULL},                           // 0x15
+	{NULL, 0, NULL},                           // 0x16
+	{NULL, 0, NULL},                           // 0x17
+	{NULL, 0, NULL},                           // 0x18
+	{NULL, 0, NULL},                           // 0x19
+	{NULL, 0, NULL},                           // 0x1A
+	{NULL, 0, NULL},                           // 0x1B
+	{NULL, 0, NULL},                           // 0x1C
+	{NULL, 0, NULL},                           // 0x1D
+	{NULL, 0, NULL},							// 0x1E
+	{NULL, 0, NULL},							// 0x1F
+	{"JR NZ, s8", 0, m_jr_nz_s8},				// 0x20
+	{"LD HL, d16", 0, m_ld_hl_d16},			// 0x21
+	{NULL, 0, NULL},                           // 0x22
+	{NULL, 0, NULL},                           // 0x23
+	{NULL, 0, NULL},                           // 0x24
+	{NULL, 0, NULL},                           // 0x25
+	{NULL, 0, NULL},                           // 0x26
+	{NULL, 0, NULL},                           // 0x27
+	{NULL, 0, NULL},                           // 0x28
+	{NULL, 0, NULL},                           // 0x29
+	{NULL, 0, NULL},                           // 0x2A
+	{NULL, 0, NULL},                           // 0x2B
+	{NULL, 0, NULL},                           // 0x2C
+	{NULL, 0, NULL},                           // 0x2D
+	{NULL, 0, NULL},                           // 0x2E
+	{NULL, 0, NULL},                           // 0x2F
+	{NULL, 0, NULL},							// 0x30
+	{"LD SP, d16", 0, m_ld_sp_d16},			// 0x31
+	{"LD (HL-), A", 0, m_ld_hlminus_a},		// 0x32
+	{NULL, 0, NULL},                           // 0x33
+	{NULL, 0, NULL},                           // 0x34
+	{NULL, 0, NULL},                           // 0x35
+	{NULL, 0, NULL},                           // 0x36
+	{NULL, 0, NULL},                           // 0x37
+	{NULL, 0, NULL},                           // 0x38
+	{NULL, 0, NULL},                           // 0x39
+	{NULL, 0, NULL},                           // 0x3A
+	{NULL, 0, NULL},                           // 0x3B
+	{NULL, 0, NULL},                           // 0x3C
+	{NULL, 0, NULL},                           // 0x3D
+	{NULL, 0, NULL},                           // 0x3E
+	{NULL, 0, NULL},                           // 0x3F
+	{NULL, 0, NULL},                           // 0x40
+	{NULL, 0, NULL},                           // 0x41
+	{NULL, 0, NULL},                           // 0x42
+	{NULL, 0, NULL},                           // 0x43
+	{NULL, 0, NULL},                           // 0x44
+	{NULL, 0, NULL},                           // 0x45
+	{NULL, 0, NULL},                           // 0x46
+	{NULL, 0, NULL},                           // 0x47
+	{NULL, 0, NULL},                           // 0x48
+	{NULL, 0, NULL},                           // 0x49
+	{NULL, 0, NULL},                           // 0x4A
+	{NULL, 0, NULL},                           // 0x4B
+	{NULL, 0, NULL},                           // 0x4C
+	{NULL, 0, NULL},                           // 0x4D
+	{NULL, 0, NULL},                           // 0x4E
+	{NULL, 0, NULL},                           // 0x4F
+	{NULL, 0, NULL},                           // 0x50
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x5F
+	{NULL, 0, NULL},                           // 0x60
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x6F
+	{NULL, 0, NULL},                           // 0x70
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x7F
+	{NULL, 0, NULL},                           // 0x80
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x8F
+	{NULL, 0, NULL},                           // 0x90
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x9F
+	{NULL, 0, NULL},                           // 0xA0
+	{NULL, 0, NULL},                           // 0xA2
+	{NULL, 0, NULL},                           // 0xA3
+	{NULL, 0, NULL},                           // 0xA4
+	{NULL, 0, NULL},                           // 0xA5
+	{NULL, 0, NULL},                           // 0xA6
+	{NULL, 0, NULL},                           // 0xA7
+	{NULL, 0, NULL},                           // 0xA8
+	{NULL, 0, NULL},                           // 0xA9
+	{NULL, 0, NULL},                           // 0xAA
+	{NULL, 0, NULL},                           // 0xAB
+	{NULL, 0, NULL},                           // 0xAC
+	{NULL, 0, NULL},                           // 0xAD
+	{NULL, 0, NULL},							// 0xAF
+	{NULL, 0, NULL},                           // 0x00
+	{"XOR A", 0, m_xor_a},						// 0xAF
+	{NULL, 0, NULL},                           // 0xB0
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xBF
+	{NULL, 0, NULL},                           // 0xC0
+	{NULL, 0, NULL},                           // 0xC1
+	{NULL, 0, NULL},                           // 0xC2
+	{NULL, 0, NULL},                           // 0xC3
+	{NULL, 0, NULL},                           // 0xC4
+	{NULL, 0, NULL},                           // 0xC5
+	{NULL, 0, NULL},                           // 0xC6
+	{NULL, 0, NULL},                           // 0xC7
+	{NULL, 0, NULL},                           // 0xC8
+	{NULL, 0, NULL},                           // 0xC9
+	{NULL, 0, NULL},                           // 0xCA
+	{"CB", 1, m_cb_ext},						// 0xCB
+	{NULL, 0, NULL},                           // 0xCC
+	{NULL, 0, NULL},                           // 0xCD
+	{NULL, 0, NULL},                           // 0xCE
+	{NULL, 0, NULL},                           // 0xCF
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL}                           	// 0x00
 };
 
 /*
