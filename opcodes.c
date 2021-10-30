@@ -1,5 +1,6 @@
 #include "include/opcodes.h"
 
+// Operand Methodology Inspired by CTurt
 const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"NOP", 0, m_nop},							// 0x00
 	{NULL, 0, NULL},                           // 0x01
