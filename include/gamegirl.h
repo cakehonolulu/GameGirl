@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "mmu.h"
 
 #define GB_INITIAL_PC 0x0000
 
@@ -64,7 +65,11 @@ typedef struct gb_registers {
 	bool isUnimplemented;
 } gb_registers_t;
 
-#define FLAGS (m_regs->flags)
-#define FLAG_SET(n) ((FLAGS) |= (1 << n))
-#define FLAG_UNSET(n) ((FLAGS) &= ~(1 << (n)))
+// Declare the MMU
+extern gb_mmu_t *mmu;
+// Declare the Registers
+extern gb_registers_t m_regs;
+
+#define FLAG_SET(x, n) ((x) |= (1 << n))
+#define FLAG_UNSET(x, n) ((x) &= ~(1 << (n)))
 #endif

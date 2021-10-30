@@ -2,6 +2,11 @@
 #include "include/mmu.h"
 #include "include/cycle.h"
 
+// Init MMU
+gb_mmu_t *mmu;
+// Declare the Registers
+gb_registers_t m_regs;
+
 int main(int argc, char **argv)
 {
 	printf("GameGirl - A C-21 Multiplatform Game Boy Emulator\n");
@@ -79,13 +84,10 @@ int main(int argc, char **argv)
 	printf("Program size: %d bytes\n", (unsigned int) m_bootromsz);
 
 	// Init MMU
-	gb_mmu_t *mmu = mmu_init();
+	mmu = mmu_init();
 
 	// Load Bootrom
 	m_load_bootrom(mmu, m_bootrom_buf);
-
-	// Declare the Registers
-	gb_registers_t m_regs;
 
 	// Initialize Registers
 	m_init_registers(&m_regs);
