@@ -26,6 +26,11 @@ uint8_t m_fetch(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 	return m_opcode;
 }
 
+bool m_is_bit_set(uint8_t m_register, size_t m_bit)
+{
+	return 1 == ((m_register >> m_bit) & 1);
+}
+
 void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 {
 	uint8_t m_opcode = m_fetch(gb_mmu, m_regs);
@@ -120,13 +125,18 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 		*/
 		case 0xAF:
 			m_regs->a ^= m_regs->a;
-			FLAG_SET(7);
+
+			if (m_regs->a == 0)
+			{
+				FLAG_SET(Z);
+			}
+
 #ifdef OPCODE_DEBUG
 			printf("Flags: 0x%02x\n", m_regs->flags);
 #endif
-			FLAG_UNSET(6);
-			FLAG_UNSET(5);
-			FLAG_UNSET(4);
+			FLAG_UNSET(H);
+			FLAG_UNSET(C);
+			FLAG_UNSET(N);
 #ifdef OPCODE_DEBUG
 			printf("Flags: 0x%02x\n", m_regs->flags);
 #endif
@@ -148,14 +158,16 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 					to the Z flag of the program status word (PSW).
 				*/
 				case 0x7C:
-					uint8_t m_bit = (m_regs->h >> 7) & 0x1;
-
-					if (m_bit == 1)
+					if (!m_is_bit_set(m_regs->h, Z))
 					{
-						FLAG_SET(7);
+						FLAG_SET(Z);
 					} else {
-						FLAG_UNSET(7);
+						FLAG_UNSET(Z);
 					}
+
+					FLAG_UNSET(N);
+
+					FLAG_SET(H);
 #ifdef OPCODE_DEBUG
 					printf("Flags: 0x%02x\n", m_regs->flags);
 #endif

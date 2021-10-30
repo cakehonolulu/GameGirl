@@ -8,10 +8,10 @@
 
 #define GB_INITIAL_PC 0x0000
 
-#define FLAGS_ZERO 0b10000000
-#define FLAGS_SUBS 0b01000000
-#define FLAGS_HALF 0b00100000
-#define FLAGS_CRRY 0b00010000
+#define Z 7
+#define N 6
+#define H 5
+#define C 4
 
 #define GB_BOOTROM_SZ 0x100
 
@@ -65,6 +65,6 @@ typedef struct gb_registers {
 } gb_registers_t;
 
 #define FLAGS (m_regs->flags)
-#define FLAG_SET(n) (FLAGS ^= (1 << n))
-#define FLAG_UNSET(n) (FLAGS &= ~(1 << n))
+#define FLAG_SET(n) ((FLAGS) |= (1 << n))
+#define FLAG_UNSET(n) ((FLAGS) &= ~(1 << (n)))
 #endif
