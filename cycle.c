@@ -50,6 +50,34 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 		case 0x0:
 			m_regs->pc += 1;
 			break;
+
+		/*
+			JR NZ, s8
+			Opcode: 0x20
+			Number of Bytes: 2
+			Number of Cycles: 3/2
+
+			If the Z flag is 0, jump s8 steps from the current address stored in the program counter (PC).
+			If not, the instruction following the current JP instruction is executed (as usual).
+		*/
+		case 0x20:
+			int8_t m_operand = (int8_t) mmu_read_byte(gb_mmu, (m_regs->pc + 1));
+			printf("Operand: 0x%x\n", (uint8_t) m_operand);
+
+			uint16_t currpc = (uint16_t) m_regs->pc;
+
+			if (!m_is_bit_set(m_regs->flags, Z))
+			{
+				// Set the PC Offset at the end of the JR NZ, s8
+				m_regs->pc += 2;
+
+				// Add m_operand as an int8_t (Can go forward or backward)
+				m_regs->pc += (int8_t) m_operand;
+			} else {
+				m_regs->pc += 2;
+			}
+			break;
+
 		/*
 			LD HL, d16
 			Opcode: 0x21

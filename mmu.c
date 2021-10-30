@@ -51,6 +51,12 @@ uint8_t mmu_read_addr8(gb_mmu_t *gb_mmu, uint16_t m_addr)
 	return *(gb_mmu->gb_address_space + m_addr);
 }
 
+uint8_t mmu_read_byte(gb_mmu_t *gb_mmu, uint16_t m_addr)
+{
+    if (!(*gb_mmu->gb_bootrom_end) && m_addr >= 0x00 && m_addr <= 0xFF)
+        return gb_mmu->gb_bootrom[m_addr];
+}
+
 void mmu_write_addr8(gb_mmu_t *gb_mmu, uint16_t m_addr, uint8_t m_data)
 {	
 	gb_mmu->gb_address_space[m_addr] = m_data;
