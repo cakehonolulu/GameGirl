@@ -48,29 +48,39 @@ typedef struct gb_mmu
 			*/
 			uint8_t gb_address_space[2^16];
 
-/*
-	Restart IVT and Cartridge Header are inside 0x4000 cart region
-*/
-// Restart and Interrupt Vectors (0x0 - 0x100)
-#define restart_ivt 0x100
-
-// ROM Cartridge Header (0x100 - 0x150)
-#define cart_hdr 0x50
-
 			struct
 			{
-				// 2 Cartridge ROM Banks (Bank 0 Fixed, 1 Switchable)
-				uint8_t cart[0x4000];
+				// #1 Cartridge ROM Bank (Fixed)
+				union {
+					struct {
+						// Restart and Interrupt Vectors (0x0 - 0x100)
+						uint8_t restart_ivt[0x100];
+						// ROM Cartridge Header (0x100 - 0x150)
+						uint8_t cart_hdr[0x50];
+						// Cart Size minus IVT and Header
+						uint8_t cart0[0x3EB0];
+					};
+
+					// Cart containing ivt, hdr and cart0
+					uint8_t cart[0x4000];
+				};
+
+				// #2 Cartridge ROM Bank (Switchable)
 				uint8_t cart_sw[0x4000];
 
-				// Character RAM
-				uint8_t cram[0x1800];
+				union {
+					struct {
+						// Character RAM
+						uint8_t cram[0x1800];
+						// Background Map Data 1
+						uint8_t bgmap1[0x400];
+						// Background Map Data 2
+						uint8_t bgmap2[0x400];
+					};
 
-				// Background Map Data 1
-				uint8_t bgmap1[0x400];
-
-				// Background Map Data 2
-				uint8_t bgmap2[0x400];
+					// VRAM Containing cram, bgmap[1,2]
+					uint8_t vram[0x2000];
+				};
 
 				// ROM Cartridge RAM (If Exists)
 				uint8_t cart_ram[0x2000];
