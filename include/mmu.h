@@ -134,7 +134,7 @@ typedef struct gb_mmu
 		};
 	};
 	
-	uint8_t *gb_bootrom_end;
+	bool gb_bootrom_loaded;
 } gb_mmu_t;
 
 gb_mmu_t *mmu_init();
