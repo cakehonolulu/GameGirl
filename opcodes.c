@@ -207,7 +207,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xCA
 	{"CB", 1, m_cb_ext},						// 0xCB
 	{NULL, 0, NULL},                           // 0xCC
-	{NULL, 0, NULL},                           // 0xCD
+	{"CALL", 0, m_call},                           // 0xCD
 	{NULL, 0, NULL},                           // 0xCE
 	{NULL, 0, NULL},                           // 0xCF
 	{NULL, 0, NULL},                           // 0xD0
@@ -545,6 +545,44 @@ void m_xor_a()
 #endif
 
 	m_regs.pc += 1;
+}
+
+/*
+	CALL a16
+	Opcode: 0xCD
+	Number of Bytes: 3
+	Number of Cycles: 6
+
+	In memory, push the program counter PC value corresponding to the address
+	following the CALL instruction to the 2 bytes following the byte specified
+	by the current stack pointer SP.
+	Then load the 16-bit immediate operand a16 into PC.
+
+	The subroutine is placed after the location specified by the new PC value.
+	When the subroutine finishes, control is returned to the source program using
+	a return instruction and by popping the starting address of the next instruction
+	(which was just pushed) and moving it to the PC.
+
+	With the push, the current value of SP is decremented by 1, and the higher-order
+	byte of PC is loaded in the memory address specified by the new SP value.
+	The value of SP is then decremented by 1 again, and the lower-order byte of PC is
+	loaded in the memory address specified by that value of SP.
+
+	The lower-order byte of a16 is placed in byte 2 of the object code,
+	and the higher-order byte is placed in byte 3.
+*/
+void m_call()
+{
+	uint16_t m_addr = mmu_read_word(mmu, m_regs.pc + 1);
+
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mCALL $%04x\033[1;0m\n", m_addr);
+#endif
+
+	m_regs.sp -= 2;
+	mmu_write_byte(m_regs.sp, (uint8_t) (m_regs.pc & 0x00ff));
+	mmu_write_byte(m_regs.sp + 1, (uint8_t) ((m_regs.pc & 0xff00) >> 8));
+	m_regs.pc = m_addr;
 }
 
 /*
