@@ -26,7 +26,7 @@ gb_mmu_t *mmu_init()
 	}
 
 	// Set the bootrom end at $FF50
-	gb_mmu->gb_bootrom_end = gb_mmu->gb_address_space + 0xFF50;
+	gb_mmu->gb_bootrom_loaded = true;
 
 	return gb_mmu;
 }
@@ -46,7 +46,7 @@ void mmu_halt(gb_mmu_t *gb_mmu)
 // Unsafe Option (DMA, no MMU Processing at all)
 uint8_t mmu_read_addr8(gb_mmu_t *gb_mmu, uint16_t m_addr)
 {
-	if (!(*gb_mmu->gb_bootrom_end) && m_addr >= 0x00 && m_addr <= 0xFF)
+	if ((!(&gb_mmu->gb_bootrom_loaded)) && m_addr >= 0x00 && m_addr <= 0xFF)
 		return gb_mmu->gb_bootrom[m_addr];
 	
 	return *(gb_mmu->gb_address_space + m_addr);
@@ -61,7 +61,7 @@ void mmu_write_addr8(gb_mmu_t *gb_mmu, uint16_t m_addr, uint8_t m_data)
 // Unsafe Option (DMA, no MMU Processing at all)
 uint16_t mmu_read_addr16(gb_mmu_t *gb_mmu, uint16_t m_addr)
 {
-	if (!(*gb_mmu->gb_bootrom_end) && m_addr >= 0x00 && m_addr <= 0xFF)
+	if ((!(&gb_mmu->gb_bootrom_loaded)) && m_addr >= 0x00 && m_addr <= 0xFF)
 		return *((uint16_t*)(gb_mmu->gb_bootrom + m_addr));
 	
 	return *((uint16_t*)(gb_mmu->gb_address_space + m_addr));
@@ -77,7 +77,7 @@ void mmu_write_addr16(gb_mmu_t *gb_mmu, uint16_t m_addr, uint16_t m_data)
 // Safe Option, goes through MMU
 uint8_t mmu_read_byte(gb_mmu_t *gb_mmu, uint16_t m_addr)
 {
-    if (!(*gb_mmu->gb_bootrom_end) && m_addr >= 0x00 && m_addr <= 0xFF)
+    if ((!(&gb_mmu->gb_bootrom_loaded)) && m_addr >= 0x00 && m_addr <= 0xFF)
         return gb_mmu->gb_bootrom[m_addr];
 
     switch ((m_addr & 0xF000) >> 12)
@@ -172,7 +172,7 @@ uint8_t mmu_read_byte(gb_mmu_t *gb_mmu, uint16_t m_addr)
 // Safe Option, goes through MMU
 uint8_t mmu_write_byte(gb_mmu_t *gb_mmu, uint16_t m_addr, uint8_t m_data)
 {
-    if (!(*gb_mmu->gb_bootrom_end) && m_addr >= 0x00 && m_addr <= 0xFF)
+    if ((!(&gb_mmu->gb_bootrom_loaded)) && m_addr >= 0x00 && m_addr <= 0xFF)
         return 0;
 
     switch ((m_addr & 0xF000) >> 12)
@@ -286,7 +286,7 @@ uint8_t mmu_write_word(gb_mmu_t *gb_mmu, uint16_t m_addr, uint16_t m_data)
 void m_load_bootrom(gb_mmu_t *gb_mmu, unsigned char *m_bootrom)
 {
 	memcpy((void*)gb_mmu->gb_bootrom, (const void*)m_bootrom, GB_BOOTROM_SZ);
-	(*gb_mmu->gb_bootrom_end) = false;
+	(gb_mmu->gb_bootrom_loaded) = true;
 
 #ifdef OPCODE_DEBUG
 	printf("BootROM Dump:\n");
