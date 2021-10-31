@@ -12,6 +12,9 @@ struct m_sharp_lr35902_instr {
 // 0x00
 void m_nop();
 
+// 0x0E
+void m_ld_c_d8();
+
 // 0x20
 void m_jr_nz_s8();
 

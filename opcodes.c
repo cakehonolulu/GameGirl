@@ -16,7 +16,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x0B
 	{NULL, 0, NULL},                           // 0x0C
 	{NULL, 0, NULL},                           // 0x0D
-	{NULL, 0, NULL},                           // 0x0E
+	{"LD C, d8", 0, m_ld_c_d8},				   // 0x0E
 	{NULL, 0, NULL},                           // 0x0F
 	{NULL, 0, NULL},                           // 0x10
 	{NULL, 0, NULL},                           // 0x11
@@ -210,6 +210,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xCD
 	{NULL, 0, NULL},                           // 0xCE
 	{NULL, 0, NULL},                           // 0xCF
+	{NULL, 0, NULL},                           // 0xD0
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -218,6 +219,14 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xD9
+	{NULL, 0, NULL},                           // 0xDA
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xDF
+	{NULL, 0, NULL},						   // 0xE0
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -226,6 +235,14 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xE9
+	{NULL, 0, NULL},                           // 0xEA
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xEF
+	{NULL, 0, NULL},                           // 0xF0
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -234,30 +251,13 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xF9
+	{NULL, 0, NULL},                           // 0xFA
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL}                           	// 0x00
+	{NULL, 0, NULL}                            // 0x0F
 };
 
 /*
@@ -276,7 +276,23 @@ void m_nop()
 
 	m_regs.pc += 1;
 }
-			
+
+/*
+	LD C, d8
+
+	Opcode: 0x0E
+	Number of Bytes: 2
+	Number of Cycles: 2
+
+	Load the 8-bit immediate operand d8 into register C.
+*/
+void m_ld_c_d8()
+{
+	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
+	m_regs.c = m_operand;
+	m_regs.pc += 2;
+}
+
 /*
 	JR NZ, s8
 	Opcode: 0x20
