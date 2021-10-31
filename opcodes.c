@@ -580,8 +580,9 @@ void m_call()
 #endif
 
 	m_regs.sp -= 2;
-	mmu_write_byte(m_regs.sp, (uint8_t) (m_regs.pc & 0x00ff));
-	mmu_write_byte(m_regs.sp + 1, (uint8_t) ((m_regs.pc & 0xff00) >> 8));
+	
+	mmu_write_word(m_regs.sp, (uint8_t) (m_regs.pc & 0x00ff));
+	
 	m_regs.pc = m_addr;
 }
 
