@@ -228,7 +228,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xDF
 	{NULL, 0, NULL},						   // 0xE0
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{"LD (C), A", 0, ld_c_a},				   // 0xE2
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -340,7 +340,7 @@ void m_ld_hl_d16()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD HL, d16\033[1;0m\n");
 #endif
-	uint16_t m_address = mmu_read_addr16(mmu, (m_regs.pc + 1));
+	uint16_t m_address = mmu_read_word(mmu, (m_regs.pc + 1));
 
 #ifdef OPCODE_DEBUG
 	printf("Address: 0x%04x\n", m_address);
@@ -368,7 +368,7 @@ void m_ld_sp_d16()
 	printf("\033[1;31mLD SP, d16\033[1;0m\n");
 #endif
 
-	uint16_t m_addr = mmu_read_addr16(mmu, (m_regs.pc + 1));
+	uint16_t m_addr = mmu_read_word(mmu, (m_regs.pc + 1));
 
 	m_regs.sp = m_addr;
 
@@ -393,7 +393,7 @@ void m_ld_hlminus_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL-), A\033[1;0m\n");
 #endif
-	mmu_write_addr16(mmu, m_regs.hl, m_regs.a);
+	mmu_write_word(mmu, m_regs.hl, m_regs.a);
 	m_regs.hl--;
 	m_regs.pc += 1;
 }
@@ -449,4 +449,22 @@ void m_xor_a()
 #endif
 
 	m_regs.pc += 1;
+}
+
+/*
+	LD (C), A
+	Opcode: 0xE2
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Store the contents of register A in the internal RAM, port register,
+	or mode register at the address in the range 0xFF00-0xFFFF specified by register C.
+
+	0xFF00-0xFF7F: Port/Mode registers, control register, sound register
+	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
+	0xFFFF: Interrupt Enable Registe
+*/
+void ld_c_a()
+{
+
 }
