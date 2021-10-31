@@ -23,14 +23,12 @@ void m_init_registers(gb_registers_t *m_regs)
 
 uint8_t m_fetch(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 {
-	uint8_t m_opcode = mmu_read_addr8(gb_mmu, m_regs->pc);
-	return m_opcode;
+	return (uint8_t) mmu_read_byte(gb_mmu, m_regs->pc);
 }
 
 uint8_t m_fetchop(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 {
-	uint8_t m_opcodeop = mmu_read_addr8(gb_mmu, (m_regs->pc + 1));
-	return m_opcodeop;
+	return (uint8_t) mmu_read_byte(gb_mmu, m_regs->pc + 1);;
 }
 
 bool m_is_bit_set(uint8_t m_register, size_t m_bit)
@@ -50,6 +48,12 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 	{
 		m_operand = m_fetchop(gb_mmu, m_regs);
 		printf("Operand: 0x%x\n", m_operand);
+	}
+
+	if (m_regs->pc == 0x0015)
+	{
+		m_printregs(m_regs);
+		exit(EXIT_FAILURE);
 	}
 
 	switch(m_gb_instr[m_opcode].m_operand)
