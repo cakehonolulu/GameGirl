@@ -46,4 +46,4 @@ extern void m_cb_ext();
 void m_ld_a8_a();
 
 // 0xE2
-void ld_c_a();
+void m_ld_c_a();

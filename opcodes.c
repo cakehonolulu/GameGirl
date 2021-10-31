@@ -228,7 +228,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xDF
 	{"LD (a8), A", 0, m_ld_a8_a},			   // 0xE0
 	{NULL, 0, NULL},                           // 0xE1
-	{"LD (C), A", 0, ld_c_a},				   // 0xE2
+	{"LD (C), A", 0, m_ld_c_a},				   // 0xE2
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -550,7 +550,7 @@ void m_ld_a8_a()
 	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
 	0xFFFF: Interrupt Enable Registe
 */
-void ld_c_a()
+void m_ld_c_a()
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (C), A\033[1;0m\n");
