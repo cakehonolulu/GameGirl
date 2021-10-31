@@ -85,11 +85,17 @@ typedef struct gb_mmu
 				// ROM Cartridge RAM (If Exists)
 				uint8_t cart_ram[0x2000];
 
-				// Bank 0 - Internal RAM
-				uint8_t int_ram[0x1000];
+				union {
+					struct {
+						// Bank 0 - Internal RAM
+						uint8_t int_ram[0x1000];
+						// Switchable Bank 1-7 - Internal RAM (CGB Only)
+						uint8_t int_ram_sw[0x1000];
+					};
 
-				// Switchable Bank 1-7 - Internal RAM (CGB Only)
-				uint8_t int_ram_sw[0x1000];
+					// WRAM
+					uint8_t wram[0x2000];
+				};
 
 				// Echo RAM - Reserved
 				uint8_t echo_ram[0x1E00];
@@ -100,13 +106,30 @@ typedef struct gb_mmu
 				// Unusable Memory
 				uint8_t unusable[0x60];
 
-				// Hardware I/O Registers
-				uint8_t hw_io_reg[0x80];
+				union {
+					struct {
+						// IO Registers Mapping
+						uint8_t io[0x40];
+						// PPU Mapping
+						uint8_t ppu[0x40];	
+					};
 
-				// Zero Page - 127 bytes
-				uint8_t zero_page[0x80 - 1];
+					// Hardware I/O Registers
+					uint8_t hw_io_reg[0x80];
+				};
 
-				uint8_t intenable[0x1];
+				union {
+					struct {
+						// Zero Page - 127 bytes
+						uint8_t zero_page[0x80 - 1];
+						// Interrupt Enable
+						uint8_t intenable[0x1];
+					};
+
+					// Zero-Page RAM
+					uint8_t zram[0x80];
+				};
+
 			} gb_mmap;
 		};
 	};
