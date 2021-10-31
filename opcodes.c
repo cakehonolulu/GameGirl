@@ -64,7 +64,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x3B
 	{NULL, 0, NULL},                           // 0x3C
 	{NULL, 0, NULL},                           // 0x3D
-	{NULL, 0, NULL},                           // 0x3E
+	{"LD A, d8", 0, m_ld_a_d8},				   // 0x3E
 	{NULL, 0, NULL},                           // 0x3F
 	{NULL, 0, NULL},                           // 0x40
 	{NULL, 0, NULL},                           // 0x41
@@ -396,6 +396,21 @@ void m_ld_hlminus_a()
 	mmu_write_addr16(mmu, m_regs.hl, m_regs.a);
 	m_regs.hl--;
 	m_regs.pc += 1;
+}
+
+/*
+	LD A, d8
+	Opcode: 0x3E
+	Number of Bytes: 2
+	Number of Cycles: 2
+
+	Load the 8-bit immediate operand d8 into register A.
+*/
+void m_ld_a_d8()
+{
+	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
+	m_regs.a = m_operand;
+	m_regs.pc += 2;
 }
 
 /*
