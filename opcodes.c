@@ -211,23 +211,23 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xCE
 	{NULL, 0, NULL},                           // 0xCF
 	{NULL, 0, NULL},                           // 0xD0
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xD1
+	{NULL, 0, NULL},                           // 0xD2
+	{NULL, 0, NULL},                           // 0xD3
+	{NULL, 0, NULL},                           // 0xD4
+	{NULL, 0, NULL},                           // 0xD5
+	{NULL, 0, NULL},                           // 0xD6
+	{NULL, 0, NULL},                           // 0xD7
+	{NULL, 0, NULL},                           // 0xD8
 	{NULL, 0, NULL},                           // 0xD9
 	{NULL, 0, NULL},                           // 0xDA
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xDB
+	{NULL, 0, NULL},                           // 0xDC
+	{NULL, 0, NULL},                           // 0xDD
+	{NULL, 0, NULL},                           // 0xDE
 	{NULL, 0, NULL},                           // 0xDF
 	{NULL, 0, NULL},						   // 0xE0
-	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xE1
 	{"LD (C), A", 0, ld_c_a},				   // 0xE2
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -466,5 +466,6 @@ void m_xor_a()
 */
 void ld_c_a()
 {
-
+	mmu_write_byte((0xFF00 + m_regs.c), m_regs.a);
+	m_regs.pc += 1;
 }
