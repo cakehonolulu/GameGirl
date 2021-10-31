@@ -48,16 +48,19 @@ typedef struct gb_mmu
 			*/
 			uint8_t gb_address_space[2^16];
 
+/*
+	Restart IVT and Cartridge Header are inside 0x4000 cart region
+*/
+// Restart and Interrupt Vectors (0x0 - 0x100)
+#define restart_ivt 0x100
+
+// ROM Cartridge Header (0x100 - 0x150)
+#define cart_hdr 0x50
+
 			struct
 			{
-				// Restart and Interrupt Vectors
-				uint8_t restart_ivt[0x100];
-
-				// ROM Cartridge Header
-				uint8_t cart_hdr[0x50];
-
 				// 2 Cartridge ROM Banks (Bank 0 Fixed, 1 Switchable)
-				uint8_t cart[0x3EB0];
+				uint8_t cart[0x4000];
 				uint8_t cart_sw[0x4000];
 
 				// Character RAM
