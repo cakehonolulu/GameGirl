@@ -18,6 +18,12 @@ void m_inc_c();
 // 0x0E
 void m_ld_c_d8();
 
+// 0x11
+void m_ld_de_d16();
+
+// 0x1A
+void m_ld_a_de();
+
 // 0x20
 void m_jr_nz_s8();
 

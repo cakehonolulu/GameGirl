@@ -19,7 +19,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"LD C, d8", 0, m_ld_c_d8},				   // 0x0E
 	{NULL, 0, NULL},                           // 0x0F
 	{NULL, 0, NULL},                           // 0x10
-	{NULL, 0, NULL},                           // 0x11
+	{"LD DE, d16", 0, m_ld_de_d16},			   // 0x11
 	{NULL, 0, NULL},                           // 0x12
 	{NULL, 0, NULL},                           // 0x13
 	{NULL, 0, NULL},                           // 0x14
@@ -28,7 +28,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x17
 	{NULL, 0, NULL},                           // 0x18
 	{NULL, 0, NULL},                           // 0x19
-	{NULL, 0, NULL},                           // 0x1A
+	{"LD A, (DE)", 0, m_ld_a_de},              // 0x1A
 	{NULL, 0, NULL},                           // 0x1B
 	{NULL, 0, NULL},                           // 0x1C
 	{NULL, 0, NULL},                           // 0x1D
@@ -328,6 +328,44 @@ void m_ld_c_d8()
 	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
 	m_regs.c = m_operand;
 	m_regs.pc += 2;
+}
+
+/*
+	LD DE, d16
+	Opcode: 0x11
+	Number of Bytes: 3
+	Number of Cycles: 3
+
+	Load the 2 bytes of immediate data into register pair DE.
+
+	The first byte of immediate data is the lower byte (i.e., bits 0-7),
+	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
+*/
+void m_ld_de_d16()
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD DE, d16\033[1;0m\n");
+#endif
+	uint16_t m_operand = mmu_read_word(mmu, m_regs.pc + 1);
+	m_regs.de = m_operand;
+	m_regs.pc += 3;
+}
+
+/*
+	LD A, (DE)
+	Opcode: 0x1A
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Load the 8-bit contents of memory specified by register pair DE into register A.
+*/
+void m_ld_a_de()
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD A, (DE)\033[1;0m\n");
+#endif
+	m_regs.a = mmu_read_byte(mmu, m_regs.de);
+	m_regs.pc += 1;
 }
 
 /*
