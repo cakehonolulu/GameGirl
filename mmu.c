@@ -25,9 +25,6 @@ gb_mmu_t *mmu_init()
 		exit(EXIT_FAILURE);
 	}
 
-	// Set the bootrom end at $FF50
-	gb_mmu->gb_bootrom_loaded = true;
-
 	return gb_mmu;
 }
 
