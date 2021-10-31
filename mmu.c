@@ -277,7 +277,7 @@ uint16_t mmu_read_word(gb_mmu_t *gb_mmu, uint16_t m_addr)
 
 uint8_t mmu_write_word(gb_mmu_t *gb_mmu, uint16_t m_addr, uint16_t m_data)
 {
-    return (uint8_t) mmu_write_byte(gb_mmu, m_addr, m_data & 0xFF) & mmu_write_byte(gb_mmu, m_addr + 1, m_data >> 8);;
+    return (uint8_t) mmu_write_byte(gb_mmu, m_addr, m_data & 0xFF) & mmu_write_byte(gb_mmu, m_addr + 1, m_data >> 8);
 }
 
 void m_load_bootrom(gb_mmu_t *gb_mmu, unsigned char *m_bootrom)
