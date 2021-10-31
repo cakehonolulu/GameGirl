@@ -9,10 +9,10 @@
 
 #define GB_INITIAL_PC 0x0000
 
-#define Z 7
-#define N 6
-#define H 5
-#define C 4
+#define Z 0b0111
+#define N 0b0110
+#define H 0b0101
+#define C 0b0100
 
 #define GB_BOOTROM_SZ 0x100
 
