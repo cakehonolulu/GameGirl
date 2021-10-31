@@ -35,3 +35,6 @@ void m_xor_a();
 
 // 0xCB
 extern void m_cb_ext();
+
+// 0xE2
+void ld_c_a();
