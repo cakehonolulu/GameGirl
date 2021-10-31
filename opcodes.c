@@ -121,7 +121,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{"LD (HL), A", 0, m_ld_hl_a},              // 0x77
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -287,6 +287,10 @@ void m_nop()
 */
 void m_inc_c()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mINC C\033[1;0m\n");
+#endif
+
 	if ((m_regs.c & 0x0f) == 0x0f)
 	{
 		FLAG_SET(m_regs.flags, H);
@@ -318,6 +322,9 @@ void m_inc_c()
 */
 void m_ld_c_d8()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD (C), d8\033[1;0m\n");
+#endif
 	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
 	m_regs.c = m_operand;
 	m_regs.pc += 2;
@@ -438,9 +445,30 @@ void m_ld_hlminus_a()
 */
 void m_ld_a_d8()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD (A), d8\033[1;0m\n");
+#endif
+
 	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
 	m_regs.a = m_operand;
 	m_regs.pc += 2;
+}
+
+/*
+	LD (HL), A
+	Opcode: 0x77
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Store the contents of register A in the memory location specified by register pair HL.
+*/
+void m_ld_hl_a()
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD (HL), A\033[1;0m\n");
+#endif
+	mmu_write_byte(m_regs.hl, m_regs.a);
+	m_regs.pc += 1;
 }
 
 /*
@@ -496,6 +524,9 @@ void m_xor_a()
 */
 void ld_c_a()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD (C), A\033[1;0m\n");
+#endif
 	mmu_write_byte((0xFF00 + m_regs.c), m_regs.a);
 	m_regs.pc += 1;
 }

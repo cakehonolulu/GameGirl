@@ -33,6 +33,9 @@ void m_ld_hlminus_a();
 // 0x3E
 void m_ld_a_d8();
 
+// 0x77
+void m_ld_hl_a();
+
 // 0xAF
 void m_xor_a();
 
