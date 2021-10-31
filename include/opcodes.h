@@ -42,5 +42,8 @@ void m_xor_a();
 // 0xCB
 extern void m_cb_ext();
 
+// 0xE0
+void m_ld_a8_a();
+
 // 0xE2
 void ld_c_a();

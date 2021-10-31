@@ -226,7 +226,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xDD
 	{NULL, 0, NULL},                           // 0xDE
 	{NULL, 0, NULL},                           // 0xDF
-	{NULL, 0, NULL},						   // 0xE0
+	{"LD (a8), A", 0, m_ld_a8_a},			   // 0xE0
 	{NULL, 0, NULL},                           // 0xE1
 	{"LD (C), A", 0, ld_c_a},				   // 0xE2
 	{NULL, 0, NULL},                           // 0x00
@@ -507,6 +507,34 @@ void m_xor_a()
 #endif
 
 	m_regs.pc += 1;
+}
+
+/*
+	LD (a8), A
+	Opcode: 0xE0
+	Number of Bytes: 2
+	Number of Cycles: 3
+
+	Store the contents of register A in the internal RAM,
+	port register, or mode register at the address in the range
+	0xFF00-0xFFFF specified by the 8-bit immediate operand a8.
+
+	Note: Should specify a 16-bit address in the mnemonic portion
+	for a8, although the immediate operand only has the lower-order 8 bits.
+
+	0xFF00-0xFF7F: Port/Mode registers, control register, sound register
+	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
+	0xFFFF: Interrupt Enable Register
+*/
+void m_ld_a8_a()
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD (a8), A\033[1;0m\n");
+#endif
+	uint8_t m_operand = mmu_read_byte(mmu, m_regs.pc + 1);
+
+	mmu_write_byte((0xFF00 + m_operand), m_regs.a);
+	m_regs.pc += 2;
 }
 
 /*
