@@ -261,10 +261,12 @@ const struct m_sharp_lr35902_instr_cb m_gb_instr_cb[256] = {
 
 void m_cb_ext(uint8_t cb_instr)
 {
+#ifdef OPCODE_DEBUG
 	printf("CB Mode Instr!\n");
 
 	printf("Current CB Opcode: 0x%02X\n", cb_instr);
-
+#endif
+	
 	((void (*)(void))m_gb_instr_cb[cb_instr].m_funct)();
 }
 

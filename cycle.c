@@ -40,14 +40,19 @@ void m_exec(gb_registers_t m_regs)
 {
 	uint8_t m_opcode = m_fetch(m_regs);
 
+#ifdef OPCODE_DEBUG
 	printf("Current opcode: 0x%02X\n", m_opcode);
+#endif
 
 	uint8_t m_operand = 0;
 
 	if (m_gb_instr[m_opcode].m_operand == 1)
 	{
 		m_operand = m_fetchop(m_regs);
+
+#ifdef OPCODE_DEBUG
 		printf("Operand: 0x%X\n", m_operand);
+#endif
 	}
 
 	switch(m_gb_instr[m_opcode].m_operand)

@@ -407,9 +407,8 @@ void m_jr_nz_s8()
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mJR NZ, $%04hhX\033[1;0m\n", m_operand);
-#endif
-
 	printf("Operand: 0x%X\n", (uint8_t) m_operand);
+#endif
 
 	uint16_t currpc = (uint16_t) PC;
 
