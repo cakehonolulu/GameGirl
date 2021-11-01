@@ -49,13 +49,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 		m_operand = m_fetchop(gb_mmu, m_regs);
 		printf("Operand: 0x%X\n", m_operand);
 	}
-
-	if (m_regs->pc == 0x0015)
-	{
-		m_printregs(m_regs);
-		exit(EXIT_FAILURE);
-	}
-
+	
 	switch(m_gb_instr[m_opcode].m_operand)
 	{
 		case 0:
