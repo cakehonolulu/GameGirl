@@ -86,6 +86,8 @@ int main(int argc, char **argv)
 	// Init MMU
 	mmu = mmu_init();
 
+	memset(mmu->gb_mmap.cart, 0, sizeof(mmu->gb_mmap.cart));
+
 	// Load Bootrom
 	m_load_bootrom(m_bootrom_buf);
 
