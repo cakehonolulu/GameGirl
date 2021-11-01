@@ -98,12 +98,6 @@ int main(int argc, char **argv)
 	{
 		// Start fetching & executing instructions
 		m_exec(m_regs);
-
-		if (m_regs.isUnimplemented == true)
-		{
-			printf("Exiting...\n");
-			exit(EXIT_FAILURE);
-		}
 	}
 
 	// Free MMU data

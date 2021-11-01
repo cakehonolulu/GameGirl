@@ -53,11 +53,25 @@ void m_exec(gb_registers_t m_regs)
 	switch(m_gb_instr[m_opcode].m_operand)
 	{
 		case 0:
-			((void (*)(void))m_gb_instr[m_opcode].m_funct)();
+			if (m_gb_instr[m_opcode].m_funct == NULL)
+			{
+				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
+				m_printregs(m_regs);
+				exit(EXIT_FAILURE);
+			} else {
+				((void (*)(void))m_gb_instr[m_opcode].m_funct)();
+			}
 			break;
 		
 		case 1:
-			((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((uint8_t) m_operand);
+			if (m_gb_instr[m_opcode].m_funct == NULL)
+			{
+				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
+				m_printregs(m_regs);
+				exit(EXIT_FAILURE);
+			} else {
+				((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((uint8_t) m_operand);
+			}
 			break;
 
 		default:
