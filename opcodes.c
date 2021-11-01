@@ -474,8 +474,8 @@ void m_ld_hlminus_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL-), A\033[1;0m\n");
 #endif
-	mmu_write_word(mmu, Hl, A);
-	Hl--;
+	mmu_write_word(mmu, HL, A);
+	HL--;
 	PC += 1;
 }
 
@@ -530,7 +530,7 @@ void m_ld_hl_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL), A\033[1;0m\n");
 #endif
-	mmu_write_byte(Hl, A);
+	mmu_write_byte(HL, A);
 	PC += 1;
 }
 
