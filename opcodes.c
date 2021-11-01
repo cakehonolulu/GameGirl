@@ -81,7 +81,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x4C
 	{NULL, 0, NULL},                           // 0x4D
 	{NULL, 0, NULL},                           // 0x4E
-	{NULL, 0, NULL},                           // 0x4F
+	{"LD C, A", 0, m_ld_c_a},                  // 0x4F
 	{NULL, 0, NULL},                           // 0x50
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -228,7 +228,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xDF
 	{"LD (a8), A", 0, m_ld_a8_a},			   // 0xE0
 	{NULL, 0, NULL},                           // 0xE1
-	{"LD (C), A", 0, m_ld_c_a},				   // 0xE2
+	{"LD (C), A", 0, m_ld_cpar_a},			   // 0xE2
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -500,6 +500,24 @@ void m_ld_a_d8()
 }
 
 /*
+	LD C, A
+	Opcode: 0x4F
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Load the contents of register A into register C.
+*/
+void m_ld_c_a()
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD C, A\033[1;0m\n");
+#endif
+
+	m_regs.c = m_regs.a;
+	m_regs.pc += 1;
+}
+
+/*
 	LD (HL), A
 	Opcode: 0x77
 	Number of Bytes: 1
@@ -635,7 +653,7 @@ void m_ld_a8_a()
 	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
 	0xFFFF: Interrupt Enable Registe
 */
-void m_ld_c_a()
+void m_ld_cpar_a()
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (C), A\033[1;0m\n");

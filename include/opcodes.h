@@ -39,6 +39,9 @@ void m_ld_hlminus_a();
 // 0x3E
 void m_ld_a_d8();
 
+// 0x4F
+void m_ld_c_a();
+
 // 0x77
 void m_ld_hl_a();
 
@@ -55,4 +58,4 @@ void m_call();
 void m_ld_a8_a();
 
 // 0xE2
-void m_ld_c_a();
+void m_ld_cpar_a();
