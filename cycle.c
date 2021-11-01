@@ -1,34 +1,34 @@
 #include "include/cycle.h"
 #include "include/opcodes.h"
 
-void m_init_registers(gb_registers_t *m_regs)
+void m_init_registers(gb_registers_t m_regs)
 {
-	m_regs->a = 0;
-	m_regs->b = 0;
+	A = 0;
+	B = 0;
 
-	m_regs->c = 0;
-	m_regs->d = 0;
+	C = 0;
+	D = 0;
 
-	m_regs->e = 0;
-	m_regs->f = 0;
+	E = 0;
+	F = 0;
 
-	m_regs->l = 0;
-	m_regs->h = 0;
+	L = 0;
+	H = 0;
 
-	m_regs->pc = 0;
-	m_regs->sp = 0;
+	PC = 0;
+	SP = 0;
 
-	m_regs->flags = 0;
+	FLAGS = 0;
 }
 
-uint8_t m_fetch(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
+uint8_t m_fetch(gb_mmu_t *gb_mmu, gb_registers_t m_regs)
 {
-	return (uint8_t) mmu_read_byte(gb_mmu, m_regs->pc);
+	return (uint8_t) mmu_read_byte(gb_mmu, PC);
 }
 
-uint8_t m_fetchop(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
+uint8_t m_fetchop(gb_mmu_t *gb_mmu, gb_registers_t m_regs)
 {
-	return (uint8_t) mmu_read_byte(gb_mmu, m_regs->pc + 1);;
+	return (uint8_t) mmu_read_byte(gb_mmu, PC + 1);;
 }
 
 bool m_is_bit_set(uint8_t m_register, size_t m_bit)
@@ -36,7 +36,7 @@ bool m_is_bit_set(uint8_t m_register, size_t m_bit)
 	return 1 == ((m_register >> m_bit) & 1);
 }
 
-void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
+void m_exec(gb_mmu_t *gb_mmu, gb_registers_t m_regs)
 {
 	uint8_t m_opcode = m_fetch(gb_mmu, m_regs);
 

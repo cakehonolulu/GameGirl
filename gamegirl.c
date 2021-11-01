@@ -90,14 +90,14 @@ int main(int argc, char **argv)
 	m_load_bootrom(mmu, m_bootrom_buf);
 
 	// Initialize Registers
-	m_init_registers(&m_regs);
+	m_init_registers(m_regs);
 
 	m_regs.isUnimplemented = false;
 
 	while (true)
 	{
 		// Start fetching & executing instructions
-		m_exec(mmu, &m_regs);
+		m_exec(mmu, m_regs);
 
 		if (m_regs.isUnimplemented == true)
 		{
