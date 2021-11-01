@@ -322,10 +322,12 @@ void m_inc_c()
 */
 void m_ld_c_d8()
 {
-#ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD (C), d8\033[1;0m\n");
-#endif
 	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
+
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD (C), $%04x\033[1;0m\n", m_operand);
+#endif
+
 	m_regs.c = m_operand;
 	m_regs.pc += 2;
 }
@@ -343,10 +345,12 @@ void m_ld_c_d8()
 */
 void m_ld_de_d16()
 {
-#ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD DE, d16\033[1;0m\n");
-#endif
 	uint16_t m_operand = mmu_read_word(mmu, m_regs.pc + 1);
+
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD DE, $%04x\033[1;0m\n", m_operand);
+#endif
+
 	m_regs.de = m_operand;
 	m_regs.pc += 3;
 }
@@ -379,11 +383,12 @@ void m_ld_a_de()
 */
 void m_jr_nz_s8()
 {
+	int8_t m_operand = (int8_t) mmu_read_byte(mmu, (m_regs.pc + 1));
+
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mJR NZ, s8\033[1;0m\n");
+	printf("\033[1;31mJR NZ, $%04x\033[1;0m\n", m_operand);
 #endif
 
-	int8_t m_operand = (int8_t) mmu_read_byte(mmu, (m_regs.pc + 1));
 	printf("Operand: 0x%x\n", (uint8_t) m_operand);
 
 	uint16_t currpc = (uint16_t) m_regs.pc;
@@ -412,10 +417,11 @@ void m_jr_nz_s8()
 */
 void m_ld_hl_d16()
 {
-#ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD HL, d16\033[1;0m\n");
-#endif
 	uint16_t m_address = mmu_read_word(mmu, (m_regs.pc + 1));
+
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD HL, $%04x\033[1;0m\n", m_address);
+#endif
 
 #ifdef OPCODE_DEBUG
 	printf("Address: 0x%04x\n", m_address);
@@ -439,11 +445,11 @@ void m_ld_hl_d16()
 */
 void m_ld_sp_d16()
 {
-#ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD SP, d16\033[1;0m\n");
-#endif
-
 	uint16_t m_addr = mmu_read_word(mmu, (m_regs.pc + 1));
+
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD SP, $%04x\033[1;0m\n", m_addr);
+#endif
 
 	m_regs.sp = m_addr;
 
@@ -483,11 +489,12 @@ void m_ld_hlminus_a()
 */
 void m_ld_a_d8()
 {
+	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
+
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD (A), d8\033[1;0m\n");
+	printf("\033[1;31mLD (A), $%04x\033[1;0m\n", m_operand);
 #endif
 
-	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
 	m_regs.a = m_operand;
 	m_regs.pc += 2;
 }
@@ -605,10 +612,11 @@ void m_call()
 */
 void m_ld_a8_a()
 {
-#ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD (a8), A\033[1;0m\n");
-#endif
 	uint8_t m_operand = mmu_read_byte(mmu, m_regs.pc + 1);
+
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD ($%04x), A\033[1;0m\n", m_operand);
+#endif
 
 	mmu_write_byte((0xFF00 + m_operand), m_regs.a);
 	m_regs.pc += 2;
