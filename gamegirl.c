@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 	}
 
 	// Free MMU data
-	mmu_halt(mmu);
+	mmu_halt();
 
 	return EXIT_SUCCESS;
 }
