@@ -203,7 +203,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xC6
 	{NULL, 0, NULL},                           // 0xC7
 	{NULL, 0, NULL},                           // 0xC8
-	{NULL, 0, NULL},                           // 0xC9
+	{"RET", 0, m_ret}, 		                   // 0xC9
 	{NULL, 0, NULL},                           // 0xCA
 	{"CB", 1, m_cb_ext},						// 0xCB
 	{NULL, 0, NULL},                           // 0xCC
@@ -757,6 +757,36 @@ void m_push_bc()
 }
 
 /*
+	RET
+	Opcode: 0xC9
+	Number of Bytes: 1
+	Number of Cycles: 4
+
+	Pop from the memory stack the program counter PC value pushed when the subroutine was called,
+	returning contorl to the source program.
+
+	The contents of the address specified by the stack pointer SP are loaded in the lower-order
+	byte of PC, and the contents of SP are incremented by 1. The contents of the address specified
+	by the new SP value are then loaded in the higher-order byte of PC, and the contents of SP are
+	incremented by 1 again. (THe value of SP is 2 larger than before instruction execution.)
+	The next instruction is fetched from the address specified by the content of PC (as usual).
+*/
+void m_ret()
+{
+	uint8_t m_addr = mmu_read_byte(SP + 1);
+
+#ifdef OPCODE_DEBUG
+	printf("Addr: 0x%04X\n", m_addr);
+#endif
+
+	SP += 2;
+
+	PC = m_addr + 0x3;
+	//m_printregs(m_regs);
+	//exit(1);
+}
+
+/*
 	CALL a16
 	Opcode: 0xCD
 	Number of Bytes: 3
@@ -788,10 +818,12 @@ void m_call()
 	printf("\033[1;31mCALL $%04X\033[1;0m\n", m_addr);
 #endif
 
-	SP -= 2;
+	SP --;
+
+	mmu_write_byte(SP, (uint8_t) (PC & 0x00ff));
 	
-	mmu_write_word(SP, (uint8_t) (PC & 0x00ff));
-	
+	SP--;
+
 	PC = m_addr;
 }
 

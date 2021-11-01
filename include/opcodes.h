@@ -72,6 +72,9 @@ void m_pop_bc();
 // 0xC5
 void m_push_bc();
 
+// 0xC9
+void m_ret();
+
 // 0xCB
 extern void m_cb_ext();
 

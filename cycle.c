@@ -36,9 +36,11 @@ bool m_is_bit_set(uint8_t m_register, size_t m_bit)
 	return 1 == ((m_register >> m_bit) & 1);
 }
 
+uint8_t m_opcode;
+
 void m_exec(gb_registers_t m_regs)
 {
-	uint8_t m_opcode = m_fetch(m_regs);
+	m_opcode = m_fetch(m_regs);
 
 #ifdef OPCODE_DEBUG
 	printf("Current opcode: 0x%02X\n", m_opcode);
@@ -54,12 +56,6 @@ void m_exec(gb_registers_t m_regs)
 		printf("Operand: 0x%X\n", m_operand);
 #endif
 	}
-
-	//if (PC == 0x0000)
-	//{
-	//	m_printregs(m_regs);
-	//	exit(0);
-	//}
 
 	switch(m_gb_instr[m_opcode].m_operand)
 	{
