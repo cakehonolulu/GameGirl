@@ -26,9 +26,20 @@ uint8_t m_fetch(gb_registers_t m_regs)
 	return (uint8_t) mmu_read_byte(PC);
 }
 
-uint8_t m_fetchop(gb_registers_t m_regs)
+uint8_t m_fetchopbyte(gb_registers_t m_regs)
 {
-	return (uint8_t) mmu_read_byte(PC + 1);;
+	return (uint8_t) mmu_read_byte(PC + 1);
+}
+
+uint16_t m_fetchopword(gb_registers_t m_regs)
+{
+	uint8_t m_rb = mmu_read_byte(PC + 1);
+
+	uint8_t m_lb = mmu_read_byte(PC + 2);
+
+	uint16_t m_w = ((m_lb & 0xFF) << 8) | m_rb & 0xFF;
+
+	return (uint16_t) m_w;
 }
 
 bool m_is_bit_set(uint8_t m_register, size_t m_bit)
@@ -46,15 +57,14 @@ void m_exec(gb_registers_t m_regs)
 	printf("Current opcode: 0x%02X\n", m_opcode);
 #endif
 
-	uint8_t m_operand = 0;
+	uint8_t m_boperand = 0;
+	uint16_t m_woperand = 0;
 
 	if (m_gb_instr[m_opcode].m_operand == 1)
 	{
-		m_operand = m_fetchop(m_regs);
-
-#ifdef OPCODE_DEBUG
-		printf("Operand: 0x%X\n", m_operand);
-#endif
+		m_boperand = m_fetchopbyte(m_regs);
+	} else if (m_gb_instr[m_opcode].m_operand == 2) {
+		m_woperand = m_fetchopword(m_regs);
 	}
 
 	switch(m_gb_instr[m_opcode].m_operand)
@@ -79,10 +89,21 @@ void m_exec(gb_registers_t m_regs)
 			} else {
 				if (m_opcode == 0x20)
 				{
-					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((int8_t) m_operand);
+					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((int8_t) m_boperand);
 				} else {
-					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((uint8_t) m_operand);
+					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((uint8_t) m_boperand);
 				}
+			}
+			break;
+
+		case 2:
+			if (m_gb_instr[m_opcode].m_funct == NULL)
+			{
+				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
+				m_printregs(m_regs);
+				exit(EXIT_FAILURE);
+			} else {
+				((void (*)(uint16_t))m_gb_instr[m_opcode].m_funct)((uint16_t) m_woperand);
 			}
 			break;
 

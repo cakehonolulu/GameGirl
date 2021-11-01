@@ -19,7 +19,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"LD C, d8", 1, m_ld_c_d8},				   // 0x0E
 	{NULL, 0, NULL},                           // 0x0F
 	{NULL, 0, NULL},                           // 0x10
-	{"LD DE, d16", 0, m_ld_de_d16},			   // 0x11
+	{"LD DE, d16", 2, m_ld_de_d16},			   // 0x11
 	{NULL, 0, NULL},                           // 0x12
 	{NULL, 0, NULL},                           // 0x13
 	{NULL, 0, NULL},                           // 0x14
@@ -35,7 +35,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},							// 0x1E
 	{NULL, 0, NULL},							// 0x1F
 	{"JR NZ, s8", 1, m_jr_nz_s8},			   // 0x20
-	{"LD HL, d16", 0, m_ld_hl_d16},			   // 0x21
+	{"LD HL, d16", 2, m_ld_hl_d16},			   // 0x21
 	{"LD (HL+), A", 0, m_ld_hlplus_a},		   // 0x22
 	{"INC HL", 0, m_inc_hl},				   // 0x23
 	{NULL, 0, NULL},                           // 0x24
@@ -51,7 +51,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x2E
 	{NULL, 0, NULL},                           // 0x2F
 	{NULL, 0, NULL},							// 0x30
-	{"LD SP, d16", 0, m_ld_sp_d16},			// 0x31
+	{"LD SP, d16", 2, m_ld_sp_d16},			// 0x31
 	{"LD (HL-), A", 0, m_ld_hlminus_a},		// 0x32
 	{NULL, 0, NULL},                           // 0x33
 	{NULL, 0, NULL},                           // 0x34
@@ -207,7 +207,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xCA
 	{"CB", 1, m_cb_ext},						// 0xCB
 	{NULL, 0, NULL},                           // 0xCC
-	{"CALL", 0, m_call},                           // 0xCD
+	{"CALL", 2, m_call},                           // 0xCD
 	{NULL, 0, NULL},                           // 0xCE
 	{NULL, 0, NULL},                           // 0xCF
 	{NULL, 0, NULL},                           // 0xD0
@@ -393,15 +393,13 @@ void m_ld_c_d8(uint8_t m_d8)
 	The first byte of immediate data is the lower byte (i.e., bits 0-7),
 	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
 */
-void m_ld_de_d16()
+void m_ld_de_d16(uint16_t m_d16)
 {
-	uint16_t m_operand = mmu_read_word(PC + 1);
-
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD DE, $%04X\033[1;0m\n", m_operand);
+	printf("\033[1;31mLD DE, $%04X\033[1;0m\n", m_d16);
 #endif
 
-	DE = m_operand;
+	DE = m_d16;
 	PC += 3;
 }
 
@@ -504,20 +502,18 @@ void m_jr_nz_s8(int8_t m_s8)
 	The first byte of immediate data is the lower byte (i.e., bits 0-7),
 	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
 */
-void m_ld_hl_d16()
+void m_ld_hl_d16(uint16_t m_d16)
 {
-	uint16_t m_address = mmu_read_word((PC + 1));
-
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD HL, $%04X\033[1;0m\n", m_address);
+	printf("\033[1;31mLD HL, $%04X\033[1;0m\n", m_d16);
 #endif
 
 #ifdef OPCODE_DEBUG
-	printf("Address: 0x%04X\n", m_address);
+	printf("Address: 0x%04X\n", m_d16);
 #endif
 
-	L = (m_address & 0xFF);
-	H = (m_address >> 8);
+	L = (m_d16 & 0xFF);
+	H = (m_d16 >> 8);
 
 	PC += 3;
 }
@@ -564,18 +560,17 @@ void m_inc_hl()
 	The first byte of immediate data is the lower byte (i.e., bits 0-7),
 	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
 */
-void m_ld_sp_d16()
+void m_ld_sp_d16(uint16_t m_d16)
 {
-	uint16_t m_addr = mmu_read_word((PC + 1));
 
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD SP, $%04X\033[1;0m\n", m_addr);
+	printf("\033[1;31mLD SP, $%04X\033[1;0m\n", m_d16);
 #endif
 
-	SP = m_addr;
+	SP = m_d16;
 
 #ifdef OPCODE_DEBUG
-	printf("Obtained Address: 0x%X\n", m_addr);
+	printf("Obtained Address: 0x%X\n", m_d16);
 #endif
 
 	PC += 3;
@@ -802,10 +797,8 @@ void m_ret()
 	The lower-order byte of a16 is placed in byte 2 of the object code,
 	and the higher-order byte is placed in byte 3.
 */
-void m_call()
+void m_call(uint16_t m_addr)
 {
-	uint16_t m_addr = mmu_read_word(PC + 1);
-
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mCALL $%04X\033[1;0m\n", m_addr);
 #endif
