@@ -40,14 +40,14 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 {
 	uint8_t m_opcode = m_fetch(gb_mmu, m_regs);
 
-	printf("Current opcode: 0x%x\n", m_opcode);
+	printf("Current opcode: 0x%X\n", m_opcode);
 
 	uint8_t m_operand = 0;
 
 	if (m_gb_instr[m_opcode].m_operand == 1)
 	{
 		m_operand = m_fetchop(gb_mmu, m_regs);
-		printf("Operand: 0x%x\n", m_operand);
+		printf("Operand: 0x%X\n", m_operand);
 	}
 
 	if (m_regs->pc == 0x0015)
@@ -75,17 +75,17 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 
 void m_printregs(gb_registers_t *m_regs)
 {
-	printf("\n\033[1;31mGeneral-Prupose Registers:\033[0m\n");
-	printf("\033[0;35mA:\033[0m 0x%02x, \033[0;35mF:\033[0m 0x%02x; \033[0;35mAF:\033[0m 0x%04x\n", m_regs->a, m_regs->f, m_regs->af);
-	printf("\033[0;35mB:\033[0m 0x%02x, \033[0;35mC:\033[0m 0x%02x; \033[0;35mBC:\033[0m 0x%04x\n", m_regs->b, m_regs->c, m_regs->bc);
-	printf("\033[0;35mD:\033[0m 0x%02x, \033[0;35mE:\033[0m 0x%02x; \033[0;35mDE:\033[0m 0x%04x\n", m_regs->d, m_regs->e, m_regs->de);
-	printf("\033[0;35mH:\033[0m 0x%02x, \033[0;35mL:\033[0m 0x%02x; \033[0;35mHL:\033[0m 0x%04x\n\n", m_regs->h, m_regs->l, m_regs->hl);
+	printf("\n\033[1;31mGeneral-Purpose Registers:\033[0m\n");
+	printf("\033[0;35mA:\033[0m 0x%02X, \033[0;35mF:\033[0m 0x%02X; \033[0;35mAF:\033[0m 0x%04X\n", m_regs->a, m_regs->f, m_regs->af);
+	printf("\033[0;35mB:\033[0m 0x%02X, \033[0;35mC:\033[0m 0x%02X; \033[0;35mBC:\033[0m 0x%04X\n", m_regs->b, m_regs->c, m_regs->bc);
+	printf("\033[0;35mD:\033[0m 0x%02X, \033[0;35mE:\033[0m 0x%02X; \033[0;35mDE:\033[0m 0x%04X\n", m_regs->d, m_regs->e, m_regs->de);
+	printf("\033[0;35mH:\033[0m 0x%02X, \033[0;35mL:\033[0m 0x%02X; \033[0;35mHL:\033[0m 0x%04X\n\n", m_regs->h, m_regs->l, m_regs->hl);
 
 	printf("\033[1;33mSegment Registers:\033[0:0m\n");
-	printf("\033[1;35mSP:\033[0m 0x%04x\n\n", m_regs->sp);
+	printf("\033[1;35mSP:\033[0m 0x%04X\n\n", m_regs->sp);
 
 	printf("\033[1;32mProgram Flow Registers:\033[0:0m\n");
-	printf("\033[1;35mPC:\033[0m 0x%04x\n\n", m_regs->pc);
+	printf("\033[1;35mPC:\033[0m 0x%04X\n\n", m_regs->pc);
 
 	printf("\033[1;34mFlags:\033[0:0m\n");
 
