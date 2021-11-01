@@ -123,7 +123,10 @@ int main(int argc, char **argv)
 
 			printf("\nLegend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
 
-			printf("\033[0;34m00:%04X  %02X ->\033[0;0m %s\n", PC - 1, mmu_read_byte(PC - 1), m_gb_instr[m_opcode].m_instr);
+			uint8_t prev_pc = PC - 1;
+			uint8_t curr_instr;
+
+			printf("\033[0;34m00:%04X  %02X ->\033[0;0m %s\n", prev_pc, mmu_read_byte(prev_pc), m_gb_instr[m_opcode].m_instr);
 			printf("\033[0;33m00:%04X  %02X ->\033[0;0m %s\n\n", PC, mmu_read_byte(PC), m_gb_instr[m_dbgopc].m_instr);
 
 			printf("Press Enter to Step...\n");
@@ -134,6 +137,8 @@ int main(int argc, char **argv)
 				{
 					printf("\e[1;1H\e[2J");
 
+					uint8_t prev_pc = PC;
+
 					m_exec(m_regs);
 					m_printregs(m_regs);
 
@@ -143,7 +148,8 @@ int main(int argc, char **argv)
 
 					uint8_t m_dbgopc = mmu_read_byte(PC);
 
-					printf("\033[0;34m00:%04X  %02X ->\033[0;0m %s\n", PC - 1, mmu_read_byte(PC - 1), m_gb_instr[m_opcode].m_instr);
+					
+					printf("\033[0;34m00:%04X  %02X ->\033[0;0m %s\n", prev_pc, mmu_read_byte(prev_pc), m_gb_instr[m_opcode].m_instr);
 					printf("\033[0;33m00:%04X  %02X ->\033[0;0m %s\n\n", PC, mmu_read_byte(PC), m_gb_instr[m_dbgopc].m_instr);
 					
 					printf("Press Enter to Step...\n");
