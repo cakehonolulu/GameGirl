@@ -389,6 +389,9 @@ void m_ld_de_d16()
 */
 void m_rla()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mRLA\033[1;0m\n");
+#endif
 	int isCarry = m_is_bit_set(A, C);
 
 	if (A & 0b1000000)

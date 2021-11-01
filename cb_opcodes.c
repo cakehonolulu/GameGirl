@@ -292,6 +292,10 @@ void m_cb_ext(uint8_t cb_instr)
 */
 void m_rl_c()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mRL C\033[1;0m\n");
+#endif
+
 	int isCarry = m_is_bit_set(C, C);
 
 	if (C & 0b1000000)
