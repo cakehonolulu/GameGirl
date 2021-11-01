@@ -40,7 +40,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 {
 	uint8_t m_opcode = m_fetch(gb_mmu, m_regs);
 
-	printf("Current opcode: 0x%X\n", m_opcode);
+	printf("Current opcode: 0x%02X\n", m_opcode);
 
 	uint8_t m_operand = 0;
 
