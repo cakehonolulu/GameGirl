@@ -51,6 +51,9 @@ void m_ld_hl_a();
 // 0xAF
 void m_xor_a();
 
+// 0xC5
+void m_push_bc();
+
 // 0xCB
 extern void m_cb_ext();
 

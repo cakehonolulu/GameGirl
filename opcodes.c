@@ -199,7 +199,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xC2
 	{NULL, 0, NULL},                           // 0xC3
 	{NULL, 0, NULL},                           // 0xC4
-	{NULL, 0, NULL},                           // 0xC5
+	{"PUSH BC", 0, m_push_bc},				   // 0xC5
 	{NULL, 0, NULL},                           // 0xC6
 	{NULL, 0, NULL},                           // 0xC7
 	{NULL, 0, NULL},                           // 0xC8
@@ -588,6 +588,35 @@ void m_xor_a()
 			printf("Flags: 0x%02X\n", FLAGS);
 #endif
 
+	PC += 1;
+}
+
+/*
+	PUSH BC
+	Opcode: 0xC5
+	Number of Bytes: 1
+	Number of Cycles: 4
+
+	Push the contents of register pair BC onto the memory stack by doing the following:
+
+	Subtract 1 from the stack pointer SP, and put the contents of the higher portion of register pair BC on the stack.
+	Subtract 2 from SP, and put the lower portion of register pair BC on the stack.
+	Decrement SP by 2.
+*/
+void m_push_bc()
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mPUSH BC\033[1;0m\n");
+#endif
+
+	SP--;
+
+	mmu_write_word(SP, (uint8_t) (BC & 0x00ff));
+
+	SP--;
+
+	mmu_write_word(SP, (uint8_t) (BC >> 8));
+	
 	PC += 1;
 }
 
