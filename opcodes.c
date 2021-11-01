@@ -8,7 +8,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x03
 	{NULL, 0, NULL},                           // 0x04
 	{NULL, 0, NULL},                           // 0x05
-	{NULL, 0, NULL},                           // 0x06
+	{"LD B, d8", 0, m_ld_b_d8},                // 0x06
 	{NULL, 0, NULL},                           // 0x07
 	{NULL, 0, NULL},                           // 0x08
 	{NULL, 0, NULL},                           // 0x09
@@ -275,6 +275,26 @@ void m_nop()
 #endif
 
 	PC += 1;
+}
+
+/*
+	LD B, d8
+	Opcode: 0x06
+	Number of Bytes: 2
+	Number of Cycles: 2
+
+	Load the 8-bit immediate operand d8 into register B.
+*/
+void m_ld_b_d8()
+{
+	uint8_t m_operand = mmu_read_byte(PC + 1);
+
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD B, $%04X\033[1;0m\n", m_operand);
+#endif
+
+	B = m_operand;
+	PC += 2;
 }
 
 /*
