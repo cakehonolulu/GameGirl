@@ -1,6 +1,7 @@
 #include "include/gamegirl.h"
 #include "include/mmu.h"
 #include "include/cycle.h"
+#include "include/opcodes.h"
 
 // Init MMU
 gb_mmu_t *mmu;
@@ -25,6 +26,8 @@ int main(int argc, char **argv)
 	bool m_foundbootrom = false;
 	bool m_foundprogram = false;
 
+	int breakpoint;
+
 	for (int i = 1; i < argc; i++)
 	{
 		if (m_foundbootrom != true)
@@ -40,8 +43,14 @@ int main(int argc, char **argv)
 		} else {
 			if (m_foundbootrom == true)
 			{
-				printf("No more than 1 BootROM file is allowed, exiting...\n");
-				exit(EXIT_FAILURE);
+				char *p;
+				
+				long conv = strtol(argv[2], &p, 10);
+				
+				breakpoint = conv;
+
+				printf("%d\n", breakpoint);
+
 			} else {
 				printf("Unknown argument: %s\n", argv[i]);
 				exit(EXIT_FAILURE);
@@ -101,6 +110,47 @@ int main(int argc, char **argv)
 	{
 		// Start fetching & executing instructions
 		m_exec(m_regs);
+
+		if (PC == breakpoint)
+		{
+			printf("\e[1;1H\e[2J");
+			printf("\033[1;32mEntered Debugging Step Mode!\033[0;0m\n");
+			extern uint8_t m_opcode;
+
+			uint8_t m_dbgopc = mmu_read_byte(PC);
+
+			m_printregs(m_regs);
+
+			printf("\nLegend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
+
+			printf("\033[0;34m00:%04X  %02X ->\033[0;0m %s\n", PC - 1, mmu_read_byte(PC - 1), m_gb_instr[m_opcode].m_instr);
+			printf("\033[0;33m00:%04X  %02X ->\033[0;0m %s\n\n", PC, mmu_read_byte(PC), m_gb_instr[m_dbgopc].m_instr);
+
+			printf("Press Enter to Step...\n");
+
+			while (true)
+			{
+				while (getchar())
+				{
+					printf("\e[1;1H\e[2J");
+
+					m_exec(m_regs);
+					m_printregs(m_regs);
+
+					extern uint8_t m_opcode;
+
+					printf("Legend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
+
+					uint8_t m_dbgopc = mmu_read_byte(PC);
+
+					printf("\033[0;34m00:%04X  %02X ->\033[0;0m %s\n", PC - 1, mmu_read_byte(PC - 1), m_gb_instr[m_opcode].m_instr);
+					printf("\033[0;33m00:%04X  %02X ->\033[0;0m %s\n\n", PC, mmu_read_byte(PC), m_gb_instr[m_dbgopc].m_instr);
+					
+					printf("Press Enter to Step...\n");
+				}
+			}
+		}
+
 	}
 
 	// Free MMU data
