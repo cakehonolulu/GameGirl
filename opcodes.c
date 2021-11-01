@@ -540,7 +540,7 @@ void m_xor_a()
 	}
 
 #ifdef OPCODE_DEBUG
-			printf("Flags: 0x%02x\n", m_regs.flags);
+			printf("Flags: 0x%02X\n", m_regs.flags);
 #endif
 
 	FLAG_UNSET(m_regs.flags, H);
@@ -548,7 +548,7 @@ void m_xor_a()
 	FLAG_UNSET(m_regs.flags, N);
 
 #ifdef OPCODE_DEBUG
-			printf("Flags: 0x%02x\n", m_regs.flags);
+			printf("Flags: 0x%02X\n", m_regs.flags);
 #endif
 
 	m_regs.pc += 1;
