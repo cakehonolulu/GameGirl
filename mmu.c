@@ -293,3 +293,21 @@ void m_load_bootrom(unsigned char *m_bootrom)
 	printf("\n");
 #endif
 }
+
+void m_init_address_space()
+{
+    // Clear Cart 0
+    memset(mmu->gb_mmap.cart, 0, sizeof(mmu->gb_mmap.cart));
+
+    // Clear VRAM
+    memset(mmu->gb_mmap.vram, 0, sizeof(mmu->gb_mmap.vram));
+
+    // Clear Cartridge RAM
+    memset(mmu->gb_mmap.cart_ram, 'F', sizeof(mmu->gb_mmap.cart_ram));
+
+    // Clear WRAM
+    memset(mmu->gb_mmap.wram, 0, sizeof(mmu->gb_mmap.wram));
+
+    // Clear OAM
+    memset(mmu->gb_mmap.oam, 0, sizeof(mmu->gb_mmap.oam));
+}
