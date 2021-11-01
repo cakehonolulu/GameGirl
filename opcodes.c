@@ -7,7 +7,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x02
 	{NULL, 0, NULL},                           // 0x03
 	{NULL, 0, NULL},                           // 0x04
-	{NULL, 0, NULL},                           // 0x05
+	{"DEC B", 0, m_dec_b},                     // 0x05
 	{"LD B, d8", 0, m_ld_b_d8},                // 0x06
 	{NULL, 0, NULL},                           // 0x07
 	{NULL, 0, NULL},                           // 0x08
@@ -276,6 +276,40 @@ void m_nop()
 #endif
 
 	PC += 1;
+}
+
+/*
+	DEC B
+	Opcode: 0x05
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Decrement the contents of register B by 1.
+*/
+void m_dec_b()
+{
+	// Check for Half-Carry
+	if(B & 0b00001111)
+	{
+		FLAG_UNSET(H);
+	} else {
+		FLAG_SET(H);
+	}
+
+	B--;
+	
+	// Check if B != 0
+	if(B)
+	{
+		FLAG_UNSET(Z);
+	} else {
+		FLAG_SET(Z);
+	}
+
+	// Set Negative (DEC Op)
+	FLAG_SET(N);
+	
+	PC++;
 }
 
 /*
