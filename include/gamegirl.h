@@ -70,6 +70,27 @@ extern gb_mmu_t *mmu;
 // Declare the Registers
 extern gb_registers_t m_regs;
 
-#define FLAG_SET(x, n) ((x) |= (1 << n))
-#define FLAG_UNSET(x, n) ((x) &= ~(1 << (n)))
+#define A (m_regs.a)
+#define F (m_regs.f)
+#define AF (m_regs.af)
+
+#define B (m_regs.b)
+#define C (m_regs.c)
+#define BC (m_regs.bc)
+
+#define D (m_regs.d)
+#define E (m_regs.e)
+#define DE (m_regs.de)
+
+#define H (m_regs.h)
+#define L (m_regs.l)
+#define HL (m_regs.hl)
+
+#define SP (m_regs.sp)
+#define PC (m_regs.pc)
+#define FLAGS (m_regs.flags)
+
+#define FLAG_SET(n) ((FLAGS) |= (1 << n))
+#define FLAG_UNSET(n) ((FLAGS) &= ~(1 << (n)))
+
 #endif

@@ -279,18 +279,18 @@ void m_cb_ext(uint8_t cb_instr)
 */
 void m_bit_7_h()
 {
-	if (!m_is_bit_set(m_regs.h, Z))
+	if (!m_is_bit_set(H, Z))
 	{
-		FLAG_SET(m_regs.flags, Z);
+		FLAG_SET(Z);
 	} else {
-		FLAG_UNSET(m_regs.flags, Z);
+		FLAG_UNSET(Z);
 	}
 
-	FLAG_UNSET(m_regs.flags, N);
+	FLAG_UNSET(N);
 
-	FLAG_SET(m_regs.flags, H);
+	FLAG_SET(H);
 #ifdef OPCODE_DEBUG
-	printf("Flags: 0x%02X\n", m_regs.flags);
+	printf("Flags: 0x%02X\n", FLAGS);
 #endif
-	m_regs.pc += 2;
+	PC += 2;
 }

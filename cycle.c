@@ -49,7 +49,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 		m_operand = m_fetchop(gb_mmu, m_regs);
 		printf("Operand: 0x%X\n", m_operand);
 	}
-	
+
 	switch(m_gb_instr[m_opcode].m_operand)
 	{
 		case 0:
@@ -67,25 +67,25 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t *m_regs)
 	
 }
 
-void m_printregs(gb_registers_t *m_regs)
+void m_printregs(gb_registers_t m_regs)
 {
 	printf("\n\033[1;31mGeneral-Purpose Registers:\033[0m\n");
-	printf("\033[0;35mA:\033[0m 0x%02X, \033[0;35mF:\033[0m 0x%02X; \033[0;35mAF:\033[0m 0x%04X\n", m_regs->a, m_regs->f, m_regs->af);
-	printf("\033[0;35mB:\033[0m 0x%02X, \033[0;35mC:\033[0m 0x%02X; \033[0;35mBC:\033[0m 0x%04X\n", m_regs->b, m_regs->c, m_regs->bc);
-	printf("\033[0;35mD:\033[0m 0x%02X, \033[0;35mE:\033[0m 0x%02X; \033[0;35mDE:\033[0m 0x%04X\n", m_regs->d, m_regs->e, m_regs->de);
-	printf("\033[0;35mH:\033[0m 0x%02X, \033[0;35mL:\033[0m 0x%02X; \033[0;35mHL:\033[0m 0x%04X\n\n", m_regs->h, m_regs->l, m_regs->hl);
+	printf("\033[0;35mA:\033[0m 0x%02X, \033[0;35mF:\033[0m 0x%02X; \033[0;35mAF:\033[0m 0x%04X\n", m_regs.a, m_regs.f, m_regs.af);
+	printf("\033[0;35mB:\033[0m 0x%02X, \033[0;35mC:\033[0m 0x%02X; \033[0;35mBC:\033[0m 0x%04X\n", m_regs.b, m_regs.c, m_regs.bc);
+	printf("\033[0;35mD:\033[0m 0x%02X, \033[0;35mE:\033[0m 0x%02X; \033[0;35mDE:\033[0m 0x%04X\n", m_regs.d, m_regs.e, m_regs.de);
+	printf("\033[0;35mH:\033[0m 0x%02X, \033[0;35mL:\033[0m 0x%02X; \033[0;35mHL:\033[0m 0x%04X\n\n", m_regs.h, m_regs.l, m_regs.hl);
 
 	printf("\033[1;33mSegment Registers:\033[0:0m\n");
-	printf("\033[1;35mSP:\033[0m 0x%04X\n\n", m_regs->sp);
+	printf("\033[1;35mSP:\033[0m 0x%04X\n\n", m_regs.sp);
 
 	printf("\033[1;32mProgram Flow Registers:\033[0:0m\n");
-	printf("\033[1;35mPC:\033[0m 0x%04X\n\n", m_regs->pc);
+	printf("\033[1;35mPC:\033[0m 0x%04X\n\n", m_regs.pc);
 
 	printf("\033[1;34mFlags:\033[0:0m\n");
 
 	printf("\033[1;35mZ: ");
 
-	if (m_is_bit_set(m_regs->flags, Z))
+	if (m_is_bit_set(m_regs.flags, Z))
 	{
 		printf("\033[0m1   ");
 	} else {
@@ -94,7 +94,7 @@ void m_printregs(gb_registers_t *m_regs)
 
 	printf("\033[1;35mN: ");
 
-	if (m_is_bit_set(m_regs->flags, N))
+	if (m_is_bit_set(m_regs.flags, N))
 	{
 		printf("\033[0m1   \n");
 	} else {
@@ -103,7 +103,7 @@ void m_printregs(gb_registers_t *m_regs)
 
 	printf("\033[1;35mH: ");
 
-	if (m_is_bit_set(m_regs->flags, H))
+	if (m_is_bit_set(m_regs.flags, H))
 	{
 		printf("\033[0m1   ");
 	} else {
@@ -112,7 +112,7 @@ void m_printregs(gb_registers_t *m_regs)
 
 	printf("\033[1;35mC: ");
 
-	if (m_is_bit_set(m_regs->flags, C))
+	if (m_is_bit_set(m_regs.flags, C))
 	{
 		printf("\033[0m1   \n");
 	} else {

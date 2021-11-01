@@ -274,7 +274,7 @@ void m_nop()
 	printf("\033[1;31mNOP\033[1;0m\n");
 #endif
 
-	m_regs.pc += 1;
+	PC += 1;
 }
 
 /*
@@ -291,25 +291,25 @@ void m_inc_c()
 	printf("\033[1;31mINC C\033[1;0m\n");
 #endif
 
-	if ((m_regs.c & 0x0f) == 0x0f)
+	if ((C & 0x0f) == 0x0f)
 	{
-		FLAG_SET(m_regs.flags, H);
+		FLAG_SET(H);
 	} else {
-		FLAG_UNSET(m_regs.flags, H);
+		FLAG_UNSET(H);
 	}
 
-	m_regs.c++;
+	C++;
 	
-	if (m_regs.c)
+	if (C)
 	{
-		FLAG_UNSET(m_regs.flags, Z);
+		FLAG_UNSET(Z);
 	} else {
-		FLAG_SET(m_regs.flags, Z);
+		FLAG_SET(Z);
 	}
 
-	FLAG_UNSET(m_regs.flags, N);
+	FLAG_UNSET(N);
 
-	m_regs.pc += 1;
+	PC += 1;
 }
 
 /*
@@ -322,14 +322,14 @@ void m_inc_c()
 */
 void m_ld_c_d8()
 {
-	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
+	uint8_t m_operand = mmu_read_byte(mmu, (PC + 1));
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (C), $%04X\033[1;0m\n", m_operand);
 #endif
 
-	m_regs.c = m_operand;
-	m_regs.pc += 2;
+	C = m_operand;
+	PC += 2;
 }
 
 /*
@@ -345,14 +345,14 @@ void m_ld_c_d8()
 */
 void m_ld_de_d16()
 {
-	uint16_t m_operand = mmu_read_word(mmu, m_regs.pc + 1);
+	uint16_t m_operand = mmu_read_word(mmu, PC + 1);
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD DE, $%04X\033[1;0m\n", m_operand);
 #endif
 
-	m_regs.de = m_operand;
-	m_regs.pc += 3;
+	DE = m_operand;
+	PC += 3;
 }
 
 /*
@@ -368,8 +368,8 @@ void m_ld_a_de()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD A, (DE)\033[1;0m\n");
 #endif
-	m_regs.a = mmu_read_byte(mmu, m_regs.de);
-	m_regs.pc += 1;
+	A = mmu_read_byte(mmu, DE);
+	PC += 1;
 }
 
 /*
@@ -383,7 +383,7 @@ void m_ld_a_de()
 */
 void m_jr_nz_s8()
 {
-	int8_t m_operand = (int8_t) mmu_read_byte(mmu, (m_regs.pc + 1));
+	int8_t m_operand = (int8_t) mmu_read_byte(mmu, (PC + 1));
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mJR NZ, $%04hhX\033[1;0m\n", m_operand);
@@ -391,17 +391,17 @@ void m_jr_nz_s8()
 
 	printf("Operand: 0x%X\n", (uint8_t) m_operand);
 
-	uint16_t currpc = (uint16_t) m_regs.pc;
+	uint16_t currpc = (uint16_t) PC;
 
-	if (!m_is_bit_set(m_regs.flags, Z))
+	if (!m_is_bit_set(FLAGS, Z))
 	{
 		// Set the PC Offset at the end of the JR NZ, s8
-		m_regs.pc += 2;
+		PC += 2;
 
 		// Add m_operand as an int8_t (Can go forward or backward)
-		m_regs.pc += (int8_t) m_operand;
+		PC += (int8_t) m_operand;
 	} else {
-		m_regs.pc += 2;
+		PC += 2;
 	}
 }
 
@@ -417,7 +417,7 @@ void m_jr_nz_s8()
 */
 void m_ld_hl_d16()
 {
-	uint16_t m_address = mmu_read_word(mmu, (m_regs.pc + 1));
+	uint16_t m_address = mmu_read_word(mmu, (PC + 1));
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD HL, $%04X\033[1;0m\n", m_address);
@@ -427,10 +427,10 @@ void m_ld_hl_d16()
 	printf("Address: 0x%04X\n", m_address);
 #endif
 
-	m_regs.l = (m_address & 0xFF);
-	m_regs.h = (m_address >> 8);
+	L = (m_address & 0xFF);
+	H = (m_address >> 8);
 
-	m_regs.pc += 3;
+	PC += 3;
 }
 
 /*
@@ -445,19 +445,19 @@ void m_ld_hl_d16()
 */
 void m_ld_sp_d16()
 {
-	uint16_t m_addr = mmu_read_word(mmu, (m_regs.pc + 1));
+	uint16_t m_addr = mmu_read_word(mmu, (PC + 1));
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD SP, $%04X\033[1;0m\n", m_addr);
 #endif
 
-	m_regs.sp = m_addr;
+	SP = m_addr;
 
 #ifdef OPCODE_DEBUG
 	printf("Obtained Address: 0x%X\n", m_addr);
 #endif
 
-	m_regs.pc += 3;
+	PC += 3;
 }
 
 /*
@@ -474,9 +474,9 @@ void m_ld_hlminus_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL-), A\033[1;0m\n");
 #endif
-	mmu_write_word(mmu, m_regs.hl, m_regs.a);
-	m_regs.hl--;
-	m_regs.pc += 1;
+	mmu_write_word(mmu, Hl, A);
+	Hl--;
+	PC += 1;
 }
 
 /*
@@ -489,14 +489,14 @@ void m_ld_hlminus_a()
 */
 void m_ld_a_d8()
 {
-	uint8_t m_operand = mmu_read_byte(mmu, (m_regs.pc + 1));
+	uint8_t m_operand = mmu_read_byte(mmu, (PC + 1));
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (A), $%04X\033[1;0m\n", m_operand);
 #endif
 
-	m_regs.a = m_operand;
-	m_regs.pc += 2;
+	A = m_operand;
+	PC += 2;
 }
 
 /*
@@ -513,8 +513,8 @@ void m_ld_c_a()
 	printf("\033[1;31mLD C, A\033[1;0m\n");
 #endif
 
-	m_regs.c = m_regs.a;
-	m_regs.pc += 1;
+	C = A;
+	PC += 1;
 }
 
 /*
@@ -530,8 +530,8 @@ void m_ld_hl_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL), A\033[1;0m\n");
 #endif
-	mmu_write_byte(m_regs.hl, m_regs.a);
-	m_regs.pc += 1;
+	mmu_write_byte(Hl, A);
+	PC += 1;
 }
 
 /*
@@ -550,26 +550,26 @@ void m_xor_a()
 	printf("\033[1;31mXOR A\033[1;0m\n");
 #endif
 
-	m_regs.a ^= m_regs.a;
+	A ^= A;
 
-	if (m_regs.a == 0)
+	if (A == 0)
 	{
-		FLAG_SET(m_regs.flags, Z);
+		FLAG_SET(Z);
 	}
 
 #ifdef OPCODE_DEBUG
-			printf("Flags: 0x%02X\n", m_regs.flags);
+			printf("Flags: 0x%02X\n", FLAGS);
 #endif
 
-	FLAG_UNSET(m_regs.flags, H);
-	FLAG_UNSET(m_regs.flags, C);
-	FLAG_UNSET(m_regs.flags, N);
+	FLAG_UNSET(H);
+	FLAG_UNSET(C);
+	FLAG_UNSET(N);
 
 #ifdef OPCODE_DEBUG
-			printf("Flags: 0x%02X\n", m_regs.flags);
+			printf("Flags: 0x%02X\n", FLAGS);
 #endif
 
-	m_regs.pc += 1;
+	PC += 1;
 }
 
 /*
@@ -598,17 +598,17 @@ void m_xor_a()
 */
 void m_call()
 {
-	uint16_t m_addr = mmu_read_word(mmu, m_regs.pc + 1);
+	uint16_t m_addr = mmu_read_word(mmu, PC + 1);
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mCALL $%04X\033[1;0m\n", m_addr);
 #endif
 
-	m_regs.sp -= 2;
+	SP -= 2;
 	
-	mmu_write_word(m_regs.sp, (uint8_t) (m_regs.pc & 0x00ff));
+	mmu_write_word(SP, (uint8_t) (PC & 0x00ff));
 	
-	m_regs.pc = m_addr;
+	PC = m_addr;
 }
 
 /*
@@ -630,14 +630,14 @@ void m_call()
 */
 void m_ld_a8_a()
 {
-	uint8_t m_operand = mmu_read_byte(mmu, m_regs.pc + 1);
+	uint8_t m_operand = mmu_read_byte(mmu, PC + 1);
 
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD ($%04X), A\033[1;0m\n", m_operand);
 #endif
 
-	mmu_write_byte((0xFF00 + m_operand), m_regs.a);
-	m_regs.pc += 2;
+	mmu_write_byte((0xFF00 + m_operand), A);
+	PC += 2;
 }
 
 /*
@@ -658,6 +658,6 @@ void m_ld_cpar_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (C), A\033[1;0m\n");
 #endif
-	mmu_write_byte((0xFF00 + m_regs.c), m_regs.a);
-	m_regs.pc += 1;
+	mmu_write_byte((0xFF00 + C), A);
+	PC += 1;
 }
