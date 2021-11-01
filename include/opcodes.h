@@ -16,13 +16,13 @@ void m_nop();
 void m_dec_b();
 
 // 0x06
-void m_ld_b_d8();
+void m_ld_b_d8(uint8_t m_d8);
 
 // 0x0C
 void m_inc_c();
 
 // 0x0E
-void m_ld_c_d8();
+void m_ld_c_d8(uint8_t m_d8);
 
 // 0x11
 void m_ld_de_d16();
@@ -34,7 +34,7 @@ void m_rla();
 void m_ld_a_de();
 
 // 0x20
-void m_jr_nz_s8();
+void m_jr_nz_s8(int8_t m_s8);
 
 // 0x21
 void m_ld_hl_d16();
@@ -52,7 +52,7 @@ void m_ld_sp_d16();
 void m_ld_hlminus_a();
 
 // 0x3E
-void m_ld_a_d8();
+void m_ld_a_d8(uint8_t m_d8);
 
 // 0x4F
 void m_ld_c_a();
@@ -82,7 +82,7 @@ extern void m_cb_ext();
 void m_call();
 
 // 0xE0
-void m_ld_a8_a();
+void m_ld_a8_a(uint8_t m_a8);
 
 // 0xE2
 void m_ld_cpar_a();

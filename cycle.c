@@ -77,7 +77,12 @@ void m_exec(gb_registers_t m_regs)
 				m_printregs(m_regs);
 				exit(EXIT_FAILURE);
 			} else {
-				((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((uint8_t) m_operand);
+				if (m_opcode == 0x20)
+				{
+					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((int8_t) m_operand);
+				} else {
+					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((uint8_t) m_operand);
+				}
 			}
 			break;
 

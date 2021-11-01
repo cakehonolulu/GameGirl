@@ -8,7 +8,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x03
 	{NULL, 0, NULL},                           // 0x04
 	{"DEC B", 0, m_dec_b},                     // 0x05
-	{"LD B, d8", 0, m_ld_b_d8},                // 0x06
+	{"LD B, d8", 1, m_ld_b_d8},                // 0x06
 	{NULL, 0, NULL},                           // 0x07
 	{NULL, 0, NULL},                           // 0x08
 	{NULL, 0, NULL},                           // 0x09
@@ -16,7 +16,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x0B
 	{"INC C", 0, m_inc_c},                     // 0x0C
 	{NULL, 0, NULL},                           // 0x0D
-	{"LD C, d8", 0, m_ld_c_d8},				   // 0x0E
+	{"LD C, d8", 1, m_ld_c_d8},				   // 0x0E
 	{NULL, 0, NULL},                           // 0x0F
 	{NULL, 0, NULL},                           // 0x10
 	{"LD DE, d16", 0, m_ld_de_d16},			   // 0x11
@@ -34,7 +34,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x1D
 	{NULL, 0, NULL},							// 0x1E
 	{NULL, 0, NULL},							// 0x1F
-	{"JR NZ, s8", 0, m_jr_nz_s8},			   // 0x20
+	{"JR NZ, s8", 1, m_jr_nz_s8},			   // 0x20
 	{"LD HL, d16", 0, m_ld_hl_d16},			   // 0x21
 	{"LD (HL+), A", 0, m_ld_hlplus_a},		   // 0x22
 	{"INC HL", 0, m_inc_hl},				   // 0x23
@@ -64,7 +64,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x3B
 	{NULL, 0, NULL},                           // 0x3C
 	{NULL, 0, NULL},                           // 0x3D
-	{"LD A, d8", 0, m_ld_a_d8},				   // 0x3E
+	{"LD A, d8", 1, m_ld_a_d8},				   // 0x3E
 	{NULL, 0, NULL},                           // 0x3F
 	{NULL, 0, NULL},                           // 0x40
 	{NULL, 0, NULL},                           // 0x41
@@ -226,7 +226,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xDD
 	{NULL, 0, NULL},                           // 0xDE
 	{NULL, 0, NULL},                           // 0xDF
-	{"LD (a8), A", 0, m_ld_a8_a},			   // 0xE0
+	{"LD (a8), A", 1, m_ld_a8_a},			   // 0xE0
 	{NULL, 0, NULL},                           // 0xE1
 	{"LD (C), A", 0, m_ld_cpar_a},			   // 0xE2
 	{NULL, 0, NULL},                           // 0x00
@@ -319,15 +319,13 @@ void m_dec_b()
 
 	Load the 8-bit immediate operand d8 into register B.
 */
-void m_ld_b_d8()
+void m_ld_b_d8(uint8_t m_d8)
 {
-	uint8_t m_operand = mmu_read_byte(PC + 1);
-
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD B, $%04X\033[1;0m\n", m_operand);
+	printf("\033[1;31mLD B, $%04X\033[1;0m\n", m_d8);
 #endif
 
-	B = m_operand;
+	B = m_d8;
 	PC += 2;
 }
 
@@ -374,15 +372,13 @@ void m_inc_c()
 
 	Load the 8-bit immediate operand d8 into register C.
 */
-void m_ld_c_d8()
+void m_ld_c_d8(uint8_t m_d8)
 {
-	uint8_t m_operand = mmu_read_byte((PC + 1));
-
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD (C), $%04X\033[1;0m\n", m_operand);
+	printf("\033[1;31mLD (C), $%04X\033[1;0m\n", m_d8);
 #endif
 
-	C = m_operand;
+	C = m_d8;
 	PC += 2;
 }
 
@@ -477,13 +473,11 @@ void m_ld_a_de()
 	If the Z flag is 0, jump s8 steps from the current address stored in the program counter (PC).
 	If not, the instruction following the current JP instruction is executed (as usual).
 */
-void m_jr_nz_s8()
+void m_jr_nz_s8(int8_t m_s8)
 {
-	int8_t m_operand = (int8_t) mmu_read_byte((PC + 1));
-
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mJR NZ, $%04hhX\033[1;0m\n", m_operand);
-	printf("Operand: 0x%X\n", (uint8_t) m_operand);
+	printf("\033[1;31mJR NZ, $%04hhX\033[1;0m\n", m_s8);
+	printf("Operand: 0x%X\n", (uint8_t) m_s8);
 #endif
 
 	uint16_t currpc = (uint16_t) PC;
@@ -494,7 +488,7 @@ void m_jr_nz_s8()
 		PC += 2;
 
 		// Add m_operand as an int8_t (Can go forward or backward)
-		PC += (int8_t) m_operand;
+		PC += (int8_t) m_s8;
 	} else {
 		PC += 2;
 	}
@@ -614,15 +608,13 @@ void m_ld_hlminus_a()
 
 	Load the 8-bit immediate operand d8 into register A.
 */
-void m_ld_a_d8()
+void m_ld_a_d8(uint8_t m_d8)
 {
-	uint8_t m_operand = mmu_read_byte((PC + 1));
-
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD (A), $%04X\033[1;0m\n", m_operand);
+	printf("\033[1;31mLD (A), $%04X\033[1;0m\n", m_d8);
 #endif
 
-	A = m_operand;
+	A = m_d8;
 	PC += 2;
 }
 
@@ -844,15 +836,13 @@ void m_call()
 	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
 	0xFFFF: Interrupt Enable Register
 */
-void m_ld_a8_a()
+void m_ld_a8_a(uint8_t m_a8)
 {
-	uint8_t m_operand = mmu_read_byte(PC + 1);
-
 #ifdef OPCODE_DEBUG
-	printf("\033[1;31mLD ($%04X), A\033[1;0m\n", m_operand);
+	printf("\033[1;31mLD ($%04X), A\033[1;0m\n", m_a8);
 #endif
 
-	mmu_write_byte((0xFF00 + m_operand), A);
+	mmu_write_byte((0xFF00 + m_a8), A);
 	PC += 2;
 }
 
