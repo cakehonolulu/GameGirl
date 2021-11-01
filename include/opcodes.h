@@ -39,6 +39,12 @@ void m_jr_nz_s8();
 // 0x21
 void m_ld_hl_d16();
 
+// 0x22
+void m_ld_hlplus_a();
+
+// 0x23
+void m_inc_hl();
+
 // 0x31
 void m_ld_sp_d16();
 

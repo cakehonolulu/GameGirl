@@ -34,10 +34,10 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x1D
 	{NULL, 0, NULL},							// 0x1E
 	{NULL, 0, NULL},							// 0x1F
-	{"JR NZ, s8", 0, m_jr_nz_s8},				// 0x20
-	{"LD HL, d16", 0, m_ld_hl_d16},			// 0x21
-	{NULL, 0, NULL},                           // 0x22
-	{NULL, 0, NULL},                           // 0x23
+	{"JR NZ, s8", 0, m_jr_nz_s8},			   // 0x20
+	{"LD HL, d16", 0, m_ld_hl_d16},			   // 0x21
+	{"LD (HL+), A", 0, m_ld_hlplus_a},		   // 0x22
+	{"INC HL", 0, m_inc_hl},				   // 0x23
 	{NULL, 0, NULL},                           // 0x24
 	{NULL, 0, NULL},                           // 0x25
 	{NULL, 0, NULL},                           // 0x26
@@ -195,7 +195,6 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xBF
 	{NULL, 0, NULL},                           // 0xC0
-	//{"RET NZ", 0, m_ret_nz},                   // 0xC0
 	{"POP BC", 0, m_pop_bc},                   // 0xC1
 	{NULL, 0, NULL},                           // 0xC2
 	{NULL, 0, NULL},                           // 0xC3
@@ -308,7 +307,7 @@ void m_dec_b()
 
 	// Set Negative (DEC Op)
 	FLAG_SET(N);
-	
+
 	PC++;
 }
 
@@ -527,6 +526,38 @@ void m_ld_hl_d16()
 	H = (m_address >> 8);
 
 	PC += 3;
+}
+
+/*
+	LD (HL+), A
+	Opcode: 0x22
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Store the contents of register A into the memory location specified
+	by register pair HL, and simultaneously increment the contents of HL.
+*/
+void m_ld_hlplus_a()
+{
+	mmu_write_byte(HL, A);
+
+	HL++;
+
+	PC++;
+}
+
+/*
+	INC HL
+	Opcode: 0x23
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Increment the contents of register pair HL by 1.
+*/
+void m_inc_hl()
+{
+	HL++;
+	PC++;
 }
 
 /*
