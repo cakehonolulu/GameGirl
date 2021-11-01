@@ -25,7 +25,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x14
 	{NULL, 0, NULL},                           // 0x15
 	{NULL, 0, NULL},                           // 0x16
-	{NULL, 0, NULL},                           // 0x17
+	{"RLA", 0, m_rla},                         // 0x17
 	{NULL, 0, NULL},                           // 0x18
 	{NULL, 0, NULL},                           // 0x19
 	{"LD A, (DE)", 0, m_ld_a_de},              // 0x1A
@@ -373,6 +373,45 @@ void m_ld_de_d16()
 
 	DE = m_operand;
 	PC += 3;
+}
+
+/*
+	RLA
+	Opcode: 0x17
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Rotate the contents of register A to the left, through the carry (CY) flag.
+	That is, the contents of bit 0 are copied to bit 1, and the previous contents
+	of bit 1 (before the copy operation) are copied to bit 2.
+	The same operation is repeated in sequence for the rest of the register.
+	The previous contents of the carry flag are copied to bit 0.
+*/
+void m_rla()
+{
+	int isCarry = m_is_bit_set(A, C);
+
+	if (A & 0b1000000)
+	{
+		FLAG_SET(C);
+	} else {
+		FLAG_UNSET(C);
+	}
+
+	A <<= 1;
+	A += isCarry;
+	
+	if(A)
+	{
+		FLAG_UNSET(Z);
+	} else {
+		FLAG_SET(Z);
+	}
+	
+	FLAG_UNSET(N);
+	FLAG_UNSET(H);
+	
+	PC += 2;
 }
 
 /*

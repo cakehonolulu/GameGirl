@@ -24,6 +24,9 @@ void m_ld_c_d8();
 // 0x11
 void m_ld_de_d16();
 
+// 0x17
+void m_rla();
+
 // 0x1A
 void m_ld_a_de();
 
