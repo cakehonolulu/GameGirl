@@ -414,7 +414,7 @@ void m_rla()
 	FLAG_UNSET(N);
 	FLAG_UNSET(H);
 	
-	PC += 2;
+	PC += 1;
 }
 
 /*
