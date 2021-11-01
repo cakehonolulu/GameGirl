@@ -195,7 +195,8 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xBF
 	{NULL, 0, NULL},                           // 0xC0
-	{NULL, 0, NULL},                           // 0xC1
+	//{"RET NZ", 0, m_ret_nz},                   // 0xC0
+	{"POP BC", 0, m_pop_bc},                   // 0xC1
 	{NULL, 0, NULL},                           // 0xC2
 	{NULL, 0, NULL},                           // 0xC3
 	{NULL, 0, NULL},                           // 0xC4
@@ -631,6 +632,34 @@ void m_xor_a()
 #endif
 
 	PC += 1;
+}
+
+/*
+	POP BC
+	Opcode: 0xC1
+	Number of Bytes: 1
+	Number of Cycles: 3
+
+	Pop the contents from the memory stack into register pair into register pair BC by doing the following:
+
+	Load the contents of memory specified by stack pointer SP into the lower portion of BC.
+	Add 1 to SP and load the contents from the new memory location into the upper portion of BC.
+	By the end, SP should be 2 more than its initial value.
+*/
+void m_pop_bc()
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mPOP BC\033[1;0m\n");
+#endif
+
+	uint16_t m_val = mmu_read_word(SP);
+
+	SP += 2;
+
+	B = m_val & 0xFF;
+	C = m_val >> 8;
+
+	PC++;
 }
 
 /*

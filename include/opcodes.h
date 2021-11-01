@@ -54,6 +54,12 @@ void m_ld_hl_a();
 // 0xAF
 void m_xor_a();
 
+// 0xC0
+void m_ret_nz();
+
+// 0xC1
+void m_pop_bc();
+
 // 0xC5
 void m_push_bc();
 
