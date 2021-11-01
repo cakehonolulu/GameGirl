@@ -21,14 +21,14 @@ void m_init_registers(gb_registers_t m_regs)
 	FLAGS = 0;
 }
 
-uint8_t m_fetch(gb_mmu_t *gb_mmu, gb_registers_t m_regs)
+uint8_t m_fetch(gb_registers_t m_regs)
 {
-	return (uint8_t) mmu_read_byte(gb_mmu, PC);
+	return (uint8_t) mmu_read_byte(PC);
 }
 
-uint8_t m_fetchop(gb_mmu_t *gb_mmu, gb_registers_t m_regs)
+uint8_t m_fetchop(gb_registers_t m_regs)
 {
-	return (uint8_t) mmu_read_byte(gb_mmu, PC + 1);;
+	return (uint8_t) mmu_read_byte(PC + 1);;
 }
 
 bool m_is_bit_set(uint8_t m_register, size_t m_bit)
@@ -36,9 +36,9 @@ bool m_is_bit_set(uint8_t m_register, size_t m_bit)
 	return 1 == ((m_register >> m_bit) & 1);
 }
 
-void m_exec(gb_mmu_t *gb_mmu, gb_registers_t m_regs)
+void m_exec(gb_registers_t m_regs)
 {
-	uint8_t m_opcode = m_fetch(gb_mmu, m_regs);
+	uint8_t m_opcode = m_fetch(m_regs);
 
 	printf("Current opcode: 0x%02X\n", m_opcode);
 
@@ -46,7 +46,7 @@ void m_exec(gb_mmu_t *gb_mmu, gb_registers_t m_regs)
 
 	if (m_gb_instr[m_opcode].m_operand == 1)
 	{
-		m_operand = m_fetchop(gb_mmu, m_regs);
+		m_operand = m_fetchop(m_regs);
 		printf("Operand: 0x%X\n", m_operand);
 	}
 

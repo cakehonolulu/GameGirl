@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 	mmu = mmu_init();
 
 	// Load Bootrom
-	m_load_bootrom(mmu, m_bootrom_buf);
+	m_load_bootrom(m_bootrom_buf);
 
 	// Initialize Registers
 	m_init_registers(m_regs);
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 	while (true)
 	{
 		// Start fetching & executing instructions
-		m_exec(mmu, m_regs);
+		m_exec(m_regs);
 
 		if (m_regs.isUnimplemented == true)
 		{

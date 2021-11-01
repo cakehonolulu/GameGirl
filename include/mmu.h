@@ -136,11 +136,11 @@ typedef struct gb_mmu
 } gb_mmu_t;
 
 gb_mmu_t *mmu_init();
-void mmu_halt(gb_mmu_t *gb_mmu);
-uint8_t mmu_read_addr8(gb_mmu_t *gb_mmu, uint16_t m_addr);
-void mmu_write_addr8(gb_mmu_t *gb_mmu, uint16_t m_addr, uint8_t m_data);
-uint16_t mmu_read_addr16(gb_mmu_t *gb_mmu, uint16_t m_addr);
-void mmu_write_addr16(gb_mmu_t *gb_mmu, uint16_t m_addr, uint16_t m_data);
-void m_load_bootrom(gb_mmu_t *gb_mmu, unsigned char *m_bootrom);
+void mmu_halt();
+uint8_t mmu_read_addr8(uint16_t m_addr);
+void mmu_write_addr8(uint16_t m_addr, uint8_t m_data);
+uint16_t mmu_read_addr16(uint16_t m_addr);
+void mmu_write_addr16(uint16_t m_addr, uint16_t m_data);
+void m_load_bootrom(unsigned char *m_bootrom);
 
 #endif
