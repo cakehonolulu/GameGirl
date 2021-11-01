@@ -2,23 +2,23 @@
 
 const struct m_sharp_lr35902_instr_cb m_gb_instr_cb[256] = {
 	{NULL, NULL},							// 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
+	{NULL, NULL},                           // 0x01
+	{NULL, NULL},                           // 0x02
+	{NULL, NULL},                           // 0x03
+	{NULL, NULL},                           // 0x04
+	{NULL, NULL},                           // 0x05
+	{NULL, NULL},                           // 0x06
+	{NULL, NULL},                           // 0x07
+	{NULL, NULL},                           // 0x08
+	{NULL, NULL},                           // 0x09
+	{NULL, NULL},                           // 0x0A
+	{NULL, NULL},                           // 0x0B
+	{NULL, NULL},                           // 0x0C
+	{NULL, NULL},                           // 0x0D
+	{NULL, NULL},                           // 0x0E
+	{NULL, NULL},                           // 0x0F
+	{NULL, NULL},                           // 0x10
+	{"RL C", m_rl_c},                       // 0x11
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
@@ -278,8 +278,48 @@ void m_cb_ext(uint8_t cb_instr)
 }
 
 /*
+	RL C
+	Opcode: 0xCB11
+	Number of Bytes: 2
+	Number of Cycles: 2
+
+	Rotate the contents of register C to the left.
+	That is, the contents of bit 0 are copied to bit 1, and
+	the previous contents of bit 1 (before the copy operation)
+	are copied to bit 2. The same operation is repeated in sequence
+	for the rest of the register. The previous contents of the carry
+	(CY) flag are copied to bit 0 of register C.
+*/
+void m_rl_c()
+{
+	int isCarry = m_is_bit_set(C, C);
+
+	if (C & 0b1000000)
+	{
+		FLAG_SET(C);
+	} else {
+		FLAG_UNSET(C);
+	}
+
+	C <<= 1;
+	C += isCarry;
+	
+	if(C)
+	{
+		FLAG_UNSET(Z);
+	} else {
+		FLAG_SET(Z);
+	}
+	
+	FLAG_UNSET(N);
+	FLAG_UNSET(H);
+	
+	PC += 2;
+}
+
+/*
 	BIT 7, H
-	Opcode: 0x7C
+	Opcode: 0xCB7C
 	Number of Bytes: 2
 	Number of Cycles: 2
 

@@ -8,5 +8,8 @@ struct m_sharp_lr35902_instr_cb {
 	void *m_funct;
 } extern const m_gb_instr_cb[256];
 
+// 0x11
+void m_rl_c();
+
 // 0x7C
 void m_bit_7_h();

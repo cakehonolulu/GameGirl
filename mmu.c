@@ -288,7 +288,7 @@ void m_load_bootrom(unsigned char *m_bootrom)
 	printf("BootROM Dump:\n");
 	for (size_t i = 0; i < GB_BOOTROM_SZ; i++)
 	{
-		printf("0x%x ", mmu->gb_bootrom[i]);
+		printf("0x%x ", mmu->gb_mmap.cart[i]);
 	}
 	printf("\n");
 #endif

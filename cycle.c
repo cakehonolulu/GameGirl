@@ -55,6 +55,12 @@ void m_exec(gb_registers_t m_regs)
 #endif
 	}
 
+	//if (PC == 0x0000)
+	//{
+	//	m_printregs(m_regs);
+	//	exit(0);
+	//}
+
 	switch(m_gb_instr[m_opcode].m_operand)
 	{
 		case 0:
