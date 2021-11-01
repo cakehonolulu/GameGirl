@@ -263,7 +263,7 @@ void m_cb_ext(uint8_t cb_instr)
 {
 	printf("CB Mode Instr!\n");
 
-	printf("Current CB Opcode: 0x%x\n", cb_instr);
+	printf("Current CB Opcode: 0x%02X\n", cb_instr);
 
 	((void (*)(void))m_gb_instr_cb[cb_instr].m_funct)();
 }
@@ -290,7 +290,7 @@ void m_bit_7_h()
 
 	FLAG_SET(m_regs.flags, H);
 #ifdef OPCODE_DEBUG
-	printf("Flags: 0x%02x\n", m_regs.flags);
+	printf("Flags: 0x%02X\n", m_regs.flags);
 #endif
 	m_regs.pc += 2;
 }
