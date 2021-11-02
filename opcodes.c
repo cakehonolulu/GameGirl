@@ -26,7 +26,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x15
 	{NULL, 0, NULL},                           // 0x16
 	{"RLA", 0, m_rla},                         // 0x17
-	{NULL, 0, NULL},                           // 0x18
+	{"JR ", 1, m_jr_s8},                           // 0x18
 	{NULL, 0, NULL},                           // 0x19
 	{"LD A, (DE)", 0, m_ld_a_de},              // 0x1A
 	{NULL, 0, NULL},                           // 0x1B
@@ -498,6 +498,20 @@ void m_rla()
 }
 
 /*
+	JR s8
+    Opcode: 0x18
+    Number of Bytes: 2
+    Number of Cycles: 3
+
+	Jump s8 steps from the current address in the program counter (PC). (Jump relative.)
+*/
+void m_jr_s8(int8_t m_s8)
+{
+	PC += 2;
+	PC += (int8_t) m_s8;
+}
+
+/*
 	LD A, (DE)
 	Opcode: 0x1A
 	Number of Bytes: 1
@@ -630,7 +644,7 @@ void m_jr_z_s8(int8_t m_s8)
 	if (m_is_bit_set(FLAGS, Z))
 	{
 		// Set the PC Offset at the end of the JR NZ, s8
-		PC += 2;
+		PC += 1;
 
 		// Add m_operand as an int8_t (Can go forward or backward)
 		PC += (int8_t) m_s8;

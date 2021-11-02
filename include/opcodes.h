@@ -36,6 +36,9 @@ void m_inc_de();
 // 0x17
 void m_rla();
 
+// 0x18
+void m_jr_s8(int8_t m_s8);
+
 // 0x1A
 void m_ld_a_de();
 

@@ -89,7 +89,7 @@ void m_exec(gb_registers_t m_regs)
 				m_printregs(m_regs);
 				exit(EXIT_FAILURE);
 			} else {
-				if (m_opcode == 0x20 | m_opcode == 0x28)
+				if (m_opcode == 0x18 | m_opcode == 0x20 | m_opcode == 0x28)
 				{
 					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((int8_t) m_boperand);
 				} else {
