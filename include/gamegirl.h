@@ -9,11 +9,6 @@
 
 #define GB_INITIAL_PC 0x0000
 
-#define Z 0b0111
-#define N 0b0110
-#define H 0b0101
-#define C 0b0100
-
 #define GB_BOOTROM_SZ 0x100
 
 typedef struct gb_registers {
@@ -69,6 +64,11 @@ typedef struct gb_registers {
 extern gb_mmu_t *mmu;
 // Declare the Registers
 extern gb_registers_t m_regs;
+
+#define ZERO 0b0111
+#define NGTV 0b0110
+#define HALF 0b0101
+#define CRRY 0b0100
 
 #define A (m_regs.a)
 #define F (m_regs.f)

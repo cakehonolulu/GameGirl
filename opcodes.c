@@ -287,22 +287,22 @@ void m_nop()
 */
 void m_inc_b()
 {
-	FLAG_UNSET(N);
+	FLAG_UNSET(NGTV);
 	
 	if ((B & 0b00001111) == 0b00001111)
 	{
-		FLAG_SET(H);
+		FLAG_SET(HALF);
 	} else {
-		FLAG_UNSET(H);
+		FLAG_UNSET(HALF);;
 	}
 
 	B++;
 	
 	if(B)
 	{
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	} else {
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	}	
 
 	PC++;
@@ -324,9 +324,9 @@ void m_dec_b()
 	// Check for Half-Carry
 	if(B & 0b00001111)
 	{
-		FLAG_UNSET(H);
+		FLAG_UNSET(HALF);;
 	} else {
-		FLAG_SET(H);
+		FLAG_SET(HALF);
 	}
 
 	B--;
@@ -334,13 +334,13 @@ void m_dec_b()
 	// Check if B != 0
 	if(B)
 	{
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	} else {
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	}
 
 	// Set Negative (DEC Op)
-	FLAG_SET(N);
+	FLAG_SET(NGTV);
 
 	PC++;
 }
@@ -379,21 +379,21 @@ void m_inc_c()
 
 	if ((C & 0x0f) == 0x0f)
 	{
-		FLAG_SET(H);
+		FLAG_SET(HALF);
 	} else {
-		FLAG_UNSET(H);
+		FLAG_UNSET(HALF);;
 	}
 
 	C++;
 	
 	if (C)
 	{
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	} else {
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	}
 
-	FLAG_UNSET(N);
+	FLAG_UNSET(NGTV);
 
 	PC += 1;
 }
@@ -408,22 +408,22 @@ void m_inc_c()
 */
 void m_dec_c()
 {
-	FLAG_SET(N);
+	FLAG_SET(NGTV);
 
 	if (C & 0b00001111)
 	{
-		FLAG_UNSET(H);
+		FLAG_UNSET(HALF);;
 	} else {
-		FLAG_SET(H);
+		FLAG_SET(HALF);
 	}
 
 	C--;
 	
 	if (C)
 	{
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	} else {
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	}
 
 	PC++;
@@ -507,9 +507,9 @@ void m_rla()
 
 	if (A & 0b1000000)
 	{
-		FLAG_SET(C);
+		FLAG_SET(CRRY);
 	} else {
-		FLAG_UNSET(C);
+		FLAG_UNSET(CRRY);
 	}
 
 	A <<= 1;
@@ -517,13 +517,13 @@ void m_rla()
 	
 	if(!A)
 	{
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	} else {
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	}
 	
-	FLAG_UNSET(N);
-	FLAG_UNSET(H);
+	FLAG_UNSET(NGTV);
+	FLAG_UNSET(HALF);;
 	
 	PC += 1;
 }
@@ -575,7 +575,7 @@ void m_jr_nz_s8(int8_t m_s8)
 	printf("Operand: 0x%X\n", (uint8_t) m_s8);
 #endif
 
-	if (!m_is_bit_set(FLAGS, Z))
+	if (!m_is_bit_set(FLAGS, ZERO))
 	{
 		// Set the PC Offset at the end of the JR NZ, s8
 		PC += 2;
@@ -668,7 +668,7 @@ void m_jr_z_s8(int8_t m_s8)
 	printf("Operand: 0x%X\n", (uint8_t) m_s8);
 #endif
 
-	if (m_is_bit_set(FLAGS, Z))
+	if (m_is_bit_set(FLAGS, ZERO))
 	{
 		// Add m_operand as an int8_t (Can go forward or backward)
 		PC += (int8_t) m_s8;
@@ -750,22 +750,22 @@ void m_dec_a()
 	printf("\033[1;31mDEC A\033[1;0m\n");
 #endif
 
-	FLAG_SET(N);
+	FLAG_SET(NGTV);
 	
 	if(A & 0b00001111)
 	{
-		FLAG_UNSET(H);
+		FLAG_UNSET(HALF);;
 	} else {
-		FLAG_SET(H);
+		FLAG_SET(HALF);
 	}
 
 	A--;
 	
 	if(A)
 	{
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	} else {
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	}
 
 	PC++;
@@ -891,16 +891,16 @@ void m_xor_a()
 
 	if (A == 0)
 	{
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	}
 
 #ifdef OPCODE_DEBUG
 			printf("Flags: 0x%02X\n", FLAGS);
 #endif
 
-	FLAG_UNSET(H);
-	FLAG_UNSET(C);
-	FLAG_UNSET(N);
+	FLAG_UNSET(HALF);;
+	FLAG_UNSET(CRRY);
+	FLAG_UNSET(NGTV);
 
 #ifdef OPCODE_DEBUG
 			printf("Flags: 0x%02X\n", FLAGS);
@@ -1122,26 +1122,26 @@ void m_cp_d8(uint8_t m_d8)
 
 	if (A == m_d8)
 	{
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	} else {
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	}
 
 	if (m_d8 > A)
 	{
-		FLAG_SET(C);
+		FLAG_SET(CRRY);
 	} else {
-		FLAG_UNSET(C);
+		FLAG_UNSET(CRRY);
 	}
 
 	if ((m_d8 & 0b00001111) > (A & 0b00001111))
 	{
-		FLAG_SET(H);
+		FLAG_SET(HALF);
 	} else {
-		FLAG_UNSET(H);
+		FLAG_UNSET(HALF);;
 	}
 
-	FLAG_SET(N);
+	FLAG_SET(NGTV);
 
 	PC += 2;
 }

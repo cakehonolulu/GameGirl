@@ -134,7 +134,7 @@ void m_printregs(gb_registers_t m_regs)
 
 	printf("\033[1;35mZ: ");
 
-	if (m_is_bit_set(FLAGS, Z))
+	if (m_is_bit_set(FLAGS, ZERO))
 	{
 		printf("\033[0m1   ");
 	} else {
@@ -143,7 +143,7 @@ void m_printregs(gb_registers_t m_regs)
 
 	printf("\033[1;35mN: ");
 
-	if (m_is_bit_set(FLAGS, N))
+	if (m_is_bit_set(FLAGS, NGTV))
 	{
 		printf("\033[0m1   \n");
 	} else {
@@ -152,7 +152,7 @@ void m_printregs(gb_registers_t m_regs)
 
 	printf("\033[1;35mH: ");
 
-	if (m_is_bit_set(FLAGS, H))
+	if (m_is_bit_set(FLAGS, HALF))
 	{
 		printf("\033[0m1   ");
 	} else {
@@ -161,7 +161,7 @@ void m_printregs(gb_registers_t m_regs)
 
 	printf("\033[1;35mC: ");
 
-	if (m_is_bit_set(FLAGS, C))
+	if (m_is_bit_set(FLAGS, CRRY))
 	{
 		printf("\033[0m1   \n");
 	} else {

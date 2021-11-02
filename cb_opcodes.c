@@ -300,9 +300,9 @@ void m_rl_c()
 
 	if (C & 0b1000000)
 	{
-		FLAG_SET(C);
+		FLAG_SET(CRRY);
 	} else {
-		FLAG_UNSET(C);
+		FLAG_UNSET(CRRY);
 	}
 
 	C <<= 1;
@@ -310,13 +310,13 @@ void m_rl_c()
 	
 	if(C)
 	{
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	} else {
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	}
 	
-	FLAG_UNSET(N);
-	FLAG_UNSET(H);
+	FLAG_UNSET(NGTV);
+	FLAG_UNSET(HALF);;
 	
 	PC += 2;
 }
@@ -332,16 +332,16 @@ void m_rl_c()
 */
 void m_bit_7_h()
 {
-	if (!m_is_bit_set(H, Z))
+	if (!m_is_bit_set(H, ZERO))
 	{
-		FLAG_SET(Z);
+		FLAG_SET(ZERO);
 	} else {
-		FLAG_UNSET(Z);
+		FLAG_UNSET(ZERO);
 	}
 
-	FLAG_UNSET(N);
+	FLAG_UNSET(NGTV);
 
-	FLAG_SET(H);
+	FLAG_SET(HALF);
 #ifdef OPCODE_DEBUG
 	printf("Flags: 0x%02X\n", FLAGS);
 #endif
