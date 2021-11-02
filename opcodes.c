@@ -15,7 +15,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x0A
 	{NULL, 0, NULL},                           // 0x0B
 	{"INC C", 0, m_inc_c},                     // 0x0C
-	{NULL, 0, NULL},                           // 0x0D
+	{"DEC C", 0, m_dec_c},                     // 0x0D
 	{"LD C, ", 1, m_ld_c_d8},				   // 0x0E
 	{NULL, 0, NULL},                           // 0x0F
 	{NULL, 0, NULL},                           // 0x10
@@ -365,6 +365,37 @@ void m_inc_c()
 	FLAG_UNSET(N);
 
 	PC += 1;
+}
+
+/*
+	DEC C
+	Opcode: 0x0D
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Increment the contents of register C by 1.
+*/
+void m_dec_c()
+{
+	FLAG_SET(N);
+
+	if (C & 0b00001111)
+	{
+		FLAG_UNSET(H);
+	} else {
+		FLAG_SET(H);
+	}
+
+	C--;
+	
+	if (C)
+	{
+		FLAG_UNSET(Z);
+	} else {
+		FLAG_SET(Z);
+	}
+
+	PC++;
 }
 
 /*

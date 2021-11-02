@@ -21,6 +21,9 @@ void m_ld_b_d8(uint8_t m_d8);
 // 0x0C
 void m_inc_c();
 
+// 0x0D
+void m_dec_c();
+
 // 0x0E
 void m_ld_c_d8(uint8_t m_d8);
 
