@@ -63,7 +63,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x3A
 	{NULL, 0, NULL},                           // 0x3B
 	{NULL, 0, NULL},                           // 0x3C
-	{NULL, 0, NULL},                           // 0x3D
+	{"DEC A", 0, m_dec_a},                     // 0x3D
 	{"LD A, ", 1, m_ld_a_d8},				   // 0x3E
 	{NULL, 0, NULL},                           // 0x3F
 	{NULL, 0, NULL},                           // 0x40
@@ -620,6 +620,41 @@ void m_ld_hlminus_a()
 	mmu_write_word(HL, A);
 	HL--;
 	PC += 1;
+}
+
+/*
+	DEC A
+	Opcode: 0x3D
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Decrement the contents of register A by 
+*/
+void m_dec_a()
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mDEC A\033[1;0m\n");
+#endif
+
+	FLAG_SET(N);
+	
+	if(A & 0b00001111)
+	{
+		FLAG_UNSET(H);
+	} else {
+		FLAG_SET(H);
+	}
+
+	A--;
+	
+	if(A)
+	{
+		FLAG_UNSET(Z);
+	} else {
+		FLAG_SET(Z);
+	}
+
+	PC++;
 }
 
 /*
