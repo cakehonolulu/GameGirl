@@ -6,7 +6,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x01
 	{NULL, 0, NULL},                           // 0x02
 	{NULL, 0, NULL},                           // 0x03
-	{NULL, 0, NULL},                           // 0x04
+	{"INC B", 0, m_inc_b},                           // 0x04
 	{"DEC B", 0, m_dec_b},                     // 0x05
 	{"LD B, ", 1, m_ld_b_d8},                  // 0x06
 	{NULL, 0, NULL},                           // 0x07
@@ -275,6 +275,37 @@ void m_nop()
 #endif
 
 	PC += 1;
+}
+
+/*
+	INC B
+	Opcode: 0x04
+    Number of Bytes: 1
+    Number of Cycles: 1
+
+	Increment the contents of register B by 1.
+*/
+void m_inc_b()
+{
+	FLAG_UNSET(N);
+	
+	if ((B & 0b00001111) == 0b00001111)
+	{
+		FLAG_SET(H);
+	} else {
+		FLAG_UNSET(H);
+	}
+
+	B++;
+	
+	if(B)
+	{
+		FLAG_UNSET(Z);
+	} else {
+		FLAG_SET(Z);
+	}	
+
+	PC++;
 }
 
 /*
