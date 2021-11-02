@@ -48,7 +48,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x2B
 	{NULL, 0, NULL},                           // 0x2C
 	{NULL, 0, NULL},                           // 0x2D
-	{NULL, 0, NULL},                           // 0x2E
+	{"LD L, ", 0, m_ld_l_d8},                  // 0x2E
 	{NULL, 0, NULL},                           // 0x2F
 	{NULL, 0, NULL},							// 0x30
 	{"LD SP, ", 2, m_ld_sp_d16},			// 0x31
@@ -636,6 +636,20 @@ void m_jr_z_s8(int8_t m_s8)
 		PC += (int8_t) m_s8;
 	}
 
+	PC += 2;
+}
+
+/*
+	LD L, d8
+	Opcode: 0x2E
+	Number of Bytes: 2
+	Number of Cycles: 2
+
+	Load the 8-bit immediate operand d8 into register L.
+*/
+void m_ld_l_d8(uint8_t m_d8)
+{
+	L = m_d8;
 	PC += 2;
 }
 
