@@ -175,7 +175,7 @@ int main(int argc, char **argv)
 					{
 						if (m_gb_instr[m_opcode].m_operand == 2)
 						{
-							printf("\033[0;34m00:%04X  %02X %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), mmu_read_byte(prev_pc + 2), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 2) >> 8) | mmu_read_byte(prev_pc + 1) & 0xFF);
+							printf("\033[0;34m00:%04X  %02X %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), mmu_read_byte(prev_pc + 2), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 2) >> 8) | (mmu_read_byte(prev_pc + 1) & 0xFF));
 						} else if (m_gb_instr[m_opcode].m_operand == 1) {
 							printf("\033[0;34m00:%04X  %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 1)));
 						} else if (m_gb_instr[m_opcode].m_operand == 0) {
@@ -189,7 +189,7 @@ int main(int argc, char **argv)
 					{
 						if (m_gb_instr[m_opcode].m_operand == 2)
 						{
-							printf("\033[0;34m00:%04X  %02X %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), mmu_read_byte(prev_pc + 2), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 2) >> 8) | mmu_read_byte(prev_pc + 1) & 0xFF);
+							printf("\033[0;34m00:%04X  %02X %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), mmu_read_byte(prev_pc + 2), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 2) >> 8) | (mmu_read_byte(prev_pc + 1) & 0xFF));
 						} else if (m_gb_instr[m_opcode].m_operand == 1) {
 							printf("\033[0;34m00:%04X  %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 1)));
 						} else if (m_gb_instr[m_opcode].m_operand == 0) {
@@ -204,14 +204,14 @@ int main(int argc, char **argv)
 					{
 						if (m_gb_instr[m_opcode].m_operand == 2)
 						{
-							printf("\033[0;34m00:%04X  %02X %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), mmu_read_byte(prev_pc + 2), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 2) >> 8) | mmu_read_byte(prev_pc + 1) & 0xFF);
+							printf("\033[0;34m00:%04X  %02X %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), mmu_read_byte(prev_pc + 2), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 2) >> 8) | (mmu_read_byte(prev_pc + 1) & 0xFF));
 						} else if (m_gb_instr[m_opcode].m_operand == 1) {
 							printf("\033[0;34m00:%04X  %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n", prev_pc, mmu_read_byte(prev_pc), mmu_read_byte(prev_pc + 1), m_gb_instr[m_opcode].m_instr, (mmu_read_byte(prev_pc + 1)));
 						} else if (m_gb_instr[m_opcode].m_operand == 0) {
 							printf("\033[0;34m00:%04X  %02X ->\033[0;0m %s\n", prev_pc, mmu_read_byte(prev_pc), m_gb_instr[m_opcode].m_instr);
 						}
 
-						printf("\033[0;33m00:%04X  %02X %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n\n", PC, mmu_read_byte(PC), mmu_read_byte(PC + 1), mmu_read_byte(PC + 2), m_gb_instr[m_dbgopc].m_instr, (mmu_read_byte(PC + 2) >> 8) | mmu_read_byte(PC + 1) & 0xFF);
+						printf("\033[0;33m00:%04X  %02X %02X %02X ->\033[0;0m %s\033[0;32m$\033[0;0m%04X\n\n", PC, mmu_read_byte(PC), mmu_read_byte(PC + 1), mmu_read_byte(PC + 2), m_gb_instr[m_dbgopc].m_instr, (mmu_read_byte(PC + 2) >> 8) | (mmu_read_byte(PC + 1) & 0xFF));
 					}
 			
 					
