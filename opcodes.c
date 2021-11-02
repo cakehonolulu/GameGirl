@@ -48,7 +48,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x2B
 	{NULL, 0, NULL},                           // 0x2C
 	{NULL, 0, NULL},                           // 0x2D
-	{"LD L, ", 0, m_ld_l_d8},                  // 0x2E
+	{"LD L, ", 1, m_ld_l_d8},                  // 0x2E
 	{NULL, 0, NULL},                           // 0x2F
 	{NULL, 0, NULL},							// 0x30
 	{"LD SP, ", 2, m_ld_sp_d16},			// 0x31
@@ -89,7 +89,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{"LD D, A", 0, m_ld_d_a},				   // 0x57
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -105,7 +105,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{"LD H, A", 0, m_ld_h_a},                  // 0x67
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -643,9 +643,6 @@ void m_jr_z_s8(int8_t m_s8)
 
 	if (m_is_bit_set(FLAGS, Z))
 	{
-		// Set the PC Offset at the end of the JR NZ, s8
-		PC += 1;
-
 		// Add m_operand as an int8_t (Can go forward or backward)
 		PC += (int8_t) m_s8;
 	}
@@ -781,6 +778,35 @@ void m_ld_c_a()
 
 	C = A;
 	PC += 1;
+}
+
+
+/*
+	LD D, A
+    Opcode: 0x57
+    Number of Bytes: 1
+    Number of Cycles: 1
+
+	Load the contents of register A into register D.
+*/
+void m_ld_d_a()
+{
+	D = A;
+	PC += 1;
+}
+
+/*
+	LD H, A
+	Opcode: 0x67
+    Number of Bytes: 1
+    Number of Cycles: 1
+
+	Load the contents of register A into register H.
+*/
+void m_ld_h_a()
+{
+	H = A;
+	PC++;
 }
 
 /*

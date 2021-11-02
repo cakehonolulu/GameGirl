@@ -75,6 +75,12 @@ void m_ld_a_d8(uint8_t m_d8);
 // 0x4F
 void m_ld_c_a();
 
+// 0x57
+void m_ld_d_a();
+
+// 0x67
+void m_ld_h_a();
+
 // 0x77
 void m_ld_hl_a();
 
