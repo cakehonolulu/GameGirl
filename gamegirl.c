@@ -43,14 +43,17 @@ int main(int argc, char **argv)
 		} else {
 			if (m_foundbootrom == true)
 			{
-				char *p;
+				if (argv > 1)
+				{
+					char *p;
 				
-				long conv = strtol(argv[2], &p, 10);
+					long conv = strtol(argv[2], &p, 10);
 				
-				breakpoint = conv;
+					breakpoint = conv;
 
-				printf("%d\n", breakpoint);
-
+					printf("%d\n", breakpoint);
+					exit(1);
+				}
 			} else {
 				printf("Unknown argument: %s\n", argv[i]);
 				exit(EXIT_FAILURE);
