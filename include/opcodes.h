@@ -4,11 +4,11 @@
 #include "mmu.h"
 #include "cycle.h"
 
-struct m_sharp_lr35902_instr {
+extern struct m_sharp_lr35902_instr {
 	char *m_instr;
 	uint8_t m_operand;
 	void *m_funct;
-} extern const m_gb_instr[256];
+} const m_gb_instr[256];
 
 // 0x00
 void m_nop();
