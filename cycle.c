@@ -48,6 +48,8 @@ bool m_is_bit_set(uint8_t m_register, size_t m_bit)
 }
 
 uint8_t m_opcode;
+uint8_t m_boperand;
+uint16_t m_woperand;
 
 void m_exec(gb_registers_t m_regs)
 {
@@ -57,8 +59,8 @@ void m_exec(gb_registers_t m_regs)
 	printf("Current opcode: 0x%02X\n", m_opcode);
 #endif
 
-	uint8_t m_boperand = 0;
-	uint16_t m_woperand = 0;
+	m_boperand = 0;
+	m_woperand = 0;
 
 	if (m_gb_instr[m_opcode].m_operand == 1)
 	{

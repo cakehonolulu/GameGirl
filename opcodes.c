@@ -8,7 +8,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x03
 	{NULL, 0, NULL},                           // 0x04
 	{"DEC B", 0, m_dec_b},                     // 0x05
-	{"LD B, d8", 1, m_ld_b_d8},                // 0x06
+	{"LD B, ", 1, m_ld_b_d8},                  // 0x06
 	{NULL, 0, NULL},                           // 0x07
 	{NULL, 0, NULL},                           // 0x08
 	{NULL, 0, NULL},                           // 0x09
@@ -16,10 +16,10 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x0B
 	{"INC C", 0, m_inc_c},                     // 0x0C
 	{NULL, 0, NULL},                           // 0x0D
-	{"LD C, d8", 1, m_ld_c_d8},				   // 0x0E
+	{"LD C, ", 1, m_ld_c_d8},				   // 0x0E
 	{NULL, 0, NULL},                           // 0x0F
 	{NULL, 0, NULL},                           // 0x10
-	{"LD DE, d16", 2, m_ld_de_d16},			   // 0x11
+	{"LD DE, ", 2, m_ld_de_d16},			   // 0x11
 	{NULL, 0, NULL},                           // 0x12
 	{NULL, 0, NULL},                           // 0x13
 	{NULL, 0, NULL},                           // 0x14
@@ -34,8 +34,8 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x1D
 	{NULL, 0, NULL},							// 0x1E
 	{NULL, 0, NULL},							// 0x1F
-	{"JR NZ, s8", 1, m_jr_nz_s8},			   // 0x20
-	{"LD HL, d16", 2, m_ld_hl_d16},			   // 0x21
+	{"JR NZ, ", 1, m_jr_nz_s8},			   // 0x20
+	{"LD HL, ", 2, m_ld_hl_d16},			   // 0x21
 	{"LD (HL+), A", 0, m_ld_hlplus_a},		   // 0x22
 	{"INC HL", 0, m_inc_hl},				   // 0x23
 	{NULL, 0, NULL},                           // 0x24
@@ -51,7 +51,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x2E
 	{NULL, 0, NULL},                           // 0x2F
 	{NULL, 0, NULL},							// 0x30
-	{"LD SP, d16", 2, m_ld_sp_d16},			// 0x31
+	{"LD SP, ", 2, m_ld_sp_d16},			// 0x31
 	{"LD (HL-), A", 0, m_ld_hlminus_a},		// 0x32
 	{NULL, 0, NULL},                           // 0x33
 	{NULL, 0, NULL},                           // 0x34
@@ -64,7 +64,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x3B
 	{NULL, 0, NULL},                           // 0x3C
 	{NULL, 0, NULL},                           // 0x3D
-	{"LD A, d8", 1, m_ld_a_d8},				   // 0x3E
+	{"LD A, ", 1, m_ld_a_d8},				   // 0x3E
 	{NULL, 0, NULL},                           // 0x3F
 	{NULL, 0, NULL},                           // 0x40
 	{NULL, 0, NULL},                           // 0x41
@@ -205,9 +205,9 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xC8
 	{"RET", 0, m_ret}, 		                   // 0xC9
 	{NULL, 0, NULL},                           // 0xCA
-	{"CB", 1, m_cb_ext},						// 0xCB
+	{"CB ", 1, m_cb_ext},						// 0xCB
 	{NULL, 0, NULL},                           // 0xCC
-	{"CALL", 2, m_call},                           // 0xCD
+	{"CALL ", 2, m_call},                           // 0xCD
 	{NULL, 0, NULL},                           // 0xCE
 	{NULL, 0, NULL},                           // 0xCF
 	{NULL, 0, NULL},                           // 0xD0
