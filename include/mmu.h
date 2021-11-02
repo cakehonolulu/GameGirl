@@ -137,10 +137,19 @@ typedef struct gb_mmu
 
 gb_mmu_t *mmu_init();
 void mmu_halt();
+
+// DMA-Like R/W, no MMU use at all, better use MMU-Safe alternatives
 uint8_t mmu_read_addr8(uint16_t m_addr);
 void mmu_write_addr8(uint16_t m_addr, uint8_t m_data);
 uint16_t mmu_read_addr16(uint16_t m_addr);
 void mmu_write_addr16(uint16_t m_addr, uint16_t m_data);
+
+// MMU-Safe alternatives
+uint8_t mmu_read_byte(uint16_t m_addr);
+uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data);
+uint16_t mmu_read_word(uint16_t m_addr);
+uint8_t mmu_write_word(uint16_t m_addr, uint16_t m_data);
+
 void m_load_bootrom(unsigned char *m_bootrom);
 
 #endif
