@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include "gamegirl.h"
 #include "mmu.h"
+#include "cycle.h"
 
 struct m_sharp_lr35902_instr {
 	char *m_instr;

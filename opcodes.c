@@ -575,8 +575,6 @@ void m_jr_nz_s8(int8_t m_s8)
 	printf("Operand: 0x%X\n", (uint8_t) m_s8);
 #endif
 
-	uint16_t currpc = (uint16_t) PC;
-
 	if (!m_is_bit_set(FLAGS, Z))
 	{
 		// Set the PC Offset at the end of the JR NZ, s8
@@ -669,8 +667,6 @@ void m_jr_z_s8(int8_t m_s8)
 	printf("\033[1;31mJR Z, $%04hhX\033[1;0m\n", m_s8);
 	printf("Operand: 0x%X\n", (uint8_t) m_s8);
 #endif
-
-	uint16_t currpc = (uint16_t) PC;
 
 	if (m_is_bit_set(FLAGS, Z))
 	{
