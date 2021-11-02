@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	bool m_foundbootrom = false;
 	bool m_foundprogram = false;
 
-	int breakpoint;
+	uint32_t m_breakpoint = NULL;
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -43,16 +43,15 @@ int main(int argc, char **argv)
 		} else {
 			if (m_foundbootrom == true)
 			{
-				if (argv > 1)
+				if (argc > 2)
 				{
 					char *p;
 				
-					long conv = strtol(argv[2], &p, 10);
-				
-					breakpoint = conv;
+					uint32_t conv = strtol(argv[2], &p, 10);
 
-					printf("%d\n", breakpoint);
-					exit(1);
+					m_breakpoint = conv;
+
+					printf("%d\n", m_breakpoint);
 				}
 			} else {
 				printf("Unknown argument: %s\n", argv[i]);
@@ -121,7 +120,7 @@ int main(int argc, char **argv)
 		// Start fetching & executing instructions
 		m_exec(m_regs);
 
-		if (PC == breakpoint)
+		if (m_breakpoint != NULL && PC == m_breakpoint)
 		{
 			printf("\e[1;1H\e[2J");
 			printf("\033[1;32mEntered Debugging Step Mode!\033[0;0m\n");
