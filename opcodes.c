@@ -21,7 +21,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x10
 	{"LD DE, ", 2, m_ld_de_d16},			   // 0x11
 	{NULL, 0, NULL},                           // 0x12
-	{NULL, 0, NULL},                           // 0x13
+	{"INC DE", 0, m_inc_de},				   // 0x13
 	{NULL, 0, NULL},                           // 0x14
 	{NULL, 0, NULL},                           // 0x15
 	{NULL, 0, NULL},                           // 0x16
@@ -401,6 +401,21 @@ void m_ld_de_d16(uint16_t m_d16)
 
 	DE = m_d16;
 	PC += 3;
+}
+
+/*
+	INC DE
+
+	Opcode: 0x13
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Increment the contents of register pair DE by 1.
+*/
+void m_inc_de()
+{
+	DE++;
+	PC++;
 }
 
 /*

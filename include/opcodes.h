@@ -27,6 +27,9 @@ void m_ld_c_d8(uint8_t m_d8);
 // 0x11
 void m_ld_de_d16(uint16_t m_d16);
 
+// 0x13
+void m_inc_de();
+
 // 0x17
 void m_rla();
 
