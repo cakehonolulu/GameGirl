@@ -256,8 +256,8 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL}                            // 0x0F
+	{"CP ", 1, m_cp_d8},                       // 0xFE
+	{NULL, 0, NULL}                            // 0xFF
 };
 
 /*
@@ -888,4 +888,45 @@ void m_ld_cpar_a()
 #endif
 	mmu_write_byte((0xFF00 + C), A);
 	PC += 1;
+}
+
+/*
+	CP d8
+	Opcode: 0xFE
+	Number of Bytes: 2
+	Number of Cycles: 2
+
+	Compare the contents of register A and the contents of the 8-bit immediate
+	operand d8 by calculating A - d8, and set the Z flag if they are equal.
+
+	The execution of this instruction does not affect the contents of register A.
+*/
+void m_cp_d8(uint8_t m_d8)
+{
+	uint8_t m_res = A - m_d8;
+
+	if (A == m_d8)
+	{
+		FLAG_SET(Z);
+	} else {
+		FLAG_UNSET(Z);
+	}
+
+	if (m_d8 > A)
+	{
+		FLAG_SET(C);
+	} else {
+		FLAG_UNSET(C);
+	}
+
+	if ((m_d8 & 0b00001111) > (A & 0b00001111))
+	{
+		FLAG_SET(H);
+	} else {
+		FLAG_UNSET(H);
+	}
+
+	FLAG_SET(N);
+
+	PC += 2;
 }
