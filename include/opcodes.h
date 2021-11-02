@@ -63,6 +63,9 @@ void m_ld_c_a();
 // 0x77
 void m_ld_hl_a();
 
+// 0x7B
+void m_ld_a_e();
+
 // 0xAF
 void m_xor_a();
 
