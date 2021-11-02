@@ -3,10 +3,10 @@
 #include "gamegirl.h"
 #include "mmu.h"
 
-struct m_sharp_lr35902_instr_cb {
+extern struct m_sharp_lr35902_instr_cb {
 	char *m_instr;
 	void *m_funct;
-} extern const m_gb_instr_cb[256];
+} const m_gb_instr_cb[256];
 
 // 0x11
 void m_rl_c();
