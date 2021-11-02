@@ -296,7 +296,7 @@ void m_rl_c()
 	printf("\033[1;31mRL C\033[1;0m\n");
 #endif
 
-	int isCarry = m_is_bit_set(C, C);
+	int isCarry = m_is_bit_set(C, CRRY);
 
 	if (C & 0b1000000)
 	{
