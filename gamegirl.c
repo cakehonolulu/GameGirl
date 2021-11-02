@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 	m_load_bootrom(m_bootrom_buf);
 
 	// Initialize Registers
-	m_init_registers(m_regs);
+	m_init_registers();
 
 	m_regs.isUnimplemented = false;
 
@@ -118,7 +118,7 @@ int main(int argc, char **argv)
 		prev_pc = PC;
 
 		// Start fetching & executing instructions
-		m_exec(m_regs);
+		m_exec();
 
 		if (m_breakpoint != NULL && PC == m_breakpoint)
 		{
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 
 			uint8_t m_dbgopc = mmu_read_byte(PC);
 
-			m_printregs(m_regs);
+			m_printregs();
 
 			printf("\nLegend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
 
@@ -160,8 +160,8 @@ int main(int argc, char **argv)
 
 					prev_pc = PC;
 
-					m_exec(m_regs);
-					m_printregs(m_regs);
+					m_exec();
+					m_printregs();
 
 					extern uint8_t m_opcode;
 
@@ -219,7 +219,6 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-
 	}
 
 	// Free MMU data

@@ -1,7 +1,7 @@
 #include "include/cycle.h"
 #include "include/opcodes.h"
 
-void m_init_registers(gb_registers_t m_regs)
+void m_init_registers()
 {
 	A = 0;
 	B = 0;
@@ -21,17 +21,17 @@ void m_init_registers(gb_registers_t m_regs)
 	FLAGS = 0;
 }
 
-uint8_t m_fetch(gb_registers_t m_regs)
+uint8_t m_fetch()
 {
 	return (uint8_t) mmu_read_byte(PC);
 }
 
-uint8_t m_fetchopbyte(gb_registers_t m_regs)
+uint8_t m_fetchopbyte()
 {
 	return (uint8_t) mmu_read_byte(PC + 1);
 }
 
-uint16_t m_fetchopword(gb_registers_t m_regs)
+uint16_t m_fetchopword()
 {
 	uint8_t m_rb = mmu_read_byte(PC + 1);
 
@@ -51,9 +51,9 @@ uint8_t m_opcode;
 uint8_t m_boperand;
 uint16_t m_woperand;
 
-void m_exec(gb_registers_t m_regs)
+void m_exec()
 {
-	m_opcode = m_fetch(m_regs);
+	m_opcode = m_fetch();
 
 #ifdef OPCODE_DEBUG
 	printf("Current opcode: 0x%02X\n", m_opcode);
@@ -64,9 +64,9 @@ void m_exec(gb_registers_t m_regs)
 
 	if (m_gb_instr[m_opcode].m_operand == 1)
 	{
-		m_boperand = m_fetchopbyte(m_regs);
+		m_boperand = m_fetchopbyte();
 	} else if (m_gb_instr[m_opcode].m_operand == 2) {
-		m_woperand = m_fetchopword(m_regs);
+		m_woperand = m_fetchopword();
 	}
 
 	switch(m_gb_instr[m_opcode].m_operand)
@@ -75,7 +75,7 @@ void m_exec(gb_registers_t m_regs)
 			if (m_gb_instr[m_opcode].m_funct == NULL)
 			{
 				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
-				m_printregs(m_regs);
+				m_printregs();
 				exit(EXIT_FAILURE);
 			} else {
 				((void (*)(void))m_gb_instr[m_opcode].m_funct)();
@@ -86,7 +86,7 @@ void m_exec(gb_registers_t m_regs)
 			if (m_gb_instr[m_opcode].m_funct == NULL)
 			{
 				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
-				m_printregs(m_regs);
+				m_printregs();
 				exit(EXIT_FAILURE);
 			} else {
 				if ((m_opcode == 0x18) | (m_opcode == 0x20) | (m_opcode == 0x28))
@@ -102,7 +102,7 @@ void m_exec(gb_registers_t m_regs)
 			if (m_gb_instr[m_opcode].m_funct == NULL)
 			{
 				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
-				m_printregs(m_regs);
+				m_printregs();
 				exit(EXIT_FAILURE);
 			} else {
 				((void (*)(uint16_t))m_gb_instr[m_opcode].m_funct)((uint16_t) m_woperand);
@@ -116,7 +116,7 @@ void m_exec(gb_registers_t m_regs)
 	
 }
 
-void m_printregs(gb_registers_t m_regs)
+void m_printregs()
 {
 	printf("\n\033[1;31mGeneral-Purpose Registers:\033[0m\n");
 	printf("\033[0;35mA:\033[0m 0x%02X, \033[0;35mF:\033[0m 0x%02X; \033[0;35mAF:\033[0m 0x%04X\n", A, F, AF);

@@ -270,7 +270,7 @@ void m_cb_ext(uint8_t cb_instr)
 	if (m_gb_instr_cb[cb_instr].m_funct == NULL)
 	{
 		printf("Unimplemented Opcode: 0xCB%02X\n", cb_instr);
-		m_printregs(m_regs);
+		m_printregs();
 		exit(EXIT_FAILURE);
 	} else {
 		((void (*)(void))m_gb_instr_cb[cb_instr].m_funct)();

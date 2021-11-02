@@ -138,6 +138,8 @@ typedef struct gb_mmu
 gb_mmu_t *mmu_init();
 void mmu_halt();
 
+void m_init_address_space();
+
 // DMA-Like R/W, no MMU use at all, better use MMU-Safe alternatives
 uint8_t mmu_read_addr8(uint16_t m_addr);
 void mmu_write_addr8(uint16_t m_addr, uint8_t m_data);
