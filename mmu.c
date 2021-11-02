@@ -131,7 +131,7 @@ uint8_t mmu_read_byte(uint16_t m_addr)
                 	// Check if it's reading from intenable region (Last byte)
                     if (m_addr == 0xFFFF)
                     	// Interrupt Enable
-                        return mmu->gb_mmap.intenable;
+                        return mmu->gb_mmap.zram[0x80 - 1];
                     else
                     {
                     	/*
@@ -164,6 +164,8 @@ uint8_t mmu_read_byte(uint16_t m_addr)
     	default:
     		break;
     }
+
+    return -1;
 }
 
 // Safe Option, goes through MMU
@@ -268,6 +270,8 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     	default:
     		break;
     }
+
+    return -1;
 }
 
 uint16_t mmu_read_word(uint16_t m_addr)
