@@ -20,11 +20,11 @@ int main(int argc, char **argv)
 	}
 
 	// Declare a char pointer with the name of the filename to load
-	const char *m_bootromname = NULL;
-	const char *m_programname = NULL;
+	[[maybe_unused]] const char *m_bootromname = NULL;
+	[[maybe_unused]] const char *m_programname = NULL;
 
-	bool m_foundbootrom = false;
-	bool m_foundprogram = false;
+	[[maybe_unused]] bool m_foundbootrom = false;
+	[[maybe_unused]] bool m_foundprogram = false;
 
 	uint32_t m_breakpoint = NULL;
 
@@ -132,9 +132,6 @@ int main(int argc, char **argv)
 			m_printregs(m_regs);
 
 			printf("\nLegend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
-
-			
-			uint8_t curr_instr;
 
 			if (m_gb_instr[m_opcode].m_operand == 0)
 			{
