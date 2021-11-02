@@ -93,5 +93,8 @@ void m_ld_a8_a(uint8_t m_a8);
 // 0xE2
 void m_ld_cpar_a();
 
+// 0xEA
+void m_ld_a16_a(uint16_t m_a16);
+
 // 0xFE
 void m_cp_d8(uint8_t m_d8);

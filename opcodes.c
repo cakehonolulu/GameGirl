@@ -236,7 +236,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xE9
-	{NULL, 0, NULL},                           // 0xEA
+	{"LD (a16), A", 2, m_ld_a16_a},			   // 0xEA
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -904,6 +904,25 @@ void m_ld_cpar_a()
 #endif
 	mmu_write_byte((0xFF00 + C), A);
 	PC += 1;
+}
+
+/*
+	LD (a16), A
+	Opcode: 0xEA
+	Number of Bytes: 3
+	Number of Cycles: 4
+
+	Store the contents of register A in the internal RAM or register specified by the 16-bit immediate operand a16.
+*/
+void m_ld_a16_a(uint16_t m_a16)
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD ($%04X), A\033[1;0m\n", m_a16);
+#endif
+
+	mmu_write_byte(m_a16, A);
+
+	PC += 3;
 }
 
 /*
