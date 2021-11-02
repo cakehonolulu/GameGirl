@@ -287,6 +287,9 @@ void m_nop()
 */
 void m_dec_b()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mDEC B\033[1;0m\n");
+#endif
 	// Check for Half-Carry
 	if(B & 0b00001111)
 	{
@@ -414,6 +417,9 @@ void m_ld_de_d16(uint16_t m_d16)
 */
 void m_inc_de()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mINC DE\033[1;0m\n");
+#endif
 	DE++;
 	PC++;
 }
@@ -544,6 +550,9 @@ void m_ld_hl_d16(uint16_t m_d16)
 */
 void m_ld_hlplus_a()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD (HL+), A\033[1;0m\n");
+#endif
 	mmu_write_byte(HL, A);
 
 	HL++;
@@ -561,6 +570,9 @@ void m_ld_hlplus_a()
 */
 void m_inc_hl()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mINC HL\033[1;0m\n");
+#endif
 	HL++;
 	PC++;
 }
@@ -673,6 +685,10 @@ void m_ld_hl_a()
 */
 void m_ld_a_e()
 {
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mLD A, E\033[1;0m\n");
+#endif
+
 	A = E;
 	PC++;
 }
@@ -903,7 +919,9 @@ void m_ld_cpar_a()
 */
 void m_cp_d8(uint8_t m_d8)
 {
-	uint8_t m_res = A - m_d8;
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mCP $%02X\033[1;0m\n", m_d8);
+#endif
 
 	if (A == m_d8)
 	{
