@@ -42,7 +42,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x25
 	{NULL, 0, NULL},                           // 0x26
 	{NULL, 0, NULL},                           // 0x27
-	{NULL, 0, NULL},                           // 0x28
+	{"JR Z, ", 1, m_jr_z_s8},                // 0x28
 	{NULL, 0, NULL},                           // 0x29
 	{NULL, 0, NULL},                           // 0x2A
 	{NULL, 0, NULL},                           // 0x2B
@@ -575,6 +575,37 @@ void m_inc_hl()
 #endif
 	HL++;
 	PC++;
+}
+
+/*
+	JR Z, s8
+	Opcode: 0x28
+	Number of Bytes: 2
+	Number of Cycles: 3/2
+
+	If the Z flag is 1, jump s8 steps from the current address stored in the
+	program counter (PC). If not, the instruction following the current JP
+	instruction is executed (as usual).
+*/
+void m_jr_z_s8(int8_t m_s8)
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mJR Z, $%04hhX\033[1;0m\n", m_s8);
+	printf("Operand: 0x%X\n", (uint8_t) m_s8);
+#endif
+
+	uint16_t currpc = (uint16_t) PC;
+
+	if (m_is_bit_set(FLAGS, Z))
+	{
+		// Set the PC Offset at the end of the JR NZ, s8
+		PC += 2;
+
+		// Add m_operand as an int8_t (Can go forward or backward)
+		PC += (int8_t) m_s8;
+	}
+
+	PC += 2;
 }
 
 /*

@@ -48,6 +48,9 @@ void m_ld_hlplus_a();
 // 0x23
 void m_inc_hl();
 
+// 0x28
+void m_jr_z_s8(int8_t m_s8);
+
 // 0x31
 void m_ld_sp_d16(uint16_t m_d16);
 
