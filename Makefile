@@ -6,18 +6,18 @@ CC = gcc
 CFLAGS := -Wall -Wextra -std=c2x
 
 ifdef OPCODE_DEBUG
-CFLAGS += "-DOPCODE_DEBUG"
+CFLAGS += -DOPCODE_DEBUG
 endif
 ifdef DEBUG
-CFLAGS += "-g"
+CFLAGS += -g
 endif
 ifdef FSANITIZE
-CFLAGS += "-fsanitize=address"
+CFLAGS += -fsanitize=address
 endif
 
 BINARY := gamegirl
 
-all: $(BINARY)
+all: clean $(BINARY)
 $(BINARY): *.c
 	@echo "🚧 Building..."
 	$(CC) $(CFLAGS) $(SDLFLAGS) $^ -o $@ $(LDFLAGS)
