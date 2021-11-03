@@ -32,7 +32,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x1B
 	{NULL, 0, NULL},                           // 0x1C
 	{NULL, 0, NULL},                           // 0x1D
-	{NULL, 0, NULL},							// 0x1E
+	{"LD E, d8", 1, m_ld_e_d8},				    // 0x1E
 	{NULL, 0, NULL},							// 0x1F
 	{"JR NZ, ", 1, m_jr_nz_s8},			   // 0x20
 	{"LD HL, ", 2, m_ld_hl_d16},			   // 0x21
@@ -557,6 +557,20 @@ void m_ld_a_de()
 #endif
 	A = mmu_read_byte(DE);
 	PC += 1;
+}
+
+/*
+	LD E, d8
+	Opcode: 0x1E
+    Number of Bytes: 2
+    Number of Cycles: 2
+
+	Load the 8-bit immediate operand d8 into register E.
+*/
+void m_ld_e_d8(uint8_t m_d8)
+{
+	E = m_d8;
+	PC += 2;
 }
 
 /*
