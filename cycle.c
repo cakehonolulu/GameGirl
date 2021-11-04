@@ -111,7 +111,7 @@ void m_init_registers()
 	// Setup Interrupts State
 	ints.m_master = 1;
 	ints.m_enabled = mmu->gb_mmap.intenable;
-	ints.m_flags = 0;
+	ints.m_flags = mmu->gb_address_space[0xFF0F];
 }
 
 uint8_t m_fetch()

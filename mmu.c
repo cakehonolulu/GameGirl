@@ -1,5 +1,7 @@
 #include "include/mmu.h"
 #include "include/gamegirl.h"
+#include "include/gpu.h"
+#include "include/int.h"
 #include <limits.h>
 
 gb_mmu_t *mmu_init()
@@ -141,23 +143,19 @@ uint8_t mmu_read_byte(uint16_t m_addr)
     }
     else if (m_addr == 0xFF40)
     {
-        // LCD Handling
-    }
-    else if (m_addr == 0xFF41)
-    {
-        // LCD Handling
+        return gpu.m_config;
     }
     else if (m_addr == 0xFF42)
     {
-        // LCD Handling
+        return gpu.m_verticalscroll;
     }
     else if (m_addr == 0xFF43)
     {
-        // LCD Handling
+        return gpu.m_horitzontalscroll;
     }
     else if (m_addr == 0xFF44)
     {
-        // LCD Handling
+        return gpu.m_scanline;
     }
     else if (m_addr >= 0xFF00 && 0xFF7F >= m_addr)
     {
@@ -169,7 +167,7 @@ uint8_t mmu_read_byte(uint16_t m_addr)
     }
     else if (m_addr == 0xFFFF)
     {
-        return mmu->gb_mmap.intenable;
+        return ints.m_enabled;
     }
 
     return 0;
@@ -233,19 +231,15 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF41)
     {
-        // LCD Handling
+        return gpu.m_config = m_data;
     }
     else if (m_addr == 0xFF42)
     {
-        // LCD Handling
+        return gpu.m_horitzontalscroll = m_data;
     }
     else if (m_addr == 0xFF43)
     {
-        // LCD Handling
-    }
-    else if (m_addr == 0xFF45) 
-    {
-        // LCD Handling;
+        return gpu.m_verticalscroll = m_data;
     }
     else if(m_addr == 0xff46)
     {
@@ -285,11 +279,11 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF0F)
     {
-        return mmu->gb_mmap.hw_io_reg[0x0F] = m_data;
+        return ints.m_flags = m_data;
     }
     else if (m_addr == 0xFFFF)
     {
-        return mmu->gb_mmap.zram[0x79] = m_data;
+        return ints.m_enabled = m_data;
     }
 
     return 0;

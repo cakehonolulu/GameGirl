@@ -21,6 +21,7 @@ typedef struct gpu_t
 	uint8_t m_verticalscroll;		// Y Coordinate (Vertical, 144px-wide)
 	uint8_t m_cgpu_mode;			// Current PPU Mode
 	uint64_t m_ticks;				// Current PPU Ticks
+	uint8_t m_config;				// PPU Tileset Control
 } m_gpu_t;
 
 extern m_gpu_t gpu;
