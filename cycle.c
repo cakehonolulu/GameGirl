@@ -261,5 +261,6 @@ void m_printregs()
 		printf("\033[0m0   \n\n");
 	}
 
-	printf("\033[1;35mCurrent Ticks:\033[0m %lu\n", m_cpu_ticks);
+	printf("\033[1;35mCurrent CPU Ticks:\033[0m %lu\n", m_cpu_ticks);
+	printf("\033[1;35mCurrent GPU Ticks:\033[0m %lu\n", gpu.m_ticks);
 }

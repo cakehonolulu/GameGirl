@@ -164,6 +164,8 @@ int main(int argc, char **argv)
 					prev_pc = PC;
 
 					m_exec();
+					m_gpu_step();
+					
 					m_printregs();
 
 					extern uint8_t m_opcode;
