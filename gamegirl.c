@@ -122,6 +122,7 @@ int main(int argc, char **argv)
 
 		// Execute the GPU subsystem
 		m_gpu_step();
+		m_int_check();
 
 		if ((m_breakpoint) && PC == m_breakpoint)
 		{
@@ -165,7 +166,8 @@ int main(int argc, char **argv)
 
 					m_exec();
 					m_gpu_step();
-					
+					m_int_check();
+
 					m_printregs();
 
 					extern uint8_t m_opcode;

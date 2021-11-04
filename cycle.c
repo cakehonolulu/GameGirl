@@ -1,6 +1,7 @@
 #include "include/cycle.h"
 #include "include/opcodes.h"
 #include "include/gpu.h"
+#include "include/int.h"
 
 uint64_t m_cpu_ticks;
 
@@ -106,6 +107,11 @@ void m_init_registers()
 	gpu.m_scanline = 0;
 	gpu.m_verticalscroll = 0;
 	gpu.m_horitzontalscroll = 0;
+
+	// Setup Interrupts State
+	ints.m_master = 1;
+	ints.m_enabled = mmu->gb_mmap.intenable;
+	ints.m_flags = 0;
 }
 
 uint8_t m_fetch()
