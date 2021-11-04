@@ -90,95 +90,94 @@ uint8_t mmu_read_byte(uint16_t m_addr)
     }
 #pragma GCC diagnostic pop
 
-    switch ((m_addr & 0xF000) >> 12)
+    // #0 Cart (Fixed) [0x0 - 0x3FFF]
+    if (m_addr >= 0x0000 && 0x3FFF >= m_addr)
     {
-    	// #0 Cart (Fixed) [0x0 - 0x3FFF]
-    	case 0x0: case 0x1: case 0x2: case 0x3:
-    		return mmu->gb_mmap.cart[m_addr];
-
-    	// #1 Cart (Switchable) [0x4000 - 0x7FFF]
-    	case 0x4: case 0x5: case 0x6: case 0x7:
-    		return mmu->gb_mmap.cart_sw[m_addr - 0x4000];
-
-    	// VRAM [0x8000 - 0x9FFF]
-    	case 0x8: case 0x9:
-    		return mmu->gb_mmap.vram[m_addr - 0x8000];
-
-    	// Cartridge RAM (If Exists) [0xA000 - 0xBFFF]
-    	case 0xA: case 0xB:
-    		return mmu->gb_mmap.cart_ram[m_addr - 0xA000];
-
-    	// Working RAM
-    	case 0xC: case 0xD:
-    		return mmu->gb_mmap.wram[m_addr - 0xC000];
-
-    	// Shadow of the Working RAM (Due to PCB layout)
-    	case 0xE:
-    		return mmu->gb_mmap.wram[m_addr - 0xC000];
-
-    	case 0xF:
-    		/*
-    			To cover the last bytes of memory (0xF000 - 0xFFFF)
-    			we need to use a switch statement and check for
-    			each second digit of the address to decide where
-    			to route the read to
-    		*/
-    		// Adding 0x0F00 acomplishes exactly that
-    		switch(m_addr & 0x0F00)
-    		{
- 				// Shadow of the Working RAM
-                case 0x000: case 0x100: case 0x200: case 0x300:
-                case 0x400: case 0x500: case 0x600: case 0x700:
-                case 0x800: case 0x900: case 0xA00: case 0xB00:
-                case 0xC00: case 0xD00:
-                    return mmu->gb_mmap.wram[m_addr - 0x1FFF];
-
-                // Sprite information
-                case 0xE00:
-                    if (m_addr < 0xFEA0)
-                        return mmu->gb_mmap.oam[m_addr & 0xFF];
-                    else
-                        return 0;
-
-                case 0xF00:
-                	// Check if it's reading from intenable region (Last byte)
-                    if (m_addr == 0xFFFF)
-                    	// Interrupt Enable
-                        return mmu->gb_mmap.zram[0x80 - 1];
-                    else
-                    {
-                    	/*
-                    		We'll use another switch statement to decide where the
-                    		last tidbits will be routed to, we need the third digit
-                    		so we'll add 0x00F0 to m_addr
-                    	*/
-                        // Memory-mapped IO
-                        switch (m_addr & 0x00F0)
-                        {
-                        	// IO
-                            case 0x00:
-                                return mmu->gb_mmap.io[m_addr & 0xFF];
-
-                            // PPU
-                            case 0x40: case 0x50: case 0x60: case 0x70:
-                                return mmu->gb_mmap.ppu[m_addr - 0xFF40];
-
-                            // Zero-Page RAM
-                            case 0x80: case 0x90: case 0xA0: case 0xB0:
-                            case 0xC0: case 0xD0: case 0xE0: case 0xF0:
-                                return mmu->gb_mmap.zram[m_addr & 0x7F];
-                        }
-                    }
-
-				default:
-					break;
-			}
-
-    	default:
-    		break;
+        return mmu->gb_mmap.cart[m_addr];
+    }
+    else if (m_addr >= 0x4000 && 0x7FFF >= m_addr)          // #1 Cart (Switchable) [0x4000 - 0x7FFF]
+    {
+        return mmu->gb_mmap.cart_sw[m_addr - 0x4000];
+    }
+    else if (m_addr >= 0x8000 && 0x9FFF >= m_addr)          // VRAM [0x8000 - 0x9FFF]
+    {
+        return mmu->gb_mmap.vram[m_addr - 0x8000];
+    }
+    else if (m_addr >= 0xA000 && 0xBFFF >= m_addr)          // Cartridge RAM (If Exists) [0xA000 - 0xBFFF]
+    {
+        return mmu->gb_mmap.cart_ram[m_addr - 0xA000];
+    }
+    else if (m_addr >= 0xC000 && 0xDFFF >= m_addr)          // Working RAM [0xC000 - 0xDFFF]
+    {
+        return mmu->gb_mmap.wram[m_addr - 0xC000];
+    }
+    else if (m_addr >= 0xE000 && 0xFDFF >= m_addr)          // Shadow of the Working RAM (Due to PCB layout)
+    {
+        return mmu->gb_mmap.wram[m_addr - 0xE000];
+    }
+    else if (m_addr >= 0xFE00 && 0xFEFF >= m_addr)
+    {
+        return mmu->gb_mmap.oam[m_addr - 0xFE00];
+    }
+    else if (m_addr == 0xFF00)
+    {
+        // GameBoy Key Handling
+    }
+    else if (m_addr == 0xFF04)
+    {
+        // IOREG Handling
+    }
+    else if (m_addr == 0xFF05)
+    {
+        // IOREG Handling
+    }
+    else if (m_addr == 0xFF06)
+    {
+        // IOREG Handling
+    }
+    else if (m_addr == 0xFF04)
+    {
+        // IOREG Handling
+    }
+    else if (m_addr == 0xFF0F)
+    {
+        return mmu->gb_mmap.intenable;
+    }
+    else if (m_addr == 0xFF40)
+    {
+        // LCD Handling
+    }
+    else if (m_addr == 0xFF41)
+    {
+        // LCD Handling
+    }
+    else if (m_addr == 0xFF42)
+    {
+        // LCD Handling
+    }
+    else if (m_addr == 0xFF43)
+    {
+        // LCD Handling
+    }
+    else if (m_addr == 0xFF44)
+    {
+        // LCD Handling
+    }
+    else if (m_addr >= 0xFF00 && 0xFF7F >= m_addr)
+    {
+        return mmu->gb_mmap.hw_io_reg[m_addr - 0xFF00];
+    }
+    else if (m_addr >= 0xFF80 && 0xFFFE >= m_addr) 
+    {
+        return mmu->gb_mmap.zram[m_addr - 0xFF80];
+    }
+    else if (m_addr == 0xFFFF)
+    {
+        return mmu->gb_mmap.intenable;
     }
 
-    return -1;
+    return 0;
+
 }
 
 // Safe Option, goes through MMU
