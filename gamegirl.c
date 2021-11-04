@@ -120,6 +120,9 @@ int main(int argc, char **argv)
 		// Start fetching & executing instructions
 		m_exec();
 
+		// Execute the GPU subsystem
+		m_gpu_step();
+
 		if ((m_breakpoint) && PC == m_breakpoint)
 		{
 			printf("\e[1;1H\e[2J");

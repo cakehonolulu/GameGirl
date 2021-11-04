@@ -1,7 +1,7 @@
 #include "include/cycle.h"
 #include "include/opcodes.h"
 
-uint64_t m_ticks;
+uint64_t m_cpu_ticks;
 
 const uint8_t m_ticks_by_opcode[256] = {
 	2, 6, 4, 4, 2, 2, 4, 4, 10, 4, 4, 4, 2, 2, 4, 4, // 0x0_
@@ -60,7 +60,7 @@ void m_init_registers()
 
 	FLAGS = 0;
 
-	m_ticks = 0;
+	m_cpu_ticks = 0;
 
 	mmu_write_byte(0xFF05, 0);
 	mmu_write_byte(0xFF06, 0);
@@ -196,9 +196,9 @@ void m_exec()
 
 	if (m_opcode == 0xCB)
 	{
-		m_ticks += m_ticks_by_cbopcode[m_fetchopbyte()];
+		m_cpu_ticks += m_ticks_by_cbopcode[m_fetchopbyte()];
 	} else {
-		m_ticks += m_ticks_by_opcode[m_opcode];
+		m_cpu_ticks += m_ticks_by_opcode[m_opcode];
 	}
 	
 }
@@ -255,5 +255,5 @@ void m_printregs()
 		printf("\033[0m0   \n\n");
 	}
 
-	printf("\033[1;35mCurrent Ticks:\033[0m %lu\n", m_ticks);
+	printf("\033[1;35mCurrent Ticks:\033[0m %lu\n", m_cpu_ticks);
 }
