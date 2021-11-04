@@ -1,5 +1,6 @@
 #include "include/cycle.h"
 #include "include/opcodes.h"
+#include "include/gpu.h"
 
 uint64_t m_cpu_ticks;
 
@@ -100,6 +101,11 @@ void m_init_registers()
 		printf("0x%02X ", mmu->gb_address_space[i]);
 	}
 #endif
+
+	// Setup the PPU
+	gpu.m_scanline = 0;
+	gpu.m_verticalscroll = 0;
+	gpu.m_horitzontalscroll = 0;
 }
 
 uint8_t m_fetch()
