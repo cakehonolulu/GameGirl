@@ -124,5 +124,8 @@ void m_ld_cpar_a();
 // 0xEA
 void m_ld_a16_a(uint16_t m_a16);
 
+// 0xF0
+void m_ld_a_a8(uint8_t m_a8);
+
 // 0xFE
 void m_cp_d8(uint8_t m_d8);

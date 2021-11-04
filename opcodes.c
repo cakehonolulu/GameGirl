@@ -242,7 +242,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xEF
-	{NULL, 0, NULL},                           // 0xF0
+	{"LD A, (a8)", 1, m_ld_a_a8},              // 0xF0
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -1118,6 +1118,25 @@ void m_ld_a16_a(uint16_t m_a16)
 }
 
 /*
+	LD A, (a8)
+	Opcode: 0xF0
+	Number of Bytes: 2
+	Number of Cycles: 3
+	Load into register A the contents of the internal RAM, port register, or mode register at the address in the range 0xFF00-0xFFFF specified by the 8-bit immediate operand a8.
+
+	Note: Should specify a 16-bit address in the mnemonic portion for a8, although the immediate operand only has the lower-order 8 bits.
+
+	0xFF00-0xFF7F: Port/Mode registers, control register, sound register
+	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
+	0xFFFF: Interrupt Enable Register
+*/
+void m_ld_a_a8(uint8_t m_a8)
+{
+	A = mmu_read_byte(0xFF00 + m_a8);
+	PC += 2;
+}
+
+/*
 	CP d8
 	Opcode: 0xFE
 	Number of Bytes: 2
@@ -1133,6 +1152,8 @@ void m_cp_d8(uint8_t m_d8)
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mCP $%02X\033[1;0m\n", m_d8);
 #endif
+
+	FLAG_SET(NGTV);
 
 	if (A == m_d8)
 	{
@@ -1154,8 +1175,6 @@ void m_cp_d8(uint8_t m_d8)
 	} else {
 		FLAG_UNSET(HALF);;
 	}
-
-	FLAG_SET(NGTV);
 
 	PC += 2;
 }
