@@ -14,8 +14,17 @@ void m_gpu_step()
 
 	switch (gpu.m_cgpu_mode)
 	{
+		case M_GPU_HBLANK:
+			break;
 
+		case M_GPU_VBLANK:
+			break;
 
+		case M_GPU_OAM:
+			break;
+
+		case M_GPU_VRAM:
+			break;
 
 		default:
 			break;
