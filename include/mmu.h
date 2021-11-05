@@ -135,6 +135,8 @@ typedef struct gb_mmu
 	};
 } gb_mmu_t;
 
+extern gb_mmu_t *mmu;
+
 gb_mmu_t *mmu_init();
 void mmu_halt();
 
