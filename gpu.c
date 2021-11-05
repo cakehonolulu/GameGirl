@@ -63,6 +63,8 @@ void m_gpu_step()
 			{
 				gpu.m_cgpu_mode = M_GPU_HBLANK;
 
+				m_render_sc();
+
 				gpu.m_ticks -= 172;
 			}
 			break;
