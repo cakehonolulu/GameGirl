@@ -31,7 +31,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"LD A, (DE)", 0, m_ld_a_de},              // 0x1A
 	{NULL, 0, NULL},                           // 0x1B
 	{NULL, 0, NULL},                           // 0x1C
-	{NULL, 0, NULL},                           // 0x1D
+	{"DEC E", 0, m_dec_e},					   // 0x1D
 	{"LD E, d8", 1, m_ld_e_d8},				    // 0x1E
 	{NULL, 0, NULL},							// 0x1F
 	{"JR NZ, ", 1, m_jr_nz_s8},			   // 0x20
@@ -557,6 +557,37 @@ void m_ld_a_de()
 #endif
 	A = mmu_read_byte(DE);
 	PC += 1;
+}
+
+/*
+	DEC E
+	Opcode: 0x1D
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Decrement the contents of register E by 1.
+*/
+void m_dec_e()
+{
+	FLAG_SET(NGTV);
+	
+	if(E & 0b00001111)
+	{
+		FLAG_UNSET(HALF);;
+	} else {
+		FLAG_SET(HALF);
+	}
+
+	E--;
+	
+	if(E)
+	{
+		FLAG_UNSET(ZERO);
+	} else {
+		FLAG_SET(ZERO);
+	}
+
+	PC++;
 }
 
 /*

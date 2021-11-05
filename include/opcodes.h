@@ -46,6 +46,9 @@ void m_jr_s8(int8_t m_s8);
 // 0x1A
 void m_ld_a_de();
 
+// 0x1D
+void m_dec_e();
+
 // 0x1E
 void m_ld_e_d8(uint8_t m_d8);
 
