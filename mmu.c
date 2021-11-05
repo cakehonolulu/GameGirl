@@ -247,7 +247,7 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF47)
     {
-        // Graphics Handling
+        return gpu.m_palette = m_data; // write only
     }
     else if (m_addr == 0xFF48)
     {
