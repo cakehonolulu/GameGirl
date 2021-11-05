@@ -40,6 +40,9 @@ void m_inc_de();
 // 0x15
 void m_dec_d();
 
+// 0x16
+void m_ld_d_d8(uint8_t m_d8);
+
 // 0x17
 void m_rla();
 
