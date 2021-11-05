@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 
 	extern uint8_t m_boperand;
 	extern uint16_t m_woperand;
-
+/*
 	// Declare both the window and Surface to use SDL2 abilities
 	SDL_Window   *m_window;
 	SDL_Renderer  *m_renderer;
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
 
 	// Update the framebuffer with all the changes
 	SDL_UpdateWindowSurface(m_window);
-
+*/
 	while (true)
 	{
 		prev_pc = PC;
