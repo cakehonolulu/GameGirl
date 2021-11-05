@@ -235,11 +235,11 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF42)
     {
-        return gpu.m_horitzontalscroll = m_data;
+        return gpu.m_verticalscroll = m_data;
     }
     else if (m_addr == 0xFF43)
     {
-        return gpu.m_verticalscroll = m_data;
+        return gpu.m_horitzontalscroll = m_data;
     }
     else if(m_addr == 0xff46)
     {
