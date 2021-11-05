@@ -4,6 +4,7 @@ CC = gcc
 # Setup the basic compilation flags
 # Warn all, extra and compile for c2x
 CFLAGS := -Wall -Wextra -std=c2x
+SDLFLAGS = `sdl2-config --cflags --libs`
 
 ifdef OPCODE_DEBUG
 CFLAGS += -DOPCODE_DEBUG
@@ -20,7 +21,7 @@ BINARY := gamegirl
 all: clean $(BINARY)
 $(BINARY): *.c
 	@echo "🚧 Building..."
-	$(CC) $(CFLAGS) $(SDLFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(SDLFLAGS) $^ -o $@ $(SDLFLAGS) $(LDFLAGS)
 
 clean:
 	@echo "🧹 Cleaning..."
