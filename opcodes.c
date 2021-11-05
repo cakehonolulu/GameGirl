@@ -126,7 +126,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{"LD A, E", 0, m_ld_a_e},                  // 0x7B
-	{NULL, 0, NULL},                           // 0x00
+	{"LD A, H", 0, m_ld_a_h},				   // 0x7C
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x7F
@@ -944,6 +944,20 @@ void m_ld_a_e()
 #endif
 
 	A = E;
+	PC++;
+}
+
+/*
+	LD A, H
+	Opcode: 0x7C
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Load the contents of register H into register A.
+*/
+void m_ld_a_h()
+{
+	A = H;
 	PC++;
 }
 
