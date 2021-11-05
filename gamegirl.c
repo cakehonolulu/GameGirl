@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	[[maybe_unused]] bool m_foundbootrom = false;
 	[[maybe_unused]] bool m_foundprogram = false;
 
-	uint32_t m_breakpoint;
+	int32_t m_breakpoint = -1;
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 		m_gpu_step();
 		m_int_check();
 
-		if ((m_breakpoint) && PC == m_breakpoint)
+		if ((m_breakpoint != -1) && PC == m_breakpoint)
 		{
 			printf("\e[1;1H\e[2J");
 			printf("\033[1;32mEntered Debugging Step Mode!\033[0;0m\n");
