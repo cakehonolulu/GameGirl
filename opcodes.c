@@ -38,7 +38,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"LD HL, ", 2, m_ld_hl_d16},			   // 0x21
 	{"LD (HL+), A", 0, m_ld_hlplus_a},		   // 0x22
 	{"INC HL", 0, m_inc_hl},				   // 0x23
-	{NULL, 0, NULL},                           // 0x24
+	{"INC H", 0, m_inc_h},					   // 0x24
 	{NULL, 0, NULL},                           // 0x25
 	{NULL, 0, NULL},                           // 0x26
 	{NULL, 0, NULL},                           // 0x27
@@ -693,6 +693,37 @@ void m_inc_hl()
 	printf("\033[1;31mINC HL\033[1;0m\n");
 #endif
 	HL++;
+	PC++;
+}
+
+/*
+	INC H
+	Opcode: 0x24
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Increment the contents of register H by 1.
+*/
+void m_inc_h()
+{
+	FLAG_UNSET(NGTV);
+	
+	if ((H & 0b00001111) == 0b00001111)
+	{
+		FLAG_SET(HALF);
+	} else {
+		FLAG_UNSET(HALF);;
+	}
+
+	H++;
+	
+	if(H)
+	{
+		FLAG_UNSET(ZERO);
+	} else {
+		FLAG_SET(ZERO);
+	}	
+
 	PC++;
 }
 
