@@ -37,6 +37,9 @@ void m_ld_de_d16(uint16_t m_d16);
 // 0x13
 void m_inc_de();
 
+// 0x15
+void m_dec_d();
+
 // 0x17
 void m_rla();
 
@@ -102,6 +105,9 @@ void m_ld_a_e();
 
 // 0x7C
 void m_ld_a_h();
+
+// 0x90
+void m_sub_b();
 
 // 0xAF
 void m_xor_a();

@@ -23,7 +23,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x12
 	{"INC DE", 0, m_inc_de},				   // 0x13
 	{NULL, 0, NULL},                           // 0x14
-	{NULL, 0, NULL},                           // 0x15
+	{"DEC D", 0, m_dec_d},					   // 0x15
 	{NULL, 0, NULL},                           // 0x16
 	{"RLA", 0, m_rla},                         // 0x17
 	{"JR ", 1, m_jr_s8},                           // 0x18
@@ -146,7 +146,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x8F
-	{NULL, 0, NULL},                           // 0x90
+	{"SUB B", 0, m_sub_b},					   // 0x90
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -483,6 +483,38 @@ void m_inc_de()
 	printf("\033[1;31mINC DE\033[1;0m\n");
 #endif
 	DE++;
+	PC++;
+}
+
+/*
+	DEC D
+
+	Opcode: 0x15
+	Number of Bytes: 1
+	Number of Cycles: 1
+	
+	Decrement the contents of register D by 1.
+*/
+void m_dec_d()
+{
+	FLAG_SET(NGTV);
+	
+	if(D & 0b00001111)
+	{
+		FLAG_UNSET(HALF);;
+	} else {
+		FLAG_SET(HALF);
+	}
+
+	D--;
+	
+	if(D)
+	{
+		FLAG_UNSET(ZERO);
+	} else {
+		FLAG_SET(ZERO);
+	}
+
 	PC++;
 }
 
@@ -958,6 +990,45 @@ void m_ld_a_e()
 void m_ld_a_h()
 {
 	A = H;
+	PC++;
+}
+
+/*
+	SUB B
+	Opcode: 0x90
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Subtract the contents of register B from the contents of
+	register A, and store the results in register A.
+*/
+void m_sub_b()
+{
+	FLAG_SET(NGTV);
+	
+	if (B > A)
+	{
+		FLAG_SET(CRRY);
+	} else {
+		FLAG_UNSET(CRRY);
+	}
+	
+	if ((B & 0b00001111) > (A & 0b00001111))
+	{
+		FLAG_SET(HALF);
+	} else {
+		FLAG_UNSET(HALF);
+	}
+	
+	A -= B;
+	
+	if (A)
+	{
+		FLAG_UNSET(ZERO);
+	} else {
+		FLAG_SET(ZERO);
+	}
+
 	PC++;
 }
 
