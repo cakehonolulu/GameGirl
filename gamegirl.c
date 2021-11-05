@@ -45,13 +45,11 @@ int main(int argc, char **argv)
 			{
 				if (argc > 2)
 				{
-					char *p;
-				
-					uint32_t conv = strtol(argv[2], &p, 10);
+					uint32_t conv = strtol(argv[2], NULL, 0);
 
 					m_breakpoint = conv;
 
-					printf("%d\n", m_breakpoint);
+					printf("0x%02X\n", m_breakpoint);
 				}
 			} else {
 				printf("Unknown argument: %s\n", argv[i]);
