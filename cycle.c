@@ -107,6 +107,7 @@ void m_init_registers()
 	gpu.m_scanline = 0;
 	gpu.m_verticalscroll = 0;
 	gpu.m_horitzontalscroll = 0;
+	gpu.m_cgpu_mode = M_GPU_HBLANK;
 
 	// Setup Interrupts State
 	ints.m_master = 1;
