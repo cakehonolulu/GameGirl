@@ -192,7 +192,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{"CP (HL)", 0, m_cp_hl},				   // 0xBE
 	{NULL, 0, NULL},                           // 0xBF
 	{NULL, 0, NULL},                           // 0xC0
 	{"POP BC", 0, m_pop_bc},                   // 0xC1
@@ -1080,6 +1080,45 @@ void m_xor_a()
 #ifdef OPCODE_DEBUG
 			printf("Flags: 0x%02X\n", FLAGS);
 #endif
+
+	PC += 1;
+}
+
+/*
+	CP (HL)
+	Opcode: 0xBE
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Compare the contents of memory specified by register pair HL and the contents of
+	register A by calculating A - (HL), and set the Z flag if they are equal.
+
+	The execution of this instruction does not affect the contents of register A.
+*/
+void m_cp_hl()
+{
+	FLAG_SET(NGTV);
+
+	if (A == mmu_read_byte(HL))
+	{
+		FLAG_SET(ZERO);
+	} else {
+		FLAG_UNSET(ZERO);
+	}
+
+	if (mmu_read_byte(HL) > A)
+	{
+		FLAG_SET(CRRY);
+	} else {
+		FLAG_UNSET(CRRY);
+	}
+
+	if ((mmu_read_byte(HL) & 0b00001111) > (A & 0b00001111))
+	{
+		FLAG_SET(HALF);
+	} else {
+		FLAG_UNSET(HALF);;
+	}
 
 	PC += 1;
 }

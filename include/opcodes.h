@@ -115,8 +115,8 @@ void m_sub_b();
 // 0xAF
 void m_xor_a();
 
-// 0xC0
-void m_ret_nz();
+// 0xBE
+void m_cp_hl();
 
 // 0xC1
 void m_pop_bc();
