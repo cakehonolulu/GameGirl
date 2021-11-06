@@ -103,11 +103,18 @@ void m_init_registers()
 	}
 #endif
 
-	// Setup the PPU
+	// Setup the PPU, point each GPU struct member to it's MMAP Addr.
+	gpu.m_scanline = mmu->gb_address_space[0xFF44];
+	gpu.m_verticalscroll = mmu->gb_address_space[0xFF42];
+	gpu.m_horitzontalscroll = mmu->gb_address_space[0xFF43];
+
+	// Set the current GPU Mode to HBLANK
+	gpu.m_cgpu_mode = M_GPU_HBLANK;
+
+	// *Actually* set the values
 	gpu.m_scanline = 0;
 	gpu.m_verticalscroll = 0;
 	gpu.m_horitzontalscroll = 0;
-	gpu.m_cgpu_mode = M_GPU_HBLANK;
 
 	// Setup Interrupts State
 	ints.m_master = 1;
