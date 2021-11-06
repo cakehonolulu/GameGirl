@@ -159,8 +159,10 @@ int main(int argc, char **argv)
 		// Start fetching & executing instructions
 		m_exec();
 
-		// Execute the GPU subsystem
+		// Execute the GPU Subsystem
 		m_gpu_step();
+
+		// Execute the Interrupt Subsystem
 		m_int_check();
 /*
 		glViewport(0, 0, 160, 144);
