@@ -116,6 +116,7 @@ int main(int argc, char **argv)
 	// Declare both the window and Context to use SDL2 abilities
 	SDL_Window   *m_window;
 	SDL_GLContext m_context;
+	SDL_Event m_event;
 
 	// Init SDL2
 	// SDL_INIT_VIDEO automatically enables SDL2 Events, we can OR SDL_INIT_AUDIO and SDL_INIT_TIMER if needed in the future
@@ -137,10 +138,18 @@ int main(int argc, char **argv)
     }
 
     m_context = SDL_GL_CreateContext(m_window);
-    
+
 	while (true)
 	{
 		prev_pc = PC;
+
+		while (SDL_PollEvent(&m_event))
+		{
+			if (m_event.type == SDL_QUIT)
+			{
+				goto exit;
+			}
+		}
 
 		// Start fetching & executing instructions
 		m_exec();
@@ -253,8 +262,11 @@ int main(int argc, char **argv)
 		}
 	}
 
+exit:
 	// Free MMU data
 	mmu_halt();
+
+	SDL_Quit();
 
 	return EXIT_SUCCESS;
 }
