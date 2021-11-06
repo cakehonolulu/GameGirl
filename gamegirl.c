@@ -1,4 +1,6 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#include <GL/gl.h>
 #include "include/gamegirl.h"
 #include "include/mmu.h"
 #include "include/cycle.h"
@@ -126,6 +128,9 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
 	}
 
+	SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
+	SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
+
 	// Create a 160 x 144 (px) window
 	m_window = SDL_CreateWindow("GameGirl (SDL2)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 							  160, 144, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
@@ -157,6 +162,12 @@ int main(int argc, char **argv)
 		// Execute the GPU subsystem
 		m_gpu_step();
 		m_int_check();
+
+		glViewport(0, 0, 160, 144);
+		glClearColor(1.f, 0.f, 1.f, 0.f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		SDL_GL_SwapWindow(m_window);
 
 		if ((m_breakpoint != -1) && PC == m_breakpoint)
 		{
