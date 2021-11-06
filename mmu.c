@@ -139,7 +139,7 @@ uint8_t mmu_read_byte(uint16_t m_addr)
     }
     else if (m_addr == 0xFF0F)
     {
-        return mmu->gb_mmap.hw_io_reg[0x0F];
+        return ints.m_flags;
     }
     else if (m_addr == 0xFF40)
     {
