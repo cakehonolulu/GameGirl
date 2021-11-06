@@ -5,7 +5,7 @@
 #include "include/mmu.h"
 #include "include/cycle.h"
 #include "include/opcodes.h"
-
+#include "include/int.h"
 
 // Init MMU
 gb_mmu_t *mmu;
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 
 	extern uint8_t m_boperand;
 	extern uint16_t m_woperand;
-
+/*
 	// Declare both the window and Context to use SDL2 abilities
 	SDL_Window   *m_window;
 	SDL_GLContext m_context;
@@ -143,32 +143,32 @@ int main(int argc, char **argv)
     }
 
     m_context = SDL_GL_CreateContext(m_window);
-
+*/
 	while (true)
 	{
 		prev_pc = PC;
 
-		while (SDL_PollEvent(&m_event))
+		/*while (SDL_PollEvent(&m_event))
 		{
 			if (m_event.type == SDL_QUIT)
 			{
 				goto exit;
 			}
 		}
-
+*/
 		// Start fetching & executing instructions
 		m_exec();
 
 		// Execute the GPU subsystem
 		m_gpu_step();
 		m_int_check();
-
+/*
 		glViewport(0, 0, 160, 144);
 		glClearColor(1.f, 0.f, 1.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		SDL_GL_SwapWindow(m_window);
-
+*/
 		if ((m_breakpoint != -1) && PC == m_breakpoint)
 		{
 			printf("\e[1;1H\e[2J");
