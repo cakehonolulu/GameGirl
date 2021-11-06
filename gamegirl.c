@@ -112,11 +112,10 @@ int main(int argc, char **argv)
 
 	extern uint8_t m_boperand;
 	extern uint16_t m_woperand;
-/*
-	// Declare both the window and Surface to use SDL2 abilities
+
+	// Declare both the window and Context to use SDL2 abilities
 	SDL_Window   *m_window;
-	SDL_Renderer  *m_renderer;
-	SDL_Texture *m_texture;
+	SDL_GLContext m_context;
 
 	// Init SDL2
 	// SDL_INIT_VIDEO automatically enables SDL2 Events, we can OR SDL_INIT_AUDIO and SDL_INIT_TIMER if needed in the future
@@ -126,9 +125,9 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
 	}
 
-	// Create a 640 x 320 (px) window
+	// Create a 160 x 144 (px) window
 	m_window = SDL_CreateWindow("GameGirl (SDL2)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-							  160, 144, SDL_WINDOW_SHOWN);
+							  160, 144, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
 	// Check if Window could be crafted
 	if (m_window == NULL)
@@ -137,31 +136,8 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-	// Set screen as a pointer to the window's surface
-	m_renderer = SDL_CreateRenderer(m_window, -1, 0);
-
-	// Check if renderer could be crafted
-	if (m_renderer == NULL)
-	{
-        printf("Could not create SDL2 Renderer: %s\n", SDL_GetError());
-        return EXIT_FAILURE;
-    }
-
-	// Adjust the renderer size
-	SDL_RenderSetLogicalSize(m_renderer, 160, 144);
-	
-	// Setup the texture trick that'll enable us to display emulator output
-	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 160, 144);
-
-	// Check if texture could not be made
-	if (m_texture == NULL)
-	{
-		printf("Could not create SDL2 Texture: %s\n", SDL_GetError());
-	}
-
-	// Update the framebuffer with all the changes
-	SDL_UpdateWindowSurface(m_window);
-*/
+    m_context = SDL_GL_CreateContext(m_window);
+    
 	while (true)
 	{
 		prev_pc = PC;
