@@ -16,7 +16,6 @@ void m_gpu_step()
 		case M_GPU_HBLANK:
 			if (gpu.m_ticks >= 204)
 			{
-				printf("LY: 0x%02X\n", mmu_read_byte(0xFF44));
 				gpu.m_scanline++;
 
 				if (gpu.m_scanline == 143)
