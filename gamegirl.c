@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	[[maybe_unused]] bool m_foundbootrom = false;
 	[[maybe_unused]] bool m_foundprogram = false;
 
-	uint32_t m_breakpoint = NULL;
+	uint32_t m_breakpoint = 0xFFFFFFFF;
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -162,11 +162,10 @@ int main(int argc, char **argv)
 
 		//SDL_GL_SwapWindow(m_window);
 
-		if (PC == m_breakpoint)
+		if ((m_breakpoint != 0xFFFFFFFF) && PC == m_breakpoint)
 		{
 			printf("\e[1;1H\e[2J");
 			printf("\033[1;32mEntered Debugging Step Mode!\033[0;0m\n");
-
 			extern uint8_t m_opcode;
 
 			uint8_t m_dbgopc = mmu_read_byte(PC);
@@ -263,17 +262,17 @@ int main(int argc, char **argv)
 					printf("Press Enter to Step...\n");
 				}
 			}
+		} else {
+			// Start fetching & executing instructions
+			m_exec();
+
+			// Execute the GPU Subsystem
+			m_gpu_step();
+
+			// Execute the Interrupt Subsystem
+			m_int_check();
 		}
 	}
-
-	// Start fetching & executing instructions
-	m_exec();
-
-	// Execute the GPU Subsystem
-	m_gpu_step();
-
-	// Execute the Interrupt Subsystem
-	m_int_check();
 
 exit:
 	// Free MMU data
