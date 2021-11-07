@@ -11,7 +11,7 @@ void m_gpu_step()
 	
 	m_gpu_elapsed_ticks = m_cpu_ticks;
 
-	switch (gpu.m_cgpu_mode)
+	switch (gpu.m_stat)
 	{
 		case M_GPU_HBLANK:
 			if (gpu.m_ticks >= 204)
@@ -23,7 +23,7 @@ void m_gpu_step()
 					/*if (ints.m_enabled & INT_VBLANK)
 					{
 						ints.m_flags |= INT_VBLANK;*/
-						gpu.m_cgpu_mode = M_GPU_VBLANK;
+						gpu.m_stat = M_GPU_VBLANK;
 					/*} else {
 						gpu.m_cgpu_mode = M_GPU_OAM;
 						gpu.m_ticks -= 204;
@@ -39,7 +39,7 @@ void m_gpu_step()
 
 				if (gpu.m_scanline > 153)
 				{
-					gpu.m_cgpu_mode = M_GPU_OAM;
+					gpu.m_stat = M_GPU_OAM;
 					gpu.m_scanline = 0;
 				}
 
@@ -50,7 +50,7 @@ void m_gpu_step()
 		case M_GPU_OAM:
 			if (gpu.m_ticks >= 80)
 			{
-				gpu.m_cgpu_mode = M_GPU_VRAM;
+				gpu.m_stat = M_GPU_VRAM;
 				
 				gpu.m_ticks -= 80;
 			}
@@ -59,7 +59,7 @@ void m_gpu_step()
 		case M_GPU_VRAM:
 			if (gpu.m_ticks >= 172)
 			{
-				gpu.m_cgpu_mode = M_GPU_HBLANK;
+				gpu.m_stat = M_GPU_HBLANK;
 
 				m_render_sc();
 

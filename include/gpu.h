@@ -12,6 +12,7 @@ enum {
 #define M_DMG01_ROWS 144
 #define M_DMG01_COLS 160
 
+// FF40 LCDC - LCD Control
 #define GPU_CONTROL_BGENABLE (1 << 0)
 #define GPU_CONTROL_SPRITEENABLE (1 << 1)
 #define GPU_CONTROL_SPRITEVDOUBLE (1 << 2)
@@ -25,13 +26,13 @@ enum {
 // DMG-01's Screen's Resolution equals to 160 x 144 (px)
 typedef struct gpu_t
 {
-	uint8_t m_scanline;				// Current scanline (DMG-01 imitates a CRT monitor)
-	uint8_t m_horitzontalscroll;	// X coordinate (Horitzontal, 160px-wide)
-	uint8_t m_verticalscroll;		// Y Coordinate (Vertical, 144px-wide)
-	uint8_t m_cgpu_mode;			// Current PPU Mode
-	uint8_t m_palette;				// Color Palette
+	uint8_t m_lcdc;					// Current PPU Mode [$FF40]
+	uint8_t m_stat;					// PPU Tileset Control [$FF41]
+	uint8_t m_verticalscroll;		// Y Coordinate (Vertical, 144px-wide) [$FF42]
+	uint8_t m_horitzontalscroll;	// X coordinate (Horitzontal, 160px-wide) [$FF43]
+	uint8_t m_scanline;				// Current scanline (DMG-01 imitates a CRT monitor) [$FF44]
+	uint8_t m_palette;				// Color Palette [$FF47]
 	uint64_t m_ticks;				// Current PPU Ticks
-	uint8_t m_config;				// PPU Tileset Control
 } m_gpu_t;
 
 extern m_gpu_t gpu;

@@ -143,7 +143,11 @@ uint8_t mmu_read_byte(uint16_t m_addr)
     }
     else if (m_addr == 0xFF40)
     {
-        return gpu.m_config;
+        return gpu.m_lcdc;
+    }
+    else if (m_addr == 0xFF41)
+    {
+        return gpu.m_stat;
     }
     else if (m_addr == 0xFF42)
     {
@@ -227,11 +231,11 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF40)
     {
-        // LCD Handling
+        return gpu.m_lcdc = m_data;
     }
     else if (m_addr == 0xFF41)
     {
-        return gpu.m_config = m_data;
+        return gpu.m_stat = m_data;
     }
     else if (m_addr == 0xFF42)
     {
