@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	[[maybe_unused]] bool m_foundbootrom = false;
 	[[maybe_unused]] bool m_foundprogram = false;
 
-	int32_t m_breakpoint = -1;
+	uint32_t m_breakpoint = NULL;
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 	extern uint8_t m_boperand;
 	extern uint16_t m_woperand;
 
-	// Declare both the window and Context to use SDL2 abilities
+	/*// Declare both the window and Context to use SDL2 abilities
 	SDL_Window   *m_window;
 	SDL_GLContext m_context;
 	SDL_Event m_event;
@@ -146,32 +146,23 @@ int main(int argc, char **argv)
 
 	glViewport(0, 0, 160, 144);
 	glClearColor(0.f, 0.f, 0.f, 0.f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);*/
 
 	while (true)
 	{
 		prev_pc = PC;
 
-		while (SDL_PollEvent(&m_event))
+		/*while (SDL_PollEvent(&m_event))
 		{
 			if (m_event.type == SDL_QUIT)
 			{
 				goto exit;
 			}
-		}
+		}*/
 
-		// Start fetching & executing instructions
-		m_exec();
+		//SDL_GL_SwapWindow(m_window);
 
-		// Execute the GPU Subsystem
-		m_gpu_step();
-
-		// Execute the Interrupt Subsystem
-		m_int_check();
-
-		SDL_GL_SwapWindow(m_window);
-
-		if ((m_breakpoint != -1) && PC == m_breakpoint)
+		if (PC == m_breakpoint)
 		{
 			printf("\e[1;1H\e[2J");
 			printf("\033[1;32mEntered Debugging Step Mode!\033[0;0m\n");
@@ -274,6 +265,15 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+
+	// Start fetching & executing instructions
+	m_exec();
+
+	// Execute the GPU Subsystem
+	m_gpu_step();
+
+	// Execute the Interrupt Subsystem
+	m_int_check();
 
 exit:
 	// Free MMU data
