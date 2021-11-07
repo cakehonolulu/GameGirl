@@ -20,6 +20,7 @@ void m_gpu_step()
 
 				if (gpu.m_scanline == 143)
 				{
+					drawFramebuffer();
 					/*if (ints.m_enabled & INT_VBLANK)
 					{
 						ints.m_flags |= INT_VBLANK;*/
@@ -28,7 +29,11 @@ void m_gpu_step()
 						gpu.m_cgpu_mode = M_GPU_OAM;
 						gpu.m_ticks -= 204;
 					}*/
+				} else {
+					gpu.m_stat = M_GPU_OAM;
 				}
+
+				gpu.m_ticks -= 204;
 			}
 			break;
 
@@ -71,4 +76,25 @@ void m_gpu_step()
 			break;
 	}
 
+}
+
+uint8_t tiles[512][8][8];
+
+void updateTile(uint16_t address, uint8_t value) {
+	if (value != 0)
+	{
+		printf("ADDR: 0x%04X, val: 0x%02X\n", address, value);
+	}
+	
+	address &= 0x1ffe;
+
+	uint16_t tile = (mmu_read_byte(address) >> 4) & 511;
+
+	uint16_t y = (address >> 1) & 7;
+
+	uint8_t x, bitIndex;
+	for(x = 0; x < 8; x++) {
+		bitIndex = 1 << (7 - x);
+		tiles[tile][x][y] = ((mmu_read_word(address) & bitIndex) ? 1 : 0) + ((mmu_read_word(address + 1) & bitIndex) ? 2 : 0);
+	}
 }

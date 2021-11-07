@@ -199,6 +199,7 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr >= 0x8000 && 0x9FFF >= m_addr)          // VRAM [0x8000 - 0x9FFF]
     {
+        updateTile(m_addr, m_data);
         return mmu->gb_mmap.vram[m_addr - 0x8000] = m_data;
     }
     else if (m_addr >= 0xA000 && 0xBFFF >= m_addr)          // Cartridge RAM (If Exists) [0xA000 - 0xBFFF]
@@ -333,4 +334,8 @@ void m_init_address_space()
 
     // Clear OAM
     memset(mmu->gb_mmap.oam, 0, sizeof(mmu->gb_mmap.oam));
+
+    memset(tiles, 0, sizeof(tiles));
+
+    memset(framebuffer, 255, sizeof(framebuffer));
 }

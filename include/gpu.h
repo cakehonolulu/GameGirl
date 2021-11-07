@@ -36,3 +36,11 @@ typedef struct gpu_t
 } m_gpu_t;
 
 extern m_gpu_t gpu;
+
+extern uint8_t tiles[512][8][8];
+
+struct rgb {
+	unsigned char r, g, b;
+} extern framebuffer[160 * 144];
+
+extern const struct rgb palette[4];

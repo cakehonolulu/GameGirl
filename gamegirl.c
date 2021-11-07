@@ -12,6 +12,11 @@ gb_mmu_t *mmu;
 // Declare the Registers
 gb_registers_t m_regs;
 
+// Declare both the window and Context to use SDL2 abilities
+	SDL_Window   *m_window;
+	SDL_GLContext m_context;
+	SDL_Event m_event;
+
 int main(int argc, char **argv)
 {
 	printf("GameGirl - A C-21 Multiplatform Game Boy Emulator\n");
@@ -115,11 +120,6 @@ int main(int argc, char **argv)
 	extern uint8_t m_boperand;
 	extern uint16_t m_woperand;
 
-	/*// Declare both the window and Context to use SDL2 abilities
-	SDL_Window   *m_window;
-	SDL_GLContext m_context;
-	SDL_Event m_event;
-
 	// Init SDL2
 	// SDL_INIT_VIDEO automatically enables SDL2 Events, we can OR SDL_INIT_AUDIO and SDL_INIT_TIMER if needed in the future
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -146,21 +146,19 @@ int main(int argc, char **argv)
 
 	glViewport(0, 0, 160, 144);
 	glClearColor(0.f, 0.f, 0.f, 0.f);
-	glClear(GL_COLOR_BUFFER_BIT);*/
+	glClear(GL_COLOR_BUFFER_BIT);
 
 	while (true)
 	{
 		prev_pc = PC;
 
-		/*while (SDL_PollEvent(&m_event))
+		while (SDL_PollEvent(&m_event))
 		{
 			if (m_event.type == SDL_QUIT)
 			{
 				goto exit;
 			}
-		}*/
-
-		//SDL_GL_SwapWindow(m_window);
+		}
 
 		if ((m_breakpoint != 0xFFFFFFFF) && PC == m_breakpoint)
 		{
