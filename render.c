@@ -30,7 +30,7 @@ glRasterPos2f(-1, 1);
 
 void m_render_sc()
 {
-	/*{
+	{
 		int i;
 		for(i = 0; i < (144 / 8) * (160 / 8); i++) {
 			int x;
@@ -43,7 +43,7 @@ void m_render_sc()
 				}
 			}
 		}
-	}*/
+	}
 
 	int mapOffset = (gpu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1c00 : 0x1800;
 	mapOffset += (((gpu.m_scanline + gpu.m_verticalscroll) & 255) >> 3) << 5;
@@ -55,10 +55,12 @@ void m_render_sc()
 
 	int pixelOffset = gpu.m_scanline * 160;
 
-	//printf("mapOffset = 0x%04X, lineOffset = 0x%04X, x = 0x%04X, y = 0x%04X, pixelOffset = 0x%04X\n", mapOffset, lineOffset, x, y, pixelOffset);
+	printf("mapOffset = 0x%04X, lineOffset = 0x%04X, x = 0x%04X, y = 0x%04X, pixelOffset = 0x%04X\n", mapOffset, lineOffset, x, y, pixelOffset);
 
 	unsigned char tile = mmu->gb_mmap.vram[mapOffset + lineOffset];
 
+
+	//if (tile != 0) printf("Tile = 0x%02X\n", tile);
 
 	int i;
 	for(i = 0; i < 160; i++) {
