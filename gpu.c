@@ -81,11 +81,14 @@ void m_gpu_step()
 uint8_t tiles[512][8][8];
 
 void updateTile(uint16_t address, uint8_t value) {
+<<<<<<< HEAD
 	if (value != 0)
 	{
 		printf("ADDR: 0x%04X, val: 0x%02X\n", address, mmu_read_byte(address));
 	}
 	
+=======
+>>>>>>> 3b15aa9468e912b1c018e4776289c6be478737d7
 	address &= 0x1ffe;
 
 	uint16_t tile = (address >> 4) & 511;
@@ -94,6 +97,7 @@ void updateTile(uint16_t address, uint8_t value) {
 
 	if (value != 0)
 	{
+<<<<<<< HEAD
 		printf("Tile: 0x%04X, y: 0x%04X\n", tile, y);
 	}
 	
@@ -104,10 +108,18 @@ void updateTile(uint16_t address, uint8_t value) {
 
 	uint8_t bitIndex;
 	
+=======
+		printf("ADDR: 0x%04X, val: 0x%02X, tile: 0x%04X y: 0x%02X\n", address + 0x8000, mmu_read_byte(address + 0x8000), tile, y);
+	}
+
+	uint8_t bitIndex;
+
+>>>>>>> 3b15aa9468e912b1c018e4776289c6be478737d7
 	for(int x = 0; x < 8; x++)
 	{
 		bitIndex = 1 << (7 - x);
 
+<<<<<<< HEAD
 	if (value != 0)
 	{
 		printf("[%02X][y:%X][x:%X][Line:0x%02X] = 0x%X\n", tile, y, x, mmu_read_byte(address + 0x8000), (((mmu_read_byte(address + 0x8000)) & bitIndex) ? 1 : 0) + (((mmu_read_byte(address + 0x8000 + 1)) & bitIndex) ? 2 : 0));
@@ -115,5 +127,8 @@ void updateTile(uint16_t address, uint8_t value) {
 		tiles[tile][x][y] = (((mmu_read_byte(address + 0x8000)) & bitIndex) ? 1 : 0) + (((mmu_read_byte(address + 0x8000 + 1)) & bitIndex) ? 2 : 0);
 	}
 		tiles[tile][x][y] = (((mmu_read_byte(address + 0x8000)) & bitIndex) ? 1 : 0) + (((mmu_read_byte(address + 0x8000 + 1)) & bitIndex) ? 2 : 0);
+=======
+		tiles[tile][x][y] = (((address + 0x8000) & bitIndex) ? 1 : 0) + ((((address + 1) + 0x8000) & bitIndex) ? 2 : 0);
+>>>>>>> 3b15aa9468e912b1c018e4776289c6be478737d7
 	}
 }
