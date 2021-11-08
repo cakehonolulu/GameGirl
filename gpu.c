@@ -81,20 +81,23 @@ void m_gpu_step()
 uint8_t tiles[512][8][8];
 
 void updateTile(uint16_t address, uint8_t value) {
-	if (value != 0)
-	{
-		printf("ADDR: 0x%04X, val: 0x%02X\n", address, value);
-	}
-	
 	address &= 0x1ffe;
 
-	uint16_t tile = (mmu_read_byte(address) >> 4) & 511;
+	uint16_t tile = (address >> 4) & 511;
 
 	uint16_t y = (address >> 1) & 7;
 
-	uint8_t x, bitIndex;
-	for(x = 0; x < 8; x++) {
+	if (value != 0)
+	{
+		printf("ADDR: 0x%04X, val: 0x%02X, tile: 0x%04X y: 0x%02X\n", address + 0x8000, mmu_read_byte(address + 0x8000), tile, y);
+	}
+
+	uint8_t bitIndex;
+
+	for(int x = 0; x < 8; x++)
+	{
 		bitIndex = 1 << (7 - x);
-		tiles[tile][x][y] = ((mmu_read_word(address) & bitIndex) ? 1 : 0) + ((mmu_read_word(address + 1) & bitIndex) ? 2 : 0);
+
+		tiles[tile][x][y] = (((address + 0x8000) & bitIndex) ? 1 : 0) + ((((address + 1) + 0x8000) & bitIndex) ? 2 : 0);
 	}
 }
