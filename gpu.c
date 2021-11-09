@@ -20,7 +20,7 @@ void m_gpu_step()
 
 				if (gpu.m_scanline == 143)
 				{
-					if (m_is_bit_set(mmu_read_byte(0xFF40), 7)) drawFramebuffer();
+					if (gpu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) drawFramebuffer();
 					/*if (ints.m_enabled & INT_VBLANK)
 					{
 						ints.m_flags |= INT_VBLANK;*/
@@ -66,7 +66,7 @@ void m_gpu_step()
 			{
 				gpu.m_stat = M_GPU_HBLANK;
 
-				m_render_sc();
+				if (gpu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_render_sc();
 
 				gpu.m_ticks -= 172;
 			}
