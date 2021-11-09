@@ -178,6 +178,8 @@ uint8_t mmu_read_byte(uint16_t m_addr)
 
 }
 
+int i = 0;
+
 // Safe Option, goes through MMU
 uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
 {
@@ -203,7 +205,17 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
         
         if(m_addr <= 0x97ff)
         {
+            if (i == 7)
+            {
+                uint16_t tile = (m_addr >> 4) & 511;
+                printf("Tile %x\n", tile);
+                i = 0;
+            } else {
+                i++;
+            }
+
             updateTile(m_addr, m_data);
+            
         }
     }
     else if (m_addr >= 0xA000 && 0xBFFF >= m_addr)          // Cartridge RAM (If Exists) [0xA000 - 0xBFFF]
