@@ -31,36 +31,42 @@ glRasterPos2f(-1, 1);
 void m_render_sc()
 {
 	// LCDC ($FF40) Bit 3 - BG Tile Map Display Select -> (1=9C00-9FFF), 0=9800-9BFF)
-	int m_gpu_tilemap = (gpu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1C00 : 0x1800;
-
-	int mapping = (m_gpu_tilemap + ((((gpu.m_scanline + gpu.m_verticalscroll) & 255) >> 3) << 5));
+	uint16_t m_gpu_tilemap = (gpu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1C00 : 0x1800;
 
 
-	if (gpu.m_horitzontalscroll == 0)
-	{
-		//printf("Hi!");
-	}
+	// LCDC ($FF40) Bit 4 - BG & Window Tile Data Select -> (1=8000-8FFF, 0=8800-97FF)
+	uint16_t m_gpu_tileset = (gpu.m_lcdc & GPU_CONTROL_TILESET) ? 0x0000 : 0x0800;
+
+	uint16_t m_gpu_tileaddr = (m_gpu_tilemap + ((((gpu.m_scanline + gpu.m_verticalscroll) & 255) >> 3) << 5));
+
+	uint8_t m_gpu_tilenumber = (uint8_t) (m_gpu_tileaddr >> 8);
+
+	//printf("tile 0x%04X map: 0x%02X\n", m_gpu_tileaddr, m_gpu_tilenumber);
 
 	int lineOffset = (gpu.m_horitzontalscroll >> 3);
 
-	printf("Mapping: 0x%04X\n", ((mapping & 0xFF00) >> 4) + lineOffset);
+	printf("Mapping: 0x%04X\n", m_gpu_tileaddr);
 
 	int x = gpu.m_horitzontalscroll & 7;
 	int y = (gpu.m_scanline + gpu.m_verticalscroll) & 7;
 
 	int pixelOffset = gpu.m_scanline * 160;
 
-	unsigned short tile = (unsigned short)mmu->gb_mmap.vram[mapping + lineOffset];
+
+	unsigned short tile = (unsigned short)mmu->gb_mmap.vram[((m_gpu_tileaddr & 0xFF00) >> 4) + lineOffset];
+
 
 	//printf("Tile: %02X\n", tile);
+
+	
 
 	int i;
 	
 	for(i = 0; i < 160; i++)
 	{
-		framebuffer[pixelOffset].r = palette[tiles[tile][x][y]].r;
-		framebuffer[pixelOffset].g = palette[tiles[tile][x][y]].g;
-		framebuffer[pixelOffset].b = palette[tiles[tile][x][y]].b;
+		framebuffer[pixelOffset].r = palette[tiles[m_gpu_tilenumber][x][y]].r;
+		framebuffer[pixelOffset].g = palette[tiles[m_gpu_tilenumber][x][y]].g;
+		framebuffer[pixelOffset].b = palette[tiles[m_gpu_tilenumber][x][y]].b;
 
 		pixelOffset++;
 
@@ -70,7 +76,9 @@ void m_render_sc()
 		{
 			x = 0;
 			lineOffset = (lineOffset + 1) & 31;
-			tile = mmu->gb_mmap.vram[mapping + lineOffset];
+			
+
+			tile = (uint16_t) mmu->gb_mmap.vram[((m_gpu_tileaddr & 0xFF00) >> 4) + lineOffset];
 		}
 	}
 }
