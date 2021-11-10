@@ -86,9 +86,10 @@ void updateTile(uint16_t address, uint8_t value) {
 		printf("ADDR: 0x%04X, val: 0x%02X\n", address, mmu_read_byte(address));
 	}*/
 	
+
 	address &= 0x1ffe;
 
-	uint16_t tile = (mmu_read_byte(address) >> 4) & 511;
+	uint16_t tile = (address >> 4) & 511;
 
 	uint16_t y = (address >> 1) & 7;
 
@@ -114,7 +115,7 @@ void updateTile(uint16_t address, uint8_t value) {
 		{
 			uint8_t dsp;
 
-			if ((((mmu_read_byte(address + 0x8000)) & bitIndex) ? 1 : 0) + (((mmu_read_byte(address + 0x8000 + 1)) & bitIndex) ? 2 : 0) == 0x1)
+			if ((((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0) == 0x1)
 			{
 				dsp = 'O';
 			} else 
@@ -128,6 +129,11 @@ void updateTile(uint16_t address, uint8_t value) {
 		}
 	}
 
-		tiles[tile][x][y] = ((mmu_read_word(address) & bitIndex) ? 1 : 0) + ((mmu_read_word(address + 1) & bitIndex) ? 2 : 0);
+		tiles[tile][x][y] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
+
+		if (tile == 0x0019)
+		{
+			printf("tile: 0x%02X, x: 0x%02X, y: 0x%02X -> 0x%04X\n", tile, x, y, (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0));
+		}
 	}
 }

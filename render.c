@@ -41,7 +41,7 @@ void m_render_sc()
 
 	int pixelOffset = gpu.m_scanline * 160;
 
-	unsigned char tile = mmu->gb_mmap.vram[(mapping) + lineOffset];
+	unsigned char tile = 0x0019;
 
 	int i;
 	for(i = 0; i < 160; i++) {
