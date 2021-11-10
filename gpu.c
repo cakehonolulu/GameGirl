@@ -44,8 +44,8 @@ void m_gpu_step()
 
 				if (gpu.m_scanline > 153)
 				{
-					gpu.m_stat = M_GPU_OAM;
 					gpu.m_scanline = 0;
+					gpu.m_stat = M_GPU_OAM;
 				}
 
 				gpu.m_ticks -= 456;
@@ -133,7 +133,7 @@ void updateTile(uint16_t address, uint8_t value) {
 
 		if (tile == 0x0019)
 		{
-			printf("tile: 0x%02X, x: 0x%02X, y: 0x%02X -> 0x%04X\n", tile, x, y, (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0));
+			printf("addr: 0x%04X, tile: 0x%02X, x: 0x%02X, y: 0x%02X -> 0x%04X\n", address, tile, x, y, (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0));
 		}
 	}
 }

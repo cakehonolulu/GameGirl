@@ -30,31 +30,47 @@ glRasterPos2f(-1, 1);
 
 void m_render_sc()
 {
-	int mapOffset = (gpu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1C00 : 0x1800;
+	// LCDC ($FF40) Bit 3 - BG Tile Map Display Select -> (1=9C00-9FFF), 0=9800-9BFF)
+	int m_gpu_tilemap = (gpu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1C00 : 0x1800;
 
-	int mapping = (mapOffset + ((((gpu.m_scanline + gpu.m_verticalscroll) & 255) >> 3) << 5));
+	int mapping = (m_gpu_tilemap + ((((gpu.m_scanline + gpu.m_verticalscroll) & 255) >> 3) << 5));
 
-	int lineOffset = gpu.m_horitzontalscroll >> 3;
+
+	if (gpu.m_horitzontalscroll == 0)
+	{
+		//printf("Hi!");
+	}
+
+	int lineOffset = (gpu.m_horitzontalscroll >> 3);
+
+	printf("Mapping: 0x%04X\n", ((mapping & 0xFF00) >> 4) + lineOffset);
 
 	int x = gpu.m_horitzontalscroll & 7;
 	int y = (gpu.m_scanline + gpu.m_verticalscroll) & 7;
 
 	int pixelOffset = gpu.m_scanline * 160;
 
-	unsigned char tile = 0x0019;
+	unsigned short tile = (unsigned short)mmu->gb_mmap.vram[((mapping & 0xFF00) >> 4) + lineOffset];
+
+	//printf("Tile: %02X\n", tile);
 
 	int i;
-	for(i = 0; i < 160; i++) {
+	
+	for(i = 0; i < 160; i++)
+	{
 		framebuffer[pixelOffset].r = palette[tiles[tile][x][y]].r;
 		framebuffer[pixelOffset].g = palette[tiles[tile][x][y]].g;
 		framebuffer[pixelOffset].b = palette[tiles[tile][x][y]].b;
+
 		pixelOffset++;
 
 		x++;
-		if(x == 8) {
+
+		if(x == 8)
+		{
 			x = 0;
 			lineOffset = (lineOffset + 1) & 31;
-			tile = mmu->gb_mmap.vram[mapping + lineOffset];
+			tile = mmu->gb_mmap.vram[((mapping & 0xFF00) >> 4) + lineOffset];
 		}
 	}
 }
