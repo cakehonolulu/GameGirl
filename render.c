@@ -50,7 +50,7 @@ void m_render_sc()
 
 	int pixelOffset = gpu.m_scanline * 160;
 
-	unsigned short tile = (unsigned short)mmu->gb_mmap.vram[((mapping & 0xFF00) >> 4) + lineOffset];
+	unsigned short tile = (unsigned short)mmu->gb_mmap.vram[mapping + lineOffset];
 
 	//printf("Tile: %02X\n", tile);
 
@@ -70,7 +70,7 @@ void m_render_sc()
 		{
 			x = 0;
 			lineOffset = (lineOffset + 1) & 31;
-			tile = mmu->gb_mmap.vram[((mapping & 0xFF00) >> 4) + lineOffset];
+			tile = mmu->gb_mmap.vram[mapping + lineOffset];
 		}
 	}
 }
