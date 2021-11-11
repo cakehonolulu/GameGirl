@@ -355,3 +355,15 @@ void m_init_address_space()
 
     memset(framebuffer, 255, sizeof(framebuffer));
 }
+
+void m_load_rom(unsigned char *m_rom)
+{
+    memcpy((void*)mmu->gb_mmap.cart_hdr + 4, (const void*)m_rom, 0x50);
+
+    printf("ROM Dump:\n");
+    for (size_t i = 0; i < 0x50; i++)
+    {
+        printf("0x%x ", mmu->gb_mmap.cart_hdr[i]);
+    }
+    printf("\n");
+}

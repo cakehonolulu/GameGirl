@@ -30,9 +30,10 @@ int main(int argc, char **argv)
 
 	// Declare a char pointer with the name of the filename to load
 	[[maybe_unused]] const char *m_bootromname = NULL;
-	[[maybe_unused]] const char *m_programname = NULL;
-
 	[[maybe_unused]] bool m_foundbootrom = false;
+
+
+	[[maybe_unused]] const char *m_programname = NULL;
 	[[maybe_unused]] bool m_foundprogram = false;
 
 	uint32_t m_breakpoint = 0xFFFFFFFF;
@@ -45,14 +46,21 @@ int main(int argc, char **argv)
 			{
 				m_programname = argv[i];
 				m_foundprogram = true;
-			} else if (strstr(argv[i], ".bin") != NULL) {
+				printf("ROM File: %s\n", m_programname);
+			}
+			else
+			if (strstr(argv[i], ".bin") != NULL)
+			{
 				m_bootromname = argv[i];
 				m_foundbootrom = true;
+				printf("BootROM File: %s\n", m_bootromname);
 			}
-		} else {
+		}
+		else
+		{
 			if (m_foundbootrom == true)
 			{
-				if (argc > 2)
+				if (argc > 2 && m_foundprogram != true)
 				{
 					uint32_t conv = strtol(argv[2], NULL, 0);
 
@@ -60,46 +68,23 @@ int main(int argc, char **argv)
 
 					printf("0x%02X\n", m_breakpoint);
 				}
-			} else {
+				else
+				if (argc > 3 && m_foundprogram == true)
+				{
+					uint32_t conv = strtol(argv[3], NULL, 0);
+
+					m_breakpoint = conv;
+
+					printf("0x%02X\n", m_breakpoint);
+				}
+			}
+			else
+			{
 				printf("Unknown argument: %s\n", argv[i]);
 				exit(EXIT_FAILURE);
 			}
 		}
 	}
-
-	FILE *m_bootrom;
-
-	m_bootrom = fopen(m_bootromname, "rb");
-
-	// Check if the file has been opened
-	if(m_bootrom == NULL)
-	{
-		printf("Could not open the BootROM file, exiting...\n");
-		return EXIT_FAILURE;
-	} else {
-		printf("BootROM loaded successfully\n");
-	}
-
-	// Get file size in bytes
-	fseek(m_bootrom, 0, SEEK_END);
-	size_t m_bootromsz = ftell(m_bootrom);
-	fseek(m_bootrom, 0, SEEK_SET);
-
-	// Allocate a buffer for the program
-	unsigned char *m_bootrom_buf;
-	m_bootrom_buf = (unsigned char*) malloc(sizeof(unsigned char) * m_bootromsz);
-
-	// Error out on memory exhaustion
-	if (m_bootrom_buf == NULL)
-	{
-		printf("Couldn't allocate memory, exiting...\n");
-		return EXIT_FAILURE;
-	}
-
-	// Load the file into host memory
-	fread(m_bootrom_buf, sizeof(unsigned char), m_bootromsz, m_bootrom); 
-
-	printf("Program size: %d bytes\n", (unsigned int) m_bootromsz);
 
 	// Init MMU
 	mmu = mmu_init();
@@ -107,8 +92,83 @@ int main(int argc, char **argv)
 	// Init Address Space
 	m_init_address_space();
 
-	// Load Bootrom
-	m_load_bootrom(m_bootrom_buf);
+	if (m_foundbootrom)
+	{
+		FILE *m_bootrom;
+
+		m_bootrom = fopen(m_bootromname, "rb");
+
+		// Check if the file has been opened
+		if(m_bootrom == NULL)
+		{
+			printf("Could not open the BootROM file, exiting...\n");
+			return EXIT_FAILURE;
+		} else {
+			printf("BootROM loaded successfully\n");
+		}
+
+		// Get file size in bytes
+		fseek(m_bootrom, 0, SEEK_END);
+		size_t m_bootromsz = ftell(m_bootrom);
+		fseek(m_bootrom, 0, SEEK_SET);
+
+		// Allocate a buffer for the program
+		unsigned char *m_bootrom_buf;
+		m_bootrom_buf = (unsigned char*) malloc(sizeof(unsigned char) * m_bootromsz);
+
+		// Error out on memory exhaustion
+		if (m_bootrom_buf == NULL)
+		{
+			printf("Couldn't allocate memory, exiting...\n");
+			return EXIT_FAILURE;
+		}
+
+		// Load the file into host memory
+		fread(m_bootrom_buf, sizeof(unsigned char), m_bootromsz, m_bootrom); 
+
+		printf("Program size: %d bytes\n", (unsigned int) m_bootromsz);
+				// Load Bootrom
+		m_load_bootrom(m_bootrom_buf);
+	}
+	
+	if (m_foundprogram)
+	{
+		FILE *m_romfile;
+
+		m_romfile = fopen(m_programname, "rb");
+
+		// Check if the file has been opened
+		if(m_romfile == NULL)
+		{
+			printf("Could not open the ROM File, exiting...\n");
+			return EXIT_FAILURE;
+		} else {
+			printf("ROM loaded successfully\n");
+		}
+
+		// Get file size in bytes
+		fseek(m_romfile, 0, SEEK_END);
+		size_t m_romsz = ftell(m_romfile);
+		fseek(m_romfile, 0, SEEK_SET);
+
+		// Allocate a buffer for the program
+		unsigned char *m_rom_buf;
+		m_rom_buf = (unsigned char*) malloc(sizeof(unsigned char) * m_romsz);
+
+		// Error out on memory exhaustion
+		if (m_rom_buf == NULL)
+		{
+			printf("Couldn't allocate memory, exiting...\n");
+			return EXIT_FAILURE;
+		}
+
+		// Load the file into host memory
+		fread(m_rom_buf, sizeof(unsigned char), m_romsz, m_romfile); 
+
+		printf("ROM size: %d bytes\n", (unsigned int) m_romsz);
+
+		m_load_rom(m_rom_buf);
+	}
 
 	// Initialize Registers
 	m_init_registers();
@@ -169,6 +229,17 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 
+		if (PC == 0x03)
+		{
+			printf("Cart logo info:\n");
+			for (int i = 0; i < 0x50; i++)
+			{
+				printf("0x%02X ", mmu->gb_address_space[0x100 + i]);
+			}
+
+			printf("\n");
+
+		}
 
 		while (SDL_PollEvent(&m_event))
 		{
