@@ -208,7 +208,7 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
             if (i == 7)
             {
                 uint16_t tile = (m_addr >> 4) & 511;
-                printf("Tile %x\n", tile);
+                //printf("Tile %x\n", tile);
                 i = 0;
             } else {
                 i++;

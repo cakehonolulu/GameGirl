@@ -85,6 +85,8 @@ void updateTile(uint16_t address, uint8_t value) {
 	{
 		printf("ADDR: 0x%04X, val: 0x%02X\n", address, mmu_read_byte(address));
 	}*/
+
+	uint16_t prevaddr = address;
 	
 
 	address &= 0x1ffe;
@@ -93,10 +95,20 @@ void updateTile(uint16_t address, uint8_t value) {
 
 	uint16_t y = (address >> 1) & 7;
 
-	/*if (value != 0)
+	// LCDC ($FF40) Bit 3 - BG Tile Map Display Select -> (1=9C00-9FFF), 0=9800-9BFF)
+	uint16_t m_gpu_tilemap = (gpu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1C00 : 0x1800;
+
+
+	// LCDC ($FF40) Bit 4 - BG & Window Tile Data Select -> (1=8000-8FFF, 0=8800-97FF)
+	uint16_t m_gpu_tileset = (gpu.m_lcdc & GPU_CONTROL_TILESET) ? 0x0000 : 0x0800;
+
+
+
+	//tile_addr = ((y / 8) * 32) + (x / 8);
+	if (value != 0)
 	{
-		printf("Tile: 0x%04X, y: 0x%04X\n", tile, y);
-	}*/
+		printf("Tile: 0x%04X, y: 0x%04X addr: 0x%04X tilemapaddr: 0x%04X\n", tile, y, address, m_gpu_tilemap + prevaddr);
+	}
 	
 	/*if (value != 0)
 	{
@@ -115,7 +127,7 @@ void updateTile(uint16_t address, uint8_t value) {
 		{
 			uint8_t dsp;
 
-			if ((((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0) == 0x1)
+			/*if ((((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0) == 0x1)
 			{
 				dsp = 'O';
 			} else 
@@ -125,15 +137,15 @@ void updateTile(uint16_t address, uint8_t value) {
 
 			printf("%c ", dsp);
 
-			if (x == 7) printf("\n");
+			if (x == 7) printf("\n");*/
 		}
 	}
 
 		tiles[tile][x][y] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
 
-		if (tile == 0x0019)
-		{
-			printf("addr: 0x%04X, tile: 0x%02X, x: 0x%02X, y: 0x%02X -> 0x%04X\n", address, tile, x, y, (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0));
-		}
+		//if (tile == 0x0019)
+		//{
+		//	printf("addr: 0x%04X, tile: 0x%02X, x: 0x%02X, y: 0x%02X -> 0x%04X\n", address, tile, x, y, (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0));
+		//}
 	}
 }
