@@ -45,13 +45,18 @@ void m_render_sc()
 
 	int pixelOffset = gpu.m_scanline * 160;
 
-	int8_t tile;
+
+	uint8_t tile;
+
+	uint8_t my = (y + gpu.m_scanline);
+
+	uint16_t tile_row = ((uint8_t)(y/8));
 
 	int i;
 	
 	for(i = 0; i < 160; i++)
 	{
-		tile = mmu->gb_mmap.vram[mapOffset + lineOffset];
+		tile = (uint8_t)mmu->gb_mmap.vram[mapOffset + lineOffset];
 
 		framebuffer[pixelOffset].r = palette[tiles[tile][x][y]].r;
 		framebuffer[pixelOffset].g = palette[tiles[tile][x][y]].g;
@@ -67,7 +72,7 @@ void m_render_sc()
 			lineOffset = (lineOffset + 1) & 31;
 			
 
-			tile = mmu->gb_mmap.vram[mapOffset + lineOffset];
+			tile = (uint8_t)mmu->gb_mmap.vram[mapOffset + lineOffset];
 		}
 	}
 }
