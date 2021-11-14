@@ -214,33 +214,6 @@ int main(int argc, char **argv)
 	{
 		prev_pc = PC;
 
-		if (PC == 0xE0)
-		{
-			FILE *f = fopen("bgmap1.bin", "wb");
-			
-			int x;
-			
-			for(x = 0x9800; x < 0x9BFF; x++)
-			{
-				fprintf(f, "%02x ", mmu_read_byte(x));
-			}
-
-			fclose(f);
-			exit(1);
-		}
-
-		if (PC == 0x03)
-		{
-			printf("Cart logo info:\n");
-			for (int i = 0; i < 0x50; i++)
-			{
-				printf("0x%02X ", mmu->gb_address_space[0x100 + i]);
-			}
-
-			printf("\n");
-
-		}
-
 		while (SDL_PollEvent(&m_event))
 		{
 			if (m_event.type == SDL_QUIT)

@@ -94,11 +94,11 @@ void updateTile(uint16_t address, uint8_t value) {
 	for (int x = 0; x < 8; x++)
 	{
 		bitIndex = 1 << (7 - x);
-		tiles[tile][y][x] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
+		tiles[tile][x][y] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
 
-		//if (tile == 0x0019)
-		//{
-		//	printf("addr: 0x%04X, tile: 0x%02X, x: 0x%02X, y: 0x%02X -> 0x%04X\n", address, tile, x, y, (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0));
-		//}
+		if (tile == 0x0019)
+		{
+			printf("addr: 0x%04X, tile: 0x%02X, x: 0x%02X, y: 0x%02X -> 0x%04X\n", address, tile, x, y, (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0));
+		}
 	}
 }
