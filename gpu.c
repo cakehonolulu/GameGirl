@@ -81,67 +81,20 @@ void m_gpu_step()
 uint8_t tiles[512][8][8];
 
 void updateTile(uint16_t address, uint8_t value) {
-	/*if (value != 0)
-	{
-		printf("ADDR: 0x%04X, val: 0x%02X\n", address, mmu_read_byte(address));
-	}*/
-
-	uint16_t prevaddr = address;
-	
-
-	address &= 0x1ffe;
+	address &= 0x1FFe;
 
 	uint16_t tile = (address >> 4) & 511;
 
 	uint16_t y = (address >> 1) & 7;
 
-	// LCDC ($FF40) Bit 3 - BG Tile Map Display Select -> (1=9C00-9FFF), 0=9800-9BFF)
-	uint16_t m_gpu_tilemap = (gpu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1C00 : 0x1800;
 
-
-	// LCDC ($FF40) Bit 4 - BG & Window Tile Data Select -> (1=8000-8FFF, 0=8800-97FF)
-	uint16_t m_gpu_tileset = (gpu.m_lcdc & GPU_CONTROL_TILESET) ? 0x0000 : 0x0800;
-
-
-
-	//tile_addr = ((y / 8) * 32) + (x / 8);
-	if (value != 0)
-	{
-		printf("Tile: 0x%04X, y: 0x%04X addr: 0x%04X tilemapaddr: 0x%04X\n", tile, y, address, m_gpu_tilemap + prevaddr);
-	}
-	
-	/*if (value != 0)
-	{
-		printf("Addr: 0x%04X -> 0x%02X\n\n", address, mmu_read_byte(address + 0x8000));
-	}*/
 
 	uint8_t bitIndex;
 	
 	for (int x = 0; x < 8; x++)
 	{
 		bitIndex = 1 << (7 - x);
-
-	if (value != 0)
-	{
-		if (x < 8)
-		{
-			uint8_t dsp;
-
-			/*if ((((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0) == 0x1)
-			{
-				dsp = 'O';
-			} else 
-			{
-				dsp = '.';
-			}
-
-			printf("%c ", dsp);
-
-			if (x == 7) printf("\n");*/
-		}
-	}
-
-		tiles[tile][x][y] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
+		tiles[tile][y][x] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
 
 		//if (tile == 0x0019)
 		//{
