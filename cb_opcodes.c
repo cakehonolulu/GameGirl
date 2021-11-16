@@ -296,7 +296,9 @@ void m_rl_c()
 	printf("\033[1;31mRL C\033[1;0m\n");
 #endif
 
-	int isCarry = m_is_bit_set(C, CRRY);
+	uint8_t carry = BIT_CHECK(C, CRRY);
+
+	printf("Is carry: %X\n", carry);
 
 	if (C & 0b1000000)
 	{
@@ -306,7 +308,7 @@ void m_rl_c()
 	}
 
 	C <<= 1;
-	C += isCarry;
+	C += carry;
 	
 	if(C)
 	{
@@ -332,7 +334,7 @@ void m_rl_c()
 */
 void m_bit_7_h()
 {
-	if (!m_is_bit_set(H, ZERO))
+	if (BIT_CHECK(H, ZERO))
 	{
 		FLAG_SET(ZERO);
 	} else {

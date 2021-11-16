@@ -3,6 +3,7 @@
 #include <gamegirl.h>
 #include <mmu.h>
 #include <cycle.h>
+#include <bit/bits.h>
 
 extern struct m_sharp_lr35902_instr_cb {
 	char *m_instr;
