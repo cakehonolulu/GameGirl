@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 		}
 
 
-		if (PC == 0x45)
+		/*if (PC == 0x45)
 		{
 			debug = true;
 			printf("\033[0;34mJust written $19 @ 0x9910\033[0;0m\n");
@@ -257,7 +257,7 @@ int main(int argc, char **argv)
 			fclose(f);
 
 			exit(1);
-		}
+		}*/
 
 		if ((m_breakpoint != 0xFFFFFFFF) && PC == m_breakpoint)
 		{
