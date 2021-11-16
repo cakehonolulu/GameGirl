@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <mmu.h>
+#include <bit/bits.h>
 
 #define GB_INITIAL_PC 0x0000
 
@@ -65,11 +66,8 @@ extern gb_mmu_t *mmu;
 // Declare the Registers
 extern gb_registers_t m_regs;
 
-#define ZERO 0b0111
-#define NGTV 0b0110
-#define HALF 0b0101
-#define CRRY 0b0100
 
+// Register defines with easier naming
 #define A (m_regs.a)
 #define F (m_regs.f)
 #define AF (m_regs.af)
@@ -86,11 +84,17 @@ extern gb_registers_t m_regs;
 #define L (m_regs.l)
 #define HL (m_regs.hl)
 
+// Stack-pointer register
 #define SP (m_regs.sp)
+
+// Program counter register
 #define PC (m_regs.pc)
+
+// Flags register (Most-Significant Nibble of a Byte is only used)
 #define FLAGS (m_regs.flags)
 
-#define FLAG_SET(n) ((FLAGS) |= (1 << n))
-#define FLAG_UNSET(n) ((FLAGS) &= ~(1 << (n)))
+// Flag set-unset routines
+#define FLAG_SET(bit) BIT_SET(FLAGS, bit)
+#define FLAG_UNSET(bit) BIT_UNSET(FLAGS, bit)
 
 #endif
