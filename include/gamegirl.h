@@ -93,8 +93,15 @@ extern gb_registers_t m_regs;
 // Flags register (Most-Significant Nibble of a Byte is only used)
 #define FLAGS (m_regs.flags)
 
-// Flag set-unset routines
+// Flag register flags
+#define ZERO 0b0111 // 7th bit
+#define NGTV 0b0110 // 6th bit
+#define HALF 0b0101 // 5th bit
+#define CRRY 0b0100 // 4th bit
+
+// Flag set-unset-check macros
 #define FLAG_SET(bit) BIT_SET(FLAGS, bit)
 #define FLAG_UNSET(bit) BIT_UNSET(FLAGS, bit)
+#define FLAG_CHECK(bit) BIT_CHECK(FLAGS, bit)
 
 #endif
