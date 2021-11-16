@@ -307,26 +307,9 @@ void m_dec_b()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mDEC B\033[1;0m\n");
 #endif
-	// Check for Half-Carry
-	if(B & 0b00001111)
-	{
-		FLAG_UNSET(HALF);;
-	} else {
-		FLAG_SET(HALF);
-	}
-
-	B--;
 	
-	// Check if B != 0
-	if(B)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}
-
-	// Set Negative (DEC Op)
-	FLAG_SET(NGTV);
+	// Decrement B register by 1
+	DEC(B);
 
 	PC++;
 }
@@ -379,23 +362,8 @@ void m_inc_c()
 */
 void m_dec_c()
 {
-	FLAG_SET(NGTV);
-
-	if (C & 0b00001111)
-	{
-		FLAG_UNSET(HALF);;
-	} else {
-		FLAG_SET(HALF);
-	}
-
-	C--;
-	
-	if (C)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}
+	// Decrement C register by 1
+	DEC(C);
 
 	PC++;
 }
@@ -468,23 +436,8 @@ void m_inc_de()
 */
 void m_dec_d()
 {
-	FLAG_SET(NGTV);
-	
-	if(D & 0b00001111)
-	{
-		FLAG_UNSET(HALF);;
-	} else {
-		FLAG_SET(HALF);
-	}
-
-	D--;
-	
-	if(D)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}
+	// Decrement D register by 1
+	DEC(D);
 
 	PC++;
 }
@@ -586,23 +539,8 @@ void m_ld_a_de()
 */
 void m_dec_e()
 {
-	FLAG_SET(NGTV);
-	
-	if(E & 0b00001111)
-	{
-		FLAG_UNSET(HALF);;
-	} else {
-		FLAG_SET(HALF);
-	}
-
-	E--;
-	
-	if(E)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}
+	// Decrement E register by 1
+	DEC(E);
 
 	PC++;
 }
@@ -832,23 +770,8 @@ void m_dec_a()
 	printf("\033[1;31mDEC A\033[1;0m\n");
 #endif
 
-	FLAG_SET(NGTV);
-	
-	if(A & 0b00001111)
-	{
-		FLAG_UNSET(HALF);;
-	} else {
-		FLAG_SET(HALF);
-	}
-
-	A--;
-	
-	if(A)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}
+	// Decrement A register by 1
+	DEC(A);
 
 	PC++;
 }

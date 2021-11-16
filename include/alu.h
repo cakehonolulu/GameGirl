@@ -20,4 +20,9 @@ enum alu_loglevels
 // Increment a 8-bit register
 uint8_t increment(uint8_t m_register);
 
+// Decrement a 8-bit register
+uint8_t decrement(uint8_t m_register);
+
+// Macros for easier working
 #define INC(reg) (reg = increment(reg))
+#define DEC(reg) (reg = decrement(reg))
