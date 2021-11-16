@@ -288,7 +288,7 @@ void m_nop()
 void m_inc_b()
 {
 	// Increment B by 1
-	m_regs.b = increment(m_regs.b);
+	INC(B);
 
 	// Increment program counter by 1 (Byte)
 	PC++;
