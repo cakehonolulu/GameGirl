@@ -208,6 +208,8 @@ int main(int argc, char **argv)
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	bool debug = false;
+
 	while (true)
 	{
 		prev_pc = PC;
@@ -218,6 +220,20 @@ int main(int argc, char **argv)
 			{
 				goto exit;
 			}
+		}
+
+
+		if (PC == 0x45)
+		{
+			debug = true;
+			printf("\033[0;34mJust written $19 @ 0x9910\033[0;0m\n");
+			printf("\033[0;33m0x9910 -> 0x%02X\033[0;0m\n", mmu->gb_mmap.vram[0x1910]);
+		}
+
+		if (PC >= 0x45 && mmu->gb_mmap.vram[0x1910] != 0x19 && debug == true)
+		{
+			printf("\033[0;32mPC: 0x%02X -> 0x9910 now reads: 0x%02X\033[0;0m\n", PC, mmu->gb_mmap.vram[0x1910]);
+			//exit(1);
 		}
 
 		if (PC == 0xE0)
