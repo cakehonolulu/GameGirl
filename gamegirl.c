@@ -208,8 +208,6 @@ int main(int argc, char **argv)
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	mmu_write_byte(0x9800, 0x19);
-
 	while (true)
 	{
 		prev_pc = PC;
@@ -220,6 +218,29 @@ int main(int argc, char **argv)
 			{
 				goto exit;
 			}
+		}
+
+		if (PC == 0xE0)
+		{
+			FILE *f = fopen("bgmap1.bin", "wb");
+			
+			int x;
+			
+			for(x = 0x9800; x < 0x9BFF; x++)
+			{
+				fprintf(f, "%02x ", mmu_read_byte(x));
+			}
+			fclose(f);
+
+			f = fopen("tiledata.bin", "wb");
+			
+			for(x = 0x8190; x < 0x8200; x++)
+			{
+				fprintf(f, "%02x ", mmu_read_byte(x));
+			}
+			fclose(f);
+
+			exit(1);
 		}
 
 		if ((m_breakpoint != 0xFFFFFFFF) && PC == m_breakpoint)
