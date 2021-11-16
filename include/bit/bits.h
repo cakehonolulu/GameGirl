@@ -3,8 +3,11 @@
 /*
 	Intended use for byte-sized variables (uint8_t)
 */
-// Sets [to], [bit] number to 1
-#define BIT_SET(to, bit) ((to) |= (1 << bit))
+// Sets [in]'s [bit] to 1
+#define BIT_SET(in, bit) ((in) |= (1 << bit))
 
-// Unsets [to], [bit] number to 1
-#define BIT_UNSET(to, bit) ((to) &= ~(1 << (bit)))
+// Unsets [in]'s [bit]
+#define BIT_UNSET(in, bit) ((in) &= ~(1 << (bit)))
+
+// Checks [in]'s bit state
+#define BIT_CHECK(in, bit) ((in & (1 << bit)))
