@@ -11,13 +11,6 @@
 // Register increment (Lone-pair-register exclusive)
 uint8_t increment(uint8_t m_register)
 {
-	// Check for undefined behaviour
-	if (m_register == NULL)
-	{
-		alu_error("Detected an undefined register!");
-		return 1;
-	}
-
 	/*
 		Check if we need to enable half-carry bit
 		Mask the lower nibble of the register and
@@ -31,7 +24,7 @@ uint8_t increment(uint8_t m_register)
 	else
 	{
 		// Clear the Half-Carry bit
-		FLAG_UNSET(HALH);
+		FLAG_UNSET(HALF);
 	}
 
 	// Increment the register value
@@ -51,4 +44,6 @@ uint8_t increment(uint8_t m_register)
 
 	// Finally, clear the negative flag as we're dealing with increments
 	FLAG_UNSET(NGTV);
+
+	return m_register;
 }
