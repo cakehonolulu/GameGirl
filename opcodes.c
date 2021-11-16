@@ -853,8 +853,11 @@ void m_ld_hlminus_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL-), A\033[1;0m\n");
 #endif
-	mmu_write_word(HL, A);
-	HL--;
+
+	// TODO: Revise this!
+	m_regs.hl--;
+	mmu_write_word(m_regs.hl, A);
+
 	PC += 1;
 }
 
