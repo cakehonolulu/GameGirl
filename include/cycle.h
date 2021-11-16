@@ -1,8 +1,8 @@
 #ifndef CYCLE_H
 #define CYCLE_H
 
-#include "gamegirl.h"
-#include "mmu.h"
+#include <gamegirl.h>
+#include <mmu.h>
 
 void m_init_registers();
 uint8_t m_fetch();

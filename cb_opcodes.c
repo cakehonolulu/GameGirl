@@ -1,4 +1,4 @@
-#include "include/cb_opcodes.h"
+#include <cb_opcodes.h>
 
 const struct m_sharp_lr35902_instr_cb m_gb_instr_cb[256] = {
 	{NULL, NULL},							// 0x00

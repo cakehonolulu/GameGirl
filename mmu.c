@@ -1,7 +1,7 @@
-#include "include/mmu.h"
-#include "include/gamegirl.h"
-#include "include/gpu.h"
-#include "include/int.h"
+#include <mmu.h>
+#include <gamegirl.h>
+#include <gpu.h>
+#include <int.h>
 #include <limits.h>
 
 gb_mmu_t *mmu_init()

@@ -1,6 +1,6 @@
-#include "include/render.h"
-#include "include/gpu.h"
-#include "include/mmu.h"
+#include <render.h>
+#include <gpu.h>
+#include <mmu.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/gl.h>

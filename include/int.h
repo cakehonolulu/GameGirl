@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "mmu.h"
+#include <mmu.h>
 
 #define INT_VBLANK	(1 << 0)
 #define INT_LCD		(1 << 1)

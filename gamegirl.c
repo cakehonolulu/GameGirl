@@ -1,11 +1,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/gl.h>
-#include "include/gamegirl.h"
-#include "include/mmu.h"
-#include "include/cycle.h"
-#include "include/opcodes.h"
-#include "include/int.h"
+#include <gamegirl.h>
+#include <mmu.h>
+#include <cycle.h>
+#include <opcodes.h>
+#include <int.h>
 
 // Init MMU
 gb_mmu_t *mmu;

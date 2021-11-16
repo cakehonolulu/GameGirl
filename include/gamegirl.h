@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "mmu.h"
+#include <mmu.h>
 
 #define GB_INITIAL_PC 0x0000
 
