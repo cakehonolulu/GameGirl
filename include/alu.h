@@ -16,3 +16,8 @@ enum alu_loglevels
 
 // ALU Error Message
 #define alu_error(msg) alu_message(ERROR, msg)
+
+// Increment a 8-bit register
+uint8_t increment(uint8_t m_register);
+
+#define INC(reg) (reg = increment(reg))
