@@ -363,23 +363,8 @@ void m_inc_c()
 	printf("\033[1;31mINC C\033[1;0m\n");
 #endif
 
-	if ((C & 0x0f) == 0x0f)
-	{
-		FLAG_SET(HALF);
-	} else {
-		FLAG_UNSET(HALF);;
-	}
-
-	C++;
-	
-	if (C)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}
-
-	FLAG_UNSET(NGTV);
+	// Increment C by 1
+	INC(C);
 
 	PC += 1;
 }
@@ -739,23 +724,8 @@ void m_inc_hl()
 */
 void m_inc_h()
 {
-	FLAG_UNSET(NGTV);
-	
-	if ((H & 0b00001111) == 0b00001111)
-	{
-		FLAG_SET(HALF);
-	} else {
-		FLAG_UNSET(HALF);;
-	}
-
-	H++;
-	
-	if(H)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}	
+	// Increment H by 1
+	INC(H);
 
 	PC++;
 }
