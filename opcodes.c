@@ -287,24 +287,10 @@ void m_nop()
 */
 void m_inc_b()
 {
-	FLAG_UNSET(NGTV);
-	
-	if ((B & 0b00001111) == 0b00001111)
-	{
-		FLAG_SET(HALF);
-	} else {
-		FLAG_UNSET(HALF);;
-	}
+	// Increment B by 1
+	m_regs.b = increment(m_regs.b);
 
-	B++;
-	
-	if(B)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}	
-
+	// Increment program counter by 1 (Byte)
 	PC++;
 }
 
