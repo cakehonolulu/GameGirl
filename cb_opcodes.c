@@ -334,11 +334,11 @@ void m_rl_c()
 */
 void m_bit_7_h()
 {
-	if (BIT_CHECK(H, ZERO))
+	if (ZERO && m_regs.h)
 	{
-		FLAG_SET(ZERO);
-	} else {
 		FLAG_UNSET(ZERO);
+	} else {
+		FLAG_SET(ZERO);
 	}
 
 	FLAG_UNSET(NGTV);
