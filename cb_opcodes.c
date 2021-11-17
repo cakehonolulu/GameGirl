@@ -296,9 +296,7 @@ void m_rl_c()
 	printf("\033[1;31mRL C\033[1;0m\n");
 #endif
 
-	uint8_t carry = BIT_CHECK(C, CRRY);
-
-	printf("Is carry: %X\n", carry);
+	uint8_t carry = FLAG_CHECK(CRRY) ? 1 : 0;
 
 	if (C & 0b1000000)
 	{
@@ -317,8 +315,7 @@ void m_rl_c()
 		FLAG_SET(ZERO);
 	}
 	
-	FLAG_UNSET(NGTV);
-	FLAG_UNSET(HALF);;
+	FLAG_UNSET(NGTV | HALF);
 	
 	PC += 2;
 }
