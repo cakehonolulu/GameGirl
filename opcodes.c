@@ -473,7 +473,8 @@ void m_rla()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mRLA\033[1;0m\n");
 #endif
-	int isCarry = m_is_bit_set(FLAGS, C);
+
+	uint8_t carry = FLAG_CHECK(CRRY) ? 1 : 0;
 
 	if (A & 0b1000000)
 	{
@@ -483,16 +484,10 @@ void m_rla()
 	}
 
 	A <<= 1;
-	A += isCarry;
-	
-	if(!A)
-	{
-		FLAG_UNSET(ZERO);
-	} else {
-		FLAG_SET(ZERO);
-	}
+	A += carry;
 	
 	FLAG_UNSET(NGTV);
+	FLAG_UNSET(ZERO);
 	FLAG_UNSET(HALF);;
 	
 	PC += 1;
