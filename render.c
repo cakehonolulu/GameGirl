@@ -16,15 +16,13 @@ const struct rgb palette[4] = {
 };
 
 
-void drawFramebuffer(void) {
-	//framebuffer[50 * 160 + 50].r = 255;
-	//framebuffer[50 * 160 + 50].g = 255;
-	//framebuffer[50 * 160 + 50].b = 255;
-glClear(GL_COLOR_BUFFER_BIT);
-glRasterPos2f(-1, 1);
-	glPixelZoom(1, -1);
+void drawFramebuffer()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glRasterPos2f(-1, 1);
+	glPixelZoom(2, -2);
 	glDrawPixels(160, 144, GL_RGB, GL_UNSIGNED_BYTE, framebuffer);
-		SDL_GL_SwapWindow(m_window);
+	SDL_GL_SwapWindow(m_window);
 
 }
 
@@ -48,14 +46,17 @@ void m_render_sc()
 	//if (tile != 0) printf("Tile = 0x%02X\n", tile);
 
 	int i;
-	for(i = 0; i < 160; i++) {
+	for(i = 0; i < 160; i++)
+	{
 		framebuffer[pixelOffset].r = palette[tiles[tile][x][y]].r;
 		framebuffer[pixelOffset].g = palette[tiles[tile][x][y]].g;
 		framebuffer[pixelOffset].b = palette[tiles[tile][x][y]].b;
 		pixelOffset++;
 
 		x++;
-		if(x == 8) {
+		
+		if(x == 8)
+		{
 			x = 0;
 			lineOffset = (lineOffset + 1) & 31;
 			tile = mmu->gb_mmap.vram[mapOffset + lineOffset];

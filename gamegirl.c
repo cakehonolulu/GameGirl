@@ -193,7 +193,7 @@ int main(int argc, char **argv)
 
 	// Create a 160 x 144 (px) window
 	m_window = SDL_CreateWindow("GameGirl (SDL2)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-							  160, 144, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+							  320, 288, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
 	// Check if Window could be crafted
 	if (m_window == NULL)
@@ -204,7 +204,7 @@ int main(int argc, char **argv)
 
     m_context = SDL_GL_CreateContext(m_window);
 
-	glViewport(0, 0, 160, 144);
+	glViewport(0, 0, 320, 288);
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
