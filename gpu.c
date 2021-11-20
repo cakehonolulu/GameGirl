@@ -5,6 +5,22 @@ static uint64_t m_gpu_elapsed_ticks = 0;
 
 m_gpu_t gpu;
 
+void m_gpu_init()
+{
+	gpu.colors[0] = 0xFFFFFFFF;
+    gpu.colors[1] = 0xFFC0C0C0;
+    gpu.colors[2] = 0xFF606060;
+    gpu.colors[3] = 0xFF000000;
+}
+
+void m_gpu_update_palette(uint8_t m_data)
+{
+	gpu.palette[3] = (m_data & 0xc0) >> 6;
+	gpu.palette[2] = (m_data & 0x30) >> 4;
+	gpu.palette[1] = (m_data & 0x0c) >> 2;
+	gpu.palette[0] = (m_data & 0x03);
+}
+
 void m_gpu_step()
 {
 	gpu.m_ticks += m_cpu_ticks - m_gpu_elapsed_ticks;
@@ -78,8 +94,6 @@ void m_gpu_step()
 
 }
 
-uint8_t tiles[512][8][8];
-
 void updateTile(uint16_t address, uint8_t value) {
 /*if (value != 0)
 	{
@@ -108,6 +122,6 @@ void updateTile(uint16_t address, uint8_t value) {
 	{
 		bitIndex = 1 << (7 - x);
 
-		tiles[tile][x][y] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
+		gpu.tileset[tile][x][y] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
 	}
 }

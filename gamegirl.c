@@ -9,13 +9,16 @@
 
 // Init MMU
 gb_mmu_t *mmu;
+
 // Declare the Registers
 gb_registers_t m_regs;
 
-// Declare both the window and Context to use SDL2 abilities
-	SDL_Window   *m_window;
-	SDL_GLContext m_context;
-	SDL_Event m_event;
+// Declare both, Window and Renderer, to be used by SDL2
+SDL_Window   *m_window;
+SDL_Renderer *m_renderer;
+
+// Declare an SDL2 Event Handler
+SDL_Event m_event;
 
 int main(int argc, char **argv)
 {
@@ -188,12 +191,9 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
 	}
 
-	SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
-	SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
-
 	// Create a 160 x 144 (px) window
 	m_window = SDL_CreateWindow("GameGirl (SDL2)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-							  320, 288, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+							  320, 288, SDL_WINDOW_SHOWN);
 
 	// Check if Window could be crafted
 	if (m_window == NULL)
@@ -202,13 +202,12 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    m_context = SDL_GL_CreateContext(m_window);
+    m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 
-	glViewport(0, 0, 320, 288);
-	glClearColor(0.f, 0.f, 0.f, 0.f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
+    SDL_RenderSetScale(m_renderer, 2, 2);
 	bool debug = false;
+
+	m_gpu_init();
 
 	while (true)
 	{

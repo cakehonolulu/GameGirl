@@ -32,15 +32,15 @@ typedef struct gpu_t
 	uint8_t m_horitzontalscroll;	// X coordinate (Horitzontal, 160px-wide) [$FF43]
 	uint8_t m_scanline;				// Current scanline (DMG-01 imitates a CRT monitor) [$FF44]
 	uint8_t m_palette;				// Color Palette [$FF47]
+
+	uint32_t colors[4];
+	uint8_t palette[4];
+
+	uint8_t tileset[0x200][8][8];
+
+    uint32_t framebuffer[M_DMG01_COLS][M_DMG01_ROWS];
+
 	uint64_t m_ticks;				// Current PPU Ticks
 } m_gpu_t;
 
 extern m_gpu_t gpu;
-
-extern uint8_t tiles[512][8][8];
-
-struct rgb {
-	unsigned char r, g, b;
-} extern framebuffer[160 * 144];
-
-extern const struct rgb palette[4];

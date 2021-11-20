@@ -268,6 +268,7 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF47)
     {
+        m_gpu_update_palette(m_data);
         return gpu.m_palette = m_data; // write only
     }
     else if (m_addr == 0xFF48)
@@ -350,10 +351,6 @@ void m_init_address_space()
 
     // Clear OAM
     memset(mmu->gb_mmap.oam, 0, sizeof(mmu->gb_mmap.oam));
-
-    memset(tiles, 0, sizeof(tiles));
-
-    memset(framebuffer, 255, sizeof(framebuffer));
 }
 
 void m_load_rom(unsigned char *m_rom)
