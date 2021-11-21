@@ -81,3 +81,39 @@ uint8_t decrement(uint8_t m_register)
 	
 	return m_register;
 }
+
+uint8_t addition(uint8_t *m_register, uint8_t m_value)
+{
+	uint32_t m_result = *m_register + m_value;
+
+	if (m_result & 0b11110000)
+	{
+		FLAG_SET(CRRY);
+	}
+	else
+	{
+		FLAG_UNSET(CRRY);
+	}
+
+	*m_register = (uint8_t) (m_result & 0xFF);
+
+	if (*m_register)
+	{
+		FLAG_UNSET(ZERO);
+	}
+	else
+	{
+		FLAG_SET(ZERO);
+	}
+
+	if (((*m_register & 0x0F) + (m_value & 0x0F)) > 0x0F)
+	{
+		FLAG_SET(HALF);
+	}
+	else
+	{
+		FLAG_UNSET(HALF);
+	}
+
+	FLAG_UNSET(NGTV);
+}
