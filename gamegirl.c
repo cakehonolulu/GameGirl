@@ -31,19 +31,25 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	// Declare a char pointer with the name of the filename to load
+	// Init MMU
+	mmu = mmu_init();
+
+	// Init Address Space
+	m_init_address_space();
+
+	// Declare a char pointer with the names of the filenames to load
 	[[maybe_unused]] const char *m_bootromname = NULL;
-	[[maybe_unused]] bool m_foundbootrom = false;
-
-
 	[[maybe_unused]] const char *m_programname = NULL;
+
+	// Declare booleans to check if we found the programs
+	[[maybe_unused]] bool m_foundbootrom = false;
 	[[maybe_unused]] bool m_foundprogram = false;
 
 	uint32_t m_breakpoint = 0xFFFFFFFF;
 
 	for (int i = 1; i < argc; i++)
 	{
-		if (m_foundbootrom != true)
+		if (m_foundbootrom != true || m_foundprogram != true)
 		{
 			if ((strstr(argv[i], ".gb") != NULL) || (strstr(argv[i], ".rom") != NULL))
 			{
@@ -63,7 +69,7 @@ int main(int argc, char **argv)
 		{
 			if (m_foundbootrom == true)
 			{
-				if (argc > 2 && m_foundprogram != true)
+				if (argc < 3 && m_foundprogram != true)
 				{
 					uint32_t conv = strtol(argv[2], NULL, 0);
 
@@ -72,9 +78,21 @@ int main(int argc, char **argv)
 					printf("0x%02X\n", m_breakpoint);
 				}
 				else
-				if (argc > 3 && m_foundprogram == true)
+				if (argc < 4 && m_foundprogram == true)
 				{
 					uint32_t conv = strtol(argv[3], NULL, 0);
+
+					m_breakpoint = conv;
+
+					printf("0x%02X\n", m_breakpoint);
+				}
+			}
+			else
+			if (m_foundbootrom != true && m_foundprogram == true)
+			{
+				if (argc < 3 && m_foundbootrom != true)
+				{
+					uint32_t conv = strtol(argv[2], NULL, 0);
 
 					m_breakpoint = conv;
 
@@ -88,12 +106,6 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-
-	// Init MMU
-	mmu = mmu_init();
-
-	// Init Address Space
-	m_init_address_space();
 
 	if (m_foundbootrom)
 	{
@@ -129,8 +141,9 @@ int main(int argc, char **argv)
 		// Load the file into host memory
 		fread(m_bootrom_buf, sizeof(unsigned char), m_bootromsz, m_bootrom); 
 
-		printf("Program size: %d bytes\n", (unsigned int) m_bootromsz);
-				// Load Bootrom
+		printf("BootROM Size: %d bytes\n", (unsigned int) m_bootromsz);
+		
+		// Load Bootrom
 		m_load_bootrom(m_bootrom_buf);
 	}
 	
@@ -205,7 +218,6 @@ int main(int argc, char **argv)
     m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 
     SDL_RenderSetScale(m_renderer, 2, 2);
-	bool debug = false;
 
 	m_gpu_init();
 
