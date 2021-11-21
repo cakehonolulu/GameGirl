@@ -122,7 +122,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{"LD (HL), A", 0, m_ld_hl_a},              // 0x77
-	{NULL, 0, NULL},                           // 0x00
+	{"LD A, B", 0, m_ld_a_b},				   // 0x78
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{"LD A, E", 0, m_ld_a_e},                  // 0x7B
@@ -851,6 +851,20 @@ void m_ld_hl_a()
 #endif
 	mmu_write_byte(HL, A);
 	PC += 1;
+}
+
+/*
+	LD A, B
+	Opcode: 0x78
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Load the contents of register B into register A.
+*/
+void m_ld_a_b()
+{
+	A = B;
+	PC++;
 }
 
 /*

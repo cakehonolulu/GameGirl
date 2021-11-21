@@ -104,6 +104,9 @@ void m_ld_h_a();
 // 0x77
 void m_ld_hl_a();
 
+// 0x78
+void m_ld_a_b();
+
 // 0x7B
 void m_ld_a_e();
 
