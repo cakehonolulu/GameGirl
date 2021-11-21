@@ -116,6 +116,9 @@ void m_ld_a_h();
 // 0x7D
 void m_ld_a_l();
 
+// 0x86
+void m_ld_a_phl();
+
 // 0x90
 void m_sub_b();
 

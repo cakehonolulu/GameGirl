@@ -136,7 +136,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{"LD A, (HL)", 0, m_ld_a_phl},			   // 0x86
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -910,6 +910,20 @@ void m_ld_a_h()
 void m_ld_a_l()
 {
 	A = L;
+	PC++;
+}
+
+/*
+	ADD A, (HL)
+	Opcode: 0x86
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Add the contents of memory specified by register pair HL to the contents of register A, and store the results in register A.
+*/
+void m_ld_a_phl()
+{
+	addition(&A, mmu_read_byte(HL));
 	PC++;
 }
 
