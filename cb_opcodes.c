@@ -331,7 +331,7 @@ void m_rl_c()
 */
 void m_bit_7_h()
 {
-	if (ZERO && m_regs.h)
+	if (BIT_CHECK(H, 7))
 	{
 		FLAG_UNSET(ZERO);
 	} else {
@@ -341,6 +341,7 @@ void m_bit_7_h()
 	FLAG_UNSET(NGTV);
 
 	FLAG_SET(HALF);
+
 #ifdef OPCODE_DEBUG
 	printf("Flags: 0x%02X\n", FLAGS);
 #endif
