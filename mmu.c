@@ -355,12 +355,13 @@ void m_init_address_space()
 
 void m_load_rom(unsigned char *m_rom)
 {
-    memcpy((void*)mmu->gb_mmap.cart_hdr + 4, (const void*)m_rom, 0x50);
+    memcpy((void*)mmu->gb_mmap.cart + 0x100, (const void*)m_rom, 0x35);
 
     printf("ROM Dump:\n");
-    for (size_t i = 0; i < 0x50; i++)
+
+    for (size_t i = 0x104; i < 0x135; i++)
     {
-        printf("0x%x ", mmu->gb_mmap.cart_hdr[i]);
+        printf("0x%x ", mmu->gb_mmap.cart[i]);
     }
     printf("\n");
 }
