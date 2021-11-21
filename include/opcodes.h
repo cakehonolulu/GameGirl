@@ -110,6 +110,9 @@ void m_ld_a_e();
 // 0x7C
 void m_ld_a_h();
 
+// 0x7D
+void m_ld_a_l();
+
 // 0x90
 void m_sub_b();
 
