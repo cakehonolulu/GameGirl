@@ -10,6 +10,29 @@ extern SDL_Renderer *m_renderer;
 
 void drawFramebuffer()
 {
+	printf("2D-Array\n"); 
+	uint32_t m_framebuffer[144 * 160];
+
+	int i, k = 0;
+
+	for(i=0;i<160;i++) 
+	{ 
+		for(int j=0;j<144;j++) 
+		{ 
+			m_framebuffer[k] = gpu.framebuffer[i][j]; 
+			k++; 
+		} 
+		printf("\n"); 
+	}
+
+		printf("1D-Array\n"); 
+	for(i=0;i<(144 * 160);i++) 
+		printf("%d ",m_framebuffer[i]); 
+	
+
+	exit(1);
+
+
 	int x, y;
 	for (y = 0; y < 144; y++)
 	{
