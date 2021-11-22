@@ -16,6 +16,7 @@ gb_registers_t m_regs;
 // Declare both, Window and Renderer, to be used by SDL2
 SDL_Window   *m_window;
 SDL_Renderer *m_renderer;
+SDL_Texture *m_texture;
 
 // Declare an SDL2 Event Handler
 SDL_Event m_event;
@@ -217,8 +218,9 @@ int main(int argc, char **argv)
 
     m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 
-    SDL_RenderSetScale(m_renderer, 2, 2);
-
+	// Setup the texture trick that'll enable us to display emulator output
+	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 160, 144);
+	
 	m_gpu_init();
 
 	while (true)

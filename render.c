@@ -7,44 +7,26 @@
 
 extern SDL_Window   *m_window;
 extern SDL_Renderer *m_renderer;
+extern SDL_Texture *m_texture;
 
 void drawFramebuffer()
 {
-	printf("2D-Array\n"); 
 	uint32_t m_framebuffer[144 * 160];
 
 	int i, k = 0;
 
-	for(i=0;i<160;i++) 
+	for(i = 0; i < 160; i++) 
 	{ 
-		for(int j=0;j<144;j++) 
+		for (int j = 0;j < 144; j++) 
 		{ 
-			m_framebuffer[k] = gpu.framebuffer[i][j]; 
+			m_framebuffer[k] = gpu.framebuffer[j][i]; 
 			k++; 
-		} 
-		printf("\n"); 
-	}
-
-		printf("1D-Array\n"); 
-	for(i=0;i<(144 * 160);i++) 
-		printf("%d ",m_framebuffer[i]); 
-	
-
-	exit(1);
-
-
-	int x, y;
-	for (y = 0; y < 144; y++)
-	{
-		for (x = 0; x < 160; x++)
-		{
-			int col = gpu.framebuffer[x][y];
-
-			SDL_SetRenderDrawColor(m_renderer, col >> 16, col >> 8, col, 0xff);
-			SDL_RenderDrawPoint(m_renderer, x, y);
 		}
 	}
 
+	SDL_UpdateTexture(m_texture, NULL, m_framebuffer, 144 * sizeof(uint32_t));
+	SDL_RenderClear(m_renderer);
+	SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
 	SDL_RenderPresent(m_renderer);
 }
 
