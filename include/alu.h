@@ -5,7 +5,7 @@ enum alu_loglevels
 {
 	NORMAL = 0,
 	WARNING = 1,
-	ERROR = 2
+	ERR = 2
 };
 
 // Arithmetic-Logic-Unit Special Messaging Macros
