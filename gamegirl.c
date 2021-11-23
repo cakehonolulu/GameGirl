@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 {
 	printf("GameGirl - A C-21 Multiplatform Game Boy Emulator\n");
 
-#ifdef UNIX
+#ifdef __unix__
 	if (argc < 2)
 	{
 		printf("Usage: ./gamegirl [bootrom] [progname]\n");
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 	// Init Address Space
 	m_init_address_space();
 
-#ifdef UNIX
+#ifdef __unix__
 	// Declare a char pointer with the names of the filenames to load
 	[[maybe_unused]] const char *m_bootromname = NULL;
 	[[maybe_unused]] const char *m_programname = NULL;
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
 	uint32_t m_breakpoint = 0xFFFFFFFF;
 
-#ifdef UNIX
+#ifdef __unix__
 	for (int i = 1; i < argc; i++)
 	{
 		if (m_foundbootrom != true || m_foundprogram != true)
@@ -118,7 +118,7 @@ int main(int argc, char **argv)
 #endif
 		FILE *m_bootrom;
 
-#ifdef UNIX
+#ifdef __unix__
 		m_bootrom = fopen(m_bootromname, "rb");
 #endif
 
@@ -158,17 +158,17 @@ int main(int argc, char **argv)
 		
 		// Load Bootrom
 		m_load_bootrom(m_bootrom_buf);
-#ifdef UNIX
+#ifdef __unix__
 	}
 #endif
 
-#ifdef UNIX
+#ifdef __unix__
 	if (m_foundprogram)
 	{
 #endif
 		FILE *m_romfile;
 
-#ifdef UNIX
+#ifdef __unix__
 		m_romfile = fopen(m_programname, "rb");
 #endif
 
@@ -207,7 +207,7 @@ int main(int argc, char **argv)
 		printf("ROM size: %d bytes\n", (unsigned int) m_romsz);
 
 		m_load_rom(m_rom_buf);
-#ifdef UNIX
+#ifdef __unix__
 	}
 #endif
 
