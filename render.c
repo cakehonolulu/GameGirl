@@ -11,20 +11,7 @@ extern SDL_Texture *m_texture;
 
 void drawFramebuffer()
 {
-	uint32_t m_framebuffer[144 * 160];
-
-	int i, k = 0;
-
-	for(i = 0; i < 160; i++) 
-	{ 
-		for (int j = 0;j < 144; j++) 
-		{ 
-			m_framebuffer[k] = gpu.framebuffer[j][i]; 
-			k++; 
-		}
-	}
-
-	SDL_UpdateTexture(m_texture, NULL, m_framebuffer, 144 * sizeof(uint32_t));
+	SDL_UpdateTexture(m_texture, NULL, gpu.framebuffer, 144 * sizeof(uint32_t));
 	SDL_RenderClear(m_renderer);
 	SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
 	SDL_RenderPresent(m_renderer);
@@ -52,7 +39,7 @@ void m_render_sc()
 		tile = (int8_t)mmu->gb_mmap.vram[mapOffset + lineOffset + (x / 8)];
 
 		color = gpu.colors[gpu.palette[gpu.tileset[tile][x % 8][y]]];
-		gpu.framebuffer[x][gpu.m_scanline] = color;
+		gpu.framebuffer[144 * gpu.m_scanline + x] = color;
 	}
 
 }

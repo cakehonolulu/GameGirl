@@ -38,7 +38,7 @@ typedef struct gpu_t
 
 	uint8_t tileset[0x200][8][8];
 
-    uint32_t framebuffer[M_DMG01_COLS][M_DMG01_ROWS];
+    uint32_t framebuffer[160 * 144];
 
 	uint64_t m_ticks;				// Current PPU Ticks
 } m_gpu_t;
