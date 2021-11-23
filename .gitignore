@@ -2,6 +2,7 @@
 *.out
 *.exe
 gamegirl
+*.dll
 
 # ROM Files
 *.gb
