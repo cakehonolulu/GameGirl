@@ -338,7 +338,7 @@ void m_load_bootrom(unsigned char *m_bootrom)
 void m_init_address_space()
 {
     // Clear Cart 0
-    memset(mmu->gb_mmap.cart, 0, sizeof(mmu->gb_mmap.cart));
+    memset(mmu->gb_mmap.cart, 0xFF, sizeof(mmu->gb_mmap.cart));
 
     // Clear VRAM
     memset(mmu->gb_mmap.vram, 0, sizeof(mmu->gb_mmap.vram));
