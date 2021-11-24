@@ -744,9 +744,9 @@ void m_ld_hlminus_a()
 	printf("\033[1;31mLD (HL-), A\033[1;0m\n");
 #endif
 
-	// TODO: Revise this!
+	// FIXME?
+	mmu->gb_address_space[m_regs.hl] = m_regs.a;
 	m_regs.hl--;
-	mmu_write_word(m_regs.hl, m_regs.a);
 
 	PC += 1;
 }
