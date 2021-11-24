@@ -6,7 +6,7 @@
 ## GameGirl is a C2X, SDL2-Driven GameBoy (DMG-01) emulator
 
 ###
-46 Instructions needed to be implemented to execute DMG-01's BootROM until the end (Infinite Loop)
+51 Instructions needed to be implemented to execute DMG-01's BootROM until the end (Infinite Loop)
 
 ### BootROM Rendering Development Phases
 * Multiple bugs around the source, didn't entirely grasp the draw concepts
