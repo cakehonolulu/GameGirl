@@ -298,7 +298,7 @@ void m_rl_c()
 
 	uint8_t carry = FLAG_CHECK(CRRY) ? 1 : 0;
 
-	if (C & 0b1000000)
+	if (carry)
 	{
 		FLAG_SET(CRRY);
 	} else {
