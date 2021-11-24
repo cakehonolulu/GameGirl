@@ -1063,11 +1063,10 @@ void m_pop_bc()
 
 	uint16_t m_val = mmu_read_word(SP);
 
-	SP += 2;
-
 	B = m_val & 0xFF;
 	C = m_val >> 8;
 
+	SP += 2;
 	PC++;
 }
 
@@ -1089,14 +1088,10 @@ void m_push_bc()
 	printf("\033[1;31mPUSH BC\033[1;0m\n");
 #endif
 
-	SP--;
+	mmu_write_byte((SP - 1), (uint8_t) (BC & 0x00ff));
+	mmu_write_byte((SP - 2), (uint8_t) (BC >> 8));
 
-	mmu_write_word(SP, (uint8_t) (BC & 0x00ff));
-
-	SP--;
-
-	mmu_write_word(SP, (uint8_t) (BC >> 8));
-	
+	SP -= 2;
 	PC += 1;
 }
 
