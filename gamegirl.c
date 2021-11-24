@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 		{
 			if (m_foundbootrom == true)
 			{
-				if (argc < 3 && m_foundprogram != true)
+				if (argc < 4 && m_foundprogram != true)
 				{
 					uint32_t conv = strtol(argv[2], NULL, 0);
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 					printf("0x%02X\n", m_breakpoint);
 				}
 				else
-				if (argc < 4 && m_foundprogram == true)
+				if (argc < 5 && m_foundprogram == true)
 				{
 					uint32_t conv = strtol(argv[3], NULL, 0);
 
