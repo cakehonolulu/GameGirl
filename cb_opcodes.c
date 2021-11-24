@@ -296,26 +296,26 @@ void m_rl_c()
 	printf("\033[1;31mRL C\033[1;0m\n");
 #endif
 
-	uint8_t carry = FLAG_CHECK(CRRY) ? 1 : 0;
+	uint8_t oldcarry = FLAG_CHECK(CRRY) ? 1 : 0;
 
-	if (carry)
+	if ((C >> 7) & 1)
 	{
 		FLAG_SET(CRRY);
 	} else {
 		FLAG_UNSET(CRRY);
 	}
 
-	C <<= 1;
-	C += carry;
-	
-	if(C)
+	C = (C << 1) | oldcarry;
+
+	if (C)
 	{
 		FLAG_UNSET(ZERO);
 	} else {
 		FLAG_SET(ZERO);
 	}
-	
-	FLAG_UNSET(NGTV | HALF);
+
+	FLAG_UNSET(NGTV);
+	FLAG_UNSET(HALF);
 	
 	PC += 2;
 }
