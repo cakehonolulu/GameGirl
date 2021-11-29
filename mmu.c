@@ -87,7 +87,7 @@ uint8_t mmu_read_byte(uint16_t m_addr)
 {
 #pragma GCC diagnostic ignored "-Wtype-limits"
     // While on BootROM, 0x00 -> 0xFF are R/O
-    if (mmu->m_in_bootrom && m_addr >= 0x00 && m_addr <= 0xFF)
+    if (!mmu->m_in_bootrom && m_addr >= 0x00 && m_addr <= 0xFF)
         return mmu->gb_bootrom[m_addr];
 #pragma GCC diagnostic pop
 
@@ -184,7 +184,7 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
 {
 #pragma GCC diagnostic ignored "-Wtype-limits"
     // While on BootROM, 0x00 -> 0xFF are R/O
-    if (mmu->m_in_bootrom && m_addr >= 0x00 && m_addr <= 0xFF)
+    if (!mmu->m_in_bootrom && m_addr >= 0x00 && m_addr <= 0xFF)
         return 0;
 #pragma GCC diagnostic pop
 
@@ -332,7 +332,8 @@ void m_load_bootrom(unsigned char *m_bootrom)
 	printf("\n");
 #endif
 
-    mmu->m_in_bootrom = true;
+    // Map the BootROM (Mapped 0x0, Unmapped 0x1)
+    mmu->m_in_bootrom = 0x0;
 }
 
 void m_init_address_space()

@@ -105,6 +105,9 @@ void m_init_registers()
 	}
 #endif
 
+	// 0xFF50 Controls whether the BootROM is mapped (0x0) or not (0x1)
+	mmu->m_in_bootrom = mmu->gb_address_space[0xFF50];
+
 	// Setup the PPU, point each GPU struct member to it's MMAP Addr.
 	gpu.m_lcdc = mmu->gb_address_space[0xFF40];
 	gpu.m_stat = mmu->gb_address_space[0xFF41];
@@ -133,9 +136,9 @@ void m_init_registers()
 
 uint8_t m_fetch()
 {
-	if (mmu->m_in_bootrom && PC >= (0xFF - 0x5))
+	if (!mmu->m_in_bootrom && PC >= 0xFF)
 	{
-		mmu->m_in_bootrom = false;
+		mmu->m_in_bootrom = 0x1;
 	}
 
 	return (uint8_t) mmu_read_byte(PC);
