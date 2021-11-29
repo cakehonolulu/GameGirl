@@ -113,6 +113,9 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// 0xFF50 Controls whether the BootROM is mapped (0x0) or not (0x1)
+	mmu->m_in_bootrom = mmu->gb_address_space[0xFF50];
+
 	if (m_foundbootrom)
 	{
 #endif
@@ -159,6 +162,11 @@ int main(int argc, char **argv)
 		// Load Bootrom
 		m_load_bootrom(m_bootrom_buf);
 #ifdef __unix__
+	}
+	else
+	{
+		printf("No BootROM!\n");
+		mmu->m_in_bootrom = 0x1;
 	}
 #endif
 

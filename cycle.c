@@ -45,68 +45,65 @@ const uint8_t m_ticks_by_cbopcode[256] = {
 
 void m_init_registers()
 {
-	A = 0;
-	B = 0;
-
-	C = 0;
-	D = 0;
-
-	E = 0;
-	F = 0;
-
-	L = 0;
-	H = 0;
-
-	PC = 0;
-	SP = 0;
-
-	FLAGS = 0;
-
-	m_cpu_ticks = 0;
-
-	// if !gb_bootrom
-	mmu_write_byte(0xFF05, 0);
-	mmu_write_byte(0xFF06, 0);
-	mmu_write_byte(0xFF07, 0);
-	mmu_write_byte(0xFF10, 0x80);
-	mmu_write_byte(0xFF11, 0xBF);
-	mmu_write_byte(0xFF12, 0xF3);
-	mmu_write_byte(0xFF14, 0xBF);
-	mmu_write_byte(0xFF16, 0x3F);
-	mmu_write_byte(0xFF17, 0x00);
-	mmu_write_byte(0xFF19, 0xBF);
-	mmu_write_byte(0xFF1A, 0x7A);
-	mmu_write_byte(0xFF1B, 0xFF);
-	mmu_write_byte(0xFF1C, 0x9F);
-	mmu_write_byte(0xFF1E, 0xBF);
-	mmu_write_byte(0xFF20, 0xFF);
-	mmu_write_byte(0xFF21, 0x00);
-	mmu_write_byte(0xFF22, 0x00);
-	mmu_write_byte(0xFF23, 0xBF);
-	mmu_write_byte(0xFF24, 0x77);
-	mmu_write_byte(0xFF25, 0xF3);
-	mmu_write_byte(0xFF26, 0xF1);
-	mmu_write_byte(0xFF40, 0x91);
-	mmu_write_byte(0xFF42, 0x00);
-	mmu_write_byte(0xFF43, 0x00);
-	mmu_write_byte(0xFF45, 0x00);
-	mmu_write_byte(0xFF47, 0xFC);
-	mmu_write_byte(0xFF48, 0xFF);
-	mmu_write_byte(0xFF49, 0xFF);
-	mmu_write_byte(0xFF4A, 0x00);
-	mmu_write_byte(0xFF4B, 0x00);
-	mmu_write_byte(0xFFFF, 0x00);
-	// endif
-
-#ifdef OPCODE_DEBUG
-	for (int i = 0xFF00; i < 0xFFFF; i++)
+	// If BootROM isn't loaded, bootstrap manually into cart area
+	if (mmu->m_in_bootrom)
 	{
-		printf("0x%02X ", mmu->gb_address_space[i]);
-	}
-#endif
+		PC = 0x100;
+		AF = 0x01B0;
+		BC = 0x0013;
+		DE = 0x00D8;
+		HL = 0x014D;
+		SP = 0xFFFE;
 
-	// 0xFF50 Controls whether the BootROM is mapped (0x0) or not (0x1)
-	mmu->m_in_bootrom = mmu->gb_address_space[0xFF50];
+		FLAGS = 0;
+
+		m_cpu_ticks = 0;
+
+		mmu_write_byte(0xFF05, 0);
+		mmu_write_byte(0xFF06, 0);
+		mmu_write_byte(0xFF07, 0);
+		mmu_write_byte(0xFF10, 0x80);
+		mmu_write_byte(0xFF11, 0xBF);
+		mmu_write_byte(0xFF12, 0xF3);
+		mmu_write_byte(0xFF14, 0xBF);
+		mmu_write_byte(0xFF16, 0x3F);
+		mmu_write_byte(0xFF17, 0x00);
+		mmu_write_byte(0xFF19, 0xBF);
+		mmu_write_byte(0xFF1A, 0x7A);
+		mmu_write_byte(0xFF1B, 0xFF);
+		mmu_write_byte(0xFF1C, 0x9F);
+		mmu_write_byte(0xFF1E, 0xBF);
+		mmu_write_byte(0xFF20, 0xFF);
+		mmu_write_byte(0xFF21, 0x00);
+		mmu_write_byte(0xFF22, 0x00);
+		mmu_write_byte(0xFF23, 0xBF);
+		mmu_write_byte(0xFF24, 0x77);
+		mmu_write_byte(0xFF25, 0xF3);
+		mmu_write_byte(0xFF26, 0xF1);
+		mmu_write_byte(0xFF40, 0x91);
+		mmu_write_byte(0xFF42, 0x00);
+		mmu_write_byte(0xFF43, 0x00);
+		mmu_write_byte(0xFF45, 0x00);
+		mmu_write_byte(0xFF47, 0xFC);
+		mmu_write_byte(0xFF48, 0xFF);
+		mmu_write_byte(0xFF49, 0xFF);
+		mmu_write_byte(0xFF4A, 0x00);
+		mmu_write_byte(0xFF4B, 0x00);
+		mmu_write_byte(0xFFFF, 0x00);
+	}
+	else
+	{
+		AF = 0;
+		BC = 0;
+		DE = 0;
+		HL = 0;
+		PC = 0;
+		SP = 0;
+
+		FLAGS = 0;
+
+		m_cpu_ticks = 0;
+	}
 
 	// Setup the PPU, point each GPU struct member to it's MMAP Addr.
 	gpu.m_lcdc = mmu->gb_address_space[0xFF40];
