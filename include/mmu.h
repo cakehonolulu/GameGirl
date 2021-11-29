@@ -15,6 +15,7 @@ typedef struct gb_mmu
 {
 	// 256-byte Reserved Frame for Bootrom
 	uint8_t gb_bootrom[GB_BOOTROM_SIZE];
+	bool m_in_bootrom;
 
 	struct
 	{

@@ -64,6 +64,7 @@ void m_init_registers()
 
 	m_cpu_ticks = 0;
 
+	// if !gb_bootrom
 	mmu_write_byte(0xFF05, 0);
 	mmu_write_byte(0xFF06, 0);
 	mmu_write_byte(0xFF07, 0);
@@ -95,6 +96,7 @@ void m_init_registers()
 	mmu_write_byte(0xFF4A, 0x00);
 	mmu_write_byte(0xFF4B, 0x00);
 	mmu_write_byte(0xFFFF, 0x00);
+	// endif
 
 #ifdef OPCODE_DEBUG
 	for (int i = 0xFF00; i < 0xFFFF; i++)
@@ -131,6 +133,11 @@ void m_init_registers()
 
 uint8_t m_fetch()
 {
+	if (mmu->m_in_bootrom && PC >= (0xFF - 0x5))
+	{
+		mmu->m_in_bootrom = false;
+	}
+
 	return (uint8_t) mmu_read_byte(PC);
 }
 

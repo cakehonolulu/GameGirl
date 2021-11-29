@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 
 		printf("ROM size: %d bytes\n", (unsigned int) m_romsz);
 
-		m_load_rom(m_rom_buf);
+		m_load_rom(m_rom_buf, m_romsz);
 #ifdef __unix__
 	}
 #endif

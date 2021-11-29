@@ -86,10 +86,9 @@ void mmu_write_addr16(uint16_t m_addr, uint16_t m_data)
 uint8_t mmu_read_byte(uint16_t m_addr)
 {
 #pragma GCC diagnostic ignored "-Wtype-limits"
-    if (m_addr >= 0x00 && m_addr <= UCHAR_MAX)
-    {
+    // While on BootROM, 0x00 -> 0xFF are R/O
+    if (mmu->m_in_bootrom && m_addr >= 0x00 && m_addr <= 0xFF)
         return mmu->gb_bootrom[m_addr];
-    }
 #pragma GCC diagnostic pop
 
     // #0 Cart (Fixed) [0x0 - 0x3FFF]
@@ -184,10 +183,9 @@ int i = 0;
 uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
 {
 #pragma GCC diagnostic ignored "-Wtype-limits"
-    if (m_addr >= 0x00 && m_addr <= UCHAR_MAX)
-    {
+    // While on BootROM, 0x00 -> 0xFF are R/O
+    if (mmu->m_in_bootrom && m_addr >= 0x00 && m_addr <= 0xFF)
         return 0;
-    }
 #pragma GCC diagnostic pop
 
     // #0 Cart (Fixed) [0x0 - 0x3FFF]
@@ -329,10 +327,12 @@ void m_load_bootrom(unsigned char *m_bootrom)
 	printf("BootROM Dump:\n");
 	for (size_t i = 0; i < GB_BOOTROM_SZ; i++)
 	{
-		printf("0x%x ", mmu->gb_mmap.cart[i]);
+		printf("0x%x ", mmu->gb_bootrom[i]);
 	}
 	printf("\n");
 #endif
+
+    mmu->m_in_bootrom = true;
 }
 
 void m_init_address_space()
@@ -353,15 +353,7 @@ void m_init_address_space()
     memset(mmu->gb_mmap.oam, 0, sizeof(mmu->gb_mmap.oam));
 }
 
-void m_load_rom(unsigned char *m_rom)
+void m_load_rom(unsigned char *m_rom, size_t m_rom_sz)
 {
-    memcpy((void*)mmu->gb_mmap.cart + 0x100, (const void*)m_rom, 0x50);
-
-    printf("ROM Dump:\n");
-
-    for (size_t i = 0x104; i < 0x150; i++)
-    {
-        printf("0x%x ", mmu->gb_mmap.cart[i]);
-    }
-    printf("\n");
+    memcpy((void*)mmu->gb_mmap.cart, (const void*)m_rom, m_rom_sz);
 }
