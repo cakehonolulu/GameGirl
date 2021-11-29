@@ -131,6 +131,9 @@ void m_cp_hl();
 // 0xC1
 void m_pop_bc();
 
+// 0xC3
+void m_jp_a16(uint16_t m_a16);
+
 // 0xC5
 void m_push_bc();
 

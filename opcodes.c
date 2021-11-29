@@ -197,7 +197,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xC0
 	{"POP BC", 0, m_pop_bc},                   // 0xC1
 	{NULL, 0, NULL},                           // 0xC2
-	{NULL, 0, NULL},                           // 0xC3
+	{"JP a16", 2, m_jp_a16},				   // 0xC3
 	{NULL, 0, NULL},                           // 0xC4
 	{"PUSH BC", 0, m_push_bc},				   // 0xC5
 	{NULL, 0, NULL},                           // 0xC6
@@ -1067,6 +1067,23 @@ void m_pop_bc()
 
 	SP += 2;
 	PC++;
+}
+
+/*
+	JP a16
+    Opcode: 0xC3
+    Number of Bytes: 3
+    Number of Cycles: 4
+	
+	Load the 16-bit immediate operand a16 into the program counter (PC). a16 specifies
+	the address of the subsequently executed instruction.
+	The second byte of the object code (immediately following the opcode) corresponds
+	to the lower-order byte of a16 (bits 0-7), and the third byte of the object code
+	corresponds to the higher-order byte (bits 8-15).
+*/
+void m_jp_a16(uint16_t m_a16)
+{
+	PC = m_a16;
 }
 
 /*
