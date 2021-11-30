@@ -201,19 +201,9 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     {
         mmu->gb_mmap.vram[m_addr - 0x8000] = m_data;
         
-        if(m_addr <= 0x97ff)
+        if(m_addr <= 0x97FF)
         {
-            if (i == 7)
-            {
-                uint16_t tile = (m_addr >> 4) & 511;
-                //printf("Tile %x\n", tile);
-                i = 0;
-            } else {
-                i++;
-            }
-
-            updateTile(m_addr, m_data);
-            
+            m_gpu_update_tile(m_addr);
         }
     }
     else if (m_addr >= 0xA000 && 0xBFFF >= m_addr)          // Cartridge RAM (If Exists) [0xA000 - 0xBFFF]

@@ -94,27 +94,13 @@ void m_gpu_step()
 
 }
 
-void updateTile(uint16_t address, uint8_t value) {
-/*if (value != 0)
-	{
-		printf("ADDR: 0x%04X, val: 0x%02X\n", address, mmu_read_byte(address));
-	}*/
-	
-	address &= 0x1ffe;
+void m_gpu_update_tile(uint16_t m_addr)
+{
+	m_addr &= 0x1FFE;
 
-	uint16_t tile = (address >> 4) & 511;
+	uint16_t tile = (m_addr >> 4) & 511;
 
-	uint16_t y = (address >> 1) & 7;
-
-	/*if (value != 0)
-	{
-		printf("Tile: 0x%04X, y: 0x%04X\n", tile, y);
-	}*/
-	
-	/*if (value != 0)
-	{
-		printf("Addr: 0x%04X -> 0x%02X\n\n", address, mmu_read_byte(address + 0x8000));
-	}*/
+	uint16_t y = (m_addr >> 1) & 7;
 
 	uint8_t bitIndex;
 	
@@ -122,6 +108,6 @@ void updateTile(uint16_t address, uint8_t value) {
 	{
 		bitIndex = 1 << (7 - x);
 
-		gpu.tileset[tile][x][y] = (((mmu->gb_mmap.vram[address]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[address + 1]) & bitIndex) ? 2 : 0);
+		gpu.tileset[tile][x][y] = (((mmu->gb_mmap.vram[m_addr]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[m_addr + 1]) & bitIndex) ? 2 : 0);
 	}
 }
