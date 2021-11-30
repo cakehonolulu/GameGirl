@@ -1,4 +1,5 @@
 #include <int.h>
+#include <stdio.h>
 
 m_interrupts ints;
 
