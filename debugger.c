@@ -46,7 +46,7 @@ void m_run_debugger()
 		{
 			if (m_dbgevent.type == SDL_QUIT)
 			{
-				//goto exit;
+				goto exit;
 			}
 
 			if (m_dbgevent.type == SDL_KEYDOWN)
@@ -118,4 +118,12 @@ void m_run_debugger()
 			}
 		}
 	}
+
+exit:
+	// Free MMU data
+	mmu_halt();
+
+	SDL_Quit();
+
+	return EXIT_SUCCESS;
 }
