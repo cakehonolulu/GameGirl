@@ -116,4 +116,6 @@ uint8_t addition(uint8_t *m_register, uint8_t m_value)
 	}
 
 	FLAG_UNSET(NGTV);
+
+	return m_register;
 }
