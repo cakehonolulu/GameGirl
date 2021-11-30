@@ -6,6 +6,8 @@
 #include <cycle.h>
 #include <opcodes.h>
 #include <int.h>
+#include <sys/time.h>
+#include <gpu.h>
 
 // Init MMU
 gb_mmu_t *mmu;
@@ -22,6 +24,12 @@ SDL_Texture *m_texture;
 SDL_Event m_event;
 
 uint8_t prev_pc;
+
+struct timeval t1, t2;
+
+extern uint64_t m_cpu_ticks;
+
+unsigned int frames;
 
 int main(int argc, char **argv)
 {
@@ -270,17 +278,52 @@ int main(int argc, char **argv)
 		}
 		else
 		{
+			// Start of operation
+			gettimeofday(&t1, NULL);
+			
 			/*
-				If no debugging is enabled, execute the regular debugger loop
+				Run as many cycles as we possibly can before updating the screen
+				This is calculated dividing the Frequency of the GameBoy's CPU
+				between the target frames per second (59.7)
 			*/
-			// Start fetching & executing instructions
-			m_exec();
+			while (m_cpu_ticks < (4194304 / 59.7))
+			{
+				/*
+					If no debugging is enabled, execute the regular debugger loop
+				*/
+				// Start fetching & executing instructions
+				m_exec();
 
-			// Execute the GPU Subsystem
-			m_gpu_step();
+				// Execute the GPU Subsystem
+				m_gpu_step();
 
-			// Execute the Interrupt Subsystem
-			m_int_check();
+				// Execute the Interrupt Subsystem
+				m_int_check();
+			}
+
+			// End of operation
+			gettimeofday(&t2, NULL);
+
+			/*
+				Calculate the time diff. (Delta) between the start of the operation
+				and end of it, divide by 1000 to convert to microsec.
+			*/
+			double m_delta = ((double) t2.tv_usec - (double) t1.tv_usec) / 1000;
+
+			// Calculate the time to wait between screen updates to throttle the emulation.
+			double m_ttwait = ((59.7 - m_delta) * 100);
+
+			// Ceil the time-to-wait and multiply by 10 so that we satisfy usleep's requirements.
+			uint64_t m_sleep = ceil(m_ttwait) * 10;
+
+			// Sleep that time slice
+			usleep(m_sleep);
+
+			// Update the SDL Texture only if LCDC's Display Enable Bit is on
+			if (gpu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen();
+			
+			// Set CPU Ticks back to 0
+			m_cpu_ticks = 0;
 		}
 	}
 

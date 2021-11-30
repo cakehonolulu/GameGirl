@@ -9,7 +9,7 @@ extern SDL_Window   *m_window;
 extern SDL_Renderer *m_renderer;
 extern SDL_Texture *m_texture;
 
-void drawFramebuffer()
+void m_sdl_draw_screen()
 {
 	SDL_UpdateTexture(m_texture, NULL, gpu.framebuffer, 160 * sizeof(uint32_t));
 	SDL_RenderClear(m_renderer);

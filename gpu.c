@@ -23,6 +23,8 @@ void m_gpu_update_palette(uint8_t m_data)
 
 void m_gpu_step()
 {
+	if (m_cpu_ticks == 0) gpu.m_ticks = 0;
+	
 	gpu.m_ticks += m_cpu_ticks - m_gpu_elapsed_ticks;
 	
 	m_gpu_elapsed_ticks = m_cpu_ticks;
@@ -36,7 +38,6 @@ void m_gpu_step()
 
 				if (gpu.m_scanline == 143)
 				{
-					if (gpu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) drawFramebuffer();
 					/*if (ints.m_enabled & INT_VBLANK)
 					{
 						ints.m_flags |= INT_VBLANK;*/
