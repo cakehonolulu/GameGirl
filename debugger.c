@@ -9,7 +9,7 @@ SDL_Event m_dbgevent;
 extern uint8_t m_boperand;
 extern uint16_t m_woperand;
 
-void m_run_debugger()
+int m_run_debugger()
 {
 	printf("\e[1;1H\e[2J");
 	printf("\033[1;32mEntered Debugging Step Mode!\033[0;0m\n");
