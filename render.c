@@ -24,15 +24,10 @@ void m_render_sc()
 
 	uint8_t lineOffset = gpu.m_horitzontalscroll >> 3;
 
-	uint8_t x;
 	uint8_t y = (gpu.m_scanline + gpu.m_verticalscroll) & 7;
-
-	//printf("mapOffset = 0x%04X, lineOffset = 0x%04X, x = 0x%04X, y = 0x%04X, pixelOffset = 0x%04X\n", mapOffset, lineOffset, x, y, pixelOffset);
 
 	int8_t tile;
 	uint32_t color;
-
-	//if (tile != 0) printf("Tile = 0x%02X\n", tile);
 
 	for(int x = 0; x < 160; x++)
 	{
