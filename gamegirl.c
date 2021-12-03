@@ -324,6 +324,9 @@ int main(int argc, char **argv)
 			
 			// Set CPU Ticks back to 0
 			m_cpu_ticks = 0;
+
+			// Set GPU Ticks back to 0
+			gpu.m_ticks = 0;
 		}
 	}
 
