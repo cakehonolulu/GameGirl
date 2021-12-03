@@ -33,8 +33,6 @@ void m_gpu_step()
 	
 	m_gpu_elapsed_ticks = m_cpu_ticks;
 
-	printf("gpu.m_ticks: %ld, m_cpu_ticks: %ld, m_gpu_elapsed_ticks: %ld\n", gpu.m_ticks, m_cpu_ticks, m_gpu_elapsed_ticks);
-
 	switch (gpu.m_stat)
 	{
 		case M_GPU_HBLANK:
