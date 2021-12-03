@@ -7,10 +7,17 @@ m_gpu_t gpu;
 
 void m_gpu_init()
 {
+#ifdef GAMEGIRL_DISPLAY_BW
 	gpu.colors[0] = 0xFFFFFFFF;
     gpu.colors[1] = 0xFFC0C0C0;
     gpu.colors[2] = 0xFF606060;
     gpu.colors[3] = 0xFF000000;
+#else
+	gpu.colors[0] = 0x9BBC0F;
+    gpu.colors[1] = 0x8BAC0F;
+    gpu.colors[2] = 0x306230;
+    gpu.colors[3] = 0x0F380F;
+#endif
 }
 
 void m_gpu_update_palette(uint8_t m_data)
