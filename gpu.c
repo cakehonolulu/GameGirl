@@ -23,11 +23,17 @@ void m_gpu_update_palette(uint8_t m_data)
 
 void m_gpu_step()
 {
-	if (m_cpu_ticks == 0) gpu.m_ticks = 0;
+	if (m_cpu_ticks == 0)
+	{
+		gpu.m_ticks = 0;
+		m_gpu_elapsed_ticks = 0;
+	}
 	
 	gpu.m_ticks += m_cpu_ticks - m_gpu_elapsed_ticks;
 	
 	m_gpu_elapsed_ticks = m_cpu_ticks;
+
+	printf("gpu.m_ticks: %ld, m_cpu_ticks: %ld, m_gpu_elapsed_ticks: %ld\n", gpu.m_ticks, m_cpu_ticks, m_gpu_elapsed_ticks);
 
 	switch (gpu.m_stat)
 	{
