@@ -13,10 +13,10 @@ void m_gpu_init()
     gpu.colors[2] = 0xFF606060;
     gpu.colors[3] = 0xFF000000;
 #else
-	gpu.colors[0] = 0x9BBC0F;
-    gpu.colors[1] = 0x8BAC0F;
-    gpu.colors[2] = 0x306230;
-    gpu.colors[3] = 0x0F380F;
+	gpu.colors[0] = 0x009BBC0F;
+    gpu.colors[1] = 0x008BAC0F;
+    gpu.colors[2] = 0x00306230;
+    gpu.colors[3] = 0x000F380F;
 #endif
 }
 
