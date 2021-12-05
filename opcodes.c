@@ -13,7 +13,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x08
 	{NULL, 0, NULL},                           // 0x09
 	{NULL, 0, NULL},                           // 0x0A
-	{NULL, 0, NULL},                           // 0x0B
+	{"DEC BC", 0, m_dec_bc},				   // 0x0B
 	{"INC C", 0, m_inc_c},                     // 0x0C
 	{"DEC C", 0, m_dec_c},                     // 0x0D
 	{"LD C, ", 1, m_ld_c_d8},				   // 0x0E
@@ -346,6 +346,20 @@ void m_ld_b_d8(uint8_t m_d8)
 
 	B = m_d8;
 	PC += 2;
+}
+
+/*
+	DEC BC
+	Opcode: 0x0B
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Decrement the contents of register pair BC by 1.
+*/
+void m_dec_bc()
+{
+	BC--;
+	PC++;
 }
 
 /*
