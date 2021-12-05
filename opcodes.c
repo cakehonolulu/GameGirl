@@ -44,7 +44,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x27
 	{"JR Z, ", 1, m_jr_z_s8},                // 0x28
 	{NULL, 0, NULL},                           // 0x29
-	{NULL, 0, NULL},                           // 0x2A
+	{"LD A, (HL+)", 0, m_ld_a_hlplusp},		   // 0x2A
 	{NULL, 0, NULL},                           // 0x2B
 	{NULL, 0, NULL},                           // 0x2C
 	{NULL, 0, NULL},                           // 0x2D
@@ -687,6 +687,21 @@ void m_jr_z_s8(int8_t m_s8)
 	}
 
 	PC += 2;
+}
+
+/*
+	LD A, (HL+)
+	Opcode: 0x2A
+	Number of Bytes: 1
+	Number of Cycles: 2
+
+	Load the contents of memory specified by register pair HL into register A, and simultaneously increment the contents of HL.
+*/
+void m_ld_a_hlplusp()
+{
+	HL++;
+	A = mmu_read_byte(HL);
+	PC++;
 }
 
 /*
