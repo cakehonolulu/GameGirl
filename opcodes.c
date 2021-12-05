@@ -2,8 +2,8 @@
 
 // Operand Methodology Inspired by CTurt
 const struct m_sharp_lr35902_instr m_gb_instr[256] = {
-	{"NOP", 0, m_nop},							// 0x00
-	{NULL, 0, NULL},                           // 0x01
+	{"NOP", 0, m_nop},						   // 0x00
+	{"LD BC, d16", 2, m_ld_bc_d16},			   // 0x01
 	{NULL, 0, NULL},                           // 0x02
 	{NULL, 0, NULL},                           // 0x03
 	{"INC B", 0, m_inc_b},                           // 0x04
@@ -275,6 +275,22 @@ void m_nop()
 #endif
 
 	PC += 1;
+}
+
+/*
+	LD BC, d16
+	Opcode: 0x01
+	Number of Bytes: 3
+	Number of Cycles: 3
+
+	Load the 2 bytes of immediate data into register pair BC.
+	The first byte of immediate data is the lower byte (i.e., bits 0-7),
+	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
+*/
+void m_ld_bc_d16(uint16_t m_d16)
+{
+	BC = m_d16;
+	PC += 3;
 }
 
 /*

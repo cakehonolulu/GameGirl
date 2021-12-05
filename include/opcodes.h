@@ -15,6 +15,9 @@ extern struct m_sharp_lr35902_instr {
 // 0x00
 void m_nop();
 
+// 0x01
+void m_ld_bc_d16(uint16_t m_d16);
+
 // 0x04
 void m_inc_b();
 
