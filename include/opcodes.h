@@ -1,9 +1,10 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <gamegirl.h>
 #include <mmu.h>
 #include <cycle.h>
+#include <int.h>
 #include <alu.h>
+#include <gamegirl.h>
 
 extern struct m_sharp_lr35902_instr {
 	char *m_instr;
@@ -157,6 +158,9 @@ void m_ld_a16_a(uint16_t m_a16);
 
 // 0xF0
 void m_ld_a_a8(uint8_t m_a8);
+
+// 0xF3
+void m_di();
 
 // 0xFE
 void m_cp_d8(uint8_t m_d8);

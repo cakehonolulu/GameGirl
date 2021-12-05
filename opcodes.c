@@ -243,9 +243,9 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xEF
 	{"LD A, (a8)", 1, m_ld_a_a8},              // 0xF0
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0xF1
+	{NULL, 0, NULL},                           // 0xF2
+	{"DI", 0, m_di},						   // 0xF3
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -1265,6 +1265,23 @@ void m_ld_a_a8(uint8_t m_a8)
 {
 	A = mmu_read_byte(0xFF00 + m_a8);
 	PC += 2;
+}
+
+/*
+	DI
+	Opcode: 0xF3
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Reset the interrupt master enable (IME) flag and prohibit maskable interrupts.
+
+	Even if a DI instruction is executed in an interrupt routine, the IME flag is
+	set if a return is performed with a RETI instruction.
+*/
+void m_di()
+{
+	ints.m_enabled = 0;
+	PC++;
 }
 
 /*

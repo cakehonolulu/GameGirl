@@ -1,3 +1,6 @@
+#ifndef INT_H
+#define INT_H
+
 #include <stdint.h>
 #include <mmu.h>
 
@@ -15,3 +18,5 @@ typedef struct m_int
 } m_interrupts;
 
 extern m_interrupts ints;
+
+#endif
