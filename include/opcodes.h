@@ -87,6 +87,9 @@ void m_ld_sp_d16(uint16_t m_d16);
 // 0x32
 void m_ld_hlminus_a();
 
+// 0x36
+void m_ld_hlp_d8(uint8_t m_d8);
+
 // 0x3D
 void m_dec_a();
 

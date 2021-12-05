@@ -56,7 +56,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x33
 	{NULL, 0, NULL},                           // 0x34
 	{NULL, 0, NULL},                           // 0x35
-	{NULL, 0, NULL},                           // 0x36
+	{"LD (HL), d8", 1, m_ld_hlp_d8},		   // 0x36
 	{NULL, 0, NULL},                           // 0x37
 	{NULL, 0, NULL},                           // 0x38
 	{NULL, 0, NULL},                           // 0x39
@@ -748,6 +748,20 @@ void m_ld_hlminus_a()
 	m_regs.hl--;
 
 	PC += 1;
+}
+
+/*
+	LD (HL), d8
+	Opcode: 0x36
+	Number of Bytes: 2
+	Number of Cycles: 3
+
+	Store the contents of 8-bit immediate operand d8 in the memory location specified by register pair HL.
+*/
+void m_ld_hlp_d8(uint8_t m_d8)
+{
+	mmu_write_byte(HL, m_d8);
+	PC += 2;
 }
 
 /*
