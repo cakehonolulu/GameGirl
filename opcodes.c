@@ -131,7 +131,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x7F
 	{NULL, 0, NULL},                           // 0x80
-	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},						   // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -179,7 +179,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{"XOR A", 0, m_xor_a},						// 0xAF
 	{NULL, 0, NULL},                           // 0xB0
-	{NULL, 0, NULL},                           // 0x00
+	{"OR C", 0, m_or_c},					   // 0xB1
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -1060,6 +1060,22 @@ void m_xor_a()
 #endif
 
 	PC += 1;
+}
+
+/*
+	OR C
+	Opcode: 0xB1
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Take the logical OR for each bit of the contents of register C
+	and the contents of register A, and store the results in register A.
+*/
+void m_or_c()
+{
+	or(C);
+
+	PC++;
 }
 
 /*

@@ -138,6 +138,9 @@ void m_sub_b();
 // 0xAF
 void m_xor_a();
 
+// 0xB1
+void m_or_c();
+
 // 0xBE
 void m_cp_hl();
 

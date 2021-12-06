@@ -119,3 +119,19 @@ uint8_t addition(uint8_t *m_register, uint8_t m_value)
 
 	return *m_register;
 }
+
+uint8_t or(uint8_t m_register)
+{
+	A |= m_register;
+
+	if (A)
+	{
+		FLAG_UNSET(ZERO);
+	}
+	else
+	{
+		FLAG_SET(ZERO);
+	}
+
+	FLAG_UNSET(CRRY | NGTV | HALF);
+}
