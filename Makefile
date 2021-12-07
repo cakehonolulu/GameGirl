@@ -1,5 +1,10 @@
-# Setup the Linux Compiler (In this case GNU GCC)
+ifdef USE_CLANG
+# Use LLVM's frontend CLANG
+CC = clang
+else
+# Use GNU's GCC Compiler
 CC = gcc
+endif
 
 # Setup the Windows Compiler (In this cross-compiling using mingw64)
 MINGW64 = x86_64-w64-mingw32-gcc-10-win32
