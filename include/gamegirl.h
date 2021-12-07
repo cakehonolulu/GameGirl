@@ -12,6 +12,13 @@
 
 #define GB_BOOTROM_SZ 0x100
 
+struct m_gb_flags {
+	unsigned _BitInt(1) zero;
+	unsigned _BitInt(1) ngtv;
+	unsigned _BitInt(1) half;
+	unsigned _BitInt(1) crry;
+};
+
 typedef struct gb_registers {
 	struct {
 		union {
@@ -56,7 +63,7 @@ typedef struct gb_registers {
 	uint16_t sp;
 	uint16_t pc;
 
-	uint8_t flags;
+	struct m_gb_flags m_flags;
 
 	bool isUnimplemented;
 } gb_registers_t;
@@ -94,14 +101,14 @@ extern gb_registers_t m_regs;
 #define FLAGS (m_regs.flags)
 
 // Flag register flags
-#define ZERO 0b0111 // 7th bit
-#define NGTV 0b0110 // 6th bit
-#define HALF 0b0101 // 5th bit
-#define CRRY 0b0100 // 4th bit
+#define ZERO 4 // 4th bit
+#define NGTV 3 // 3rd bit
+#define HALF 2 // 2nd bit
+#define CRRY 1 // 1st bit
 
 // Flag set-unset-check macros
-#define FLAG_SET(bit) BIT_SET(FLAGS, bit)
-#define FLAG_UNSET(bit) BIT_UNSET(FLAGS, bit)
-#define FLAG_CHECK(bit) BIT_CHECK(FLAGS, bit)
+#define FLAG_SET(flag) flag_set(flag)
+#define FLAG_UNSET(flag) flag_unset(flag)
+#define FLAG_CHECK(flag) flag_check(flag)
 
 #endif

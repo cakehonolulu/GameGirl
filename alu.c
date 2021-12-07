@@ -133,5 +133,7 @@ uint8_t or(uint8_t m_register)
 		FLAG_SET(ZERO);
 	}
 
-	FLAG_UNSET(CRRY | NGTV | HALF);
+	FLAG_UNSET(CRRY);
+	FLAG_UNSET(NGTV);
+	FLAG_UNSET(HALF);
 }

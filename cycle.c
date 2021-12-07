@@ -55,7 +55,10 @@ void m_init_registers()
 		HL = 0x014D;
 		SP = 0xFFFE;
 
-		FLAGS = 0;
+		m_regs.m_flags.zero = 0;
+		m_regs.m_flags.ngtv = 0;
+		m_regs.m_flags.half = 0;
+		m_regs.m_flags.crry = 0;
 
 		m_cpu_ticks = 0;
 
@@ -100,7 +103,10 @@ void m_init_registers()
 		PC = 0;
 		SP = 0;
 
-		FLAGS = 0;
+		m_regs.m_flags.zero = 0;
+		m_regs.m_flags.ngtv = 0;
+		m_regs.m_flags.half = 0;
+		m_regs.m_flags.crry = 0;
 
 		m_cpu_ticks = 0;
 	}
@@ -157,10 +163,11 @@ uint16_t m_fetchopword()
 	return (uint16_t) m_w;
 }
 
-bool m_is_bit_set(uint8_t m_register, size_t m_bit)
+/*bool m_is_bit_set(uint8_t m_register, size_t m_bit)
 {
 	return 1 == ((m_register >> m_bit) & 1);
 }
+*/
 
 uint8_t m_opcode;
 uint8_t m_boperand;
@@ -255,7 +262,7 @@ void m_printregs()
 
 	printf("\033[1;35mZ: ");
 
-	if (m_is_bit_set(FLAGS, ZERO))
+	if (FLAG_CHECK(ZERO))
 	{
 		printf("\033[0m1   ");
 	} else {
@@ -264,7 +271,7 @@ void m_printregs()
 
 	printf("\033[1;35mN: ");
 
-	if (m_is_bit_set(FLAGS, NGTV))
+	if (FLAG_CHECK(NGTV))
 	{
 		printf("\033[0m1   \n");
 	} else {
@@ -273,7 +280,7 @@ void m_printregs()
 
 	printf("\033[1;35mH: ");
 
-	if (m_is_bit_set(FLAGS, HALF))
+	if (FLAG_CHECK(HALF))
 	{
 		printf("\033[0m1   ");
 	} else {
@@ -282,7 +289,7 @@ void m_printregs()
 
 	printf("\033[1;35mC: ");
 
-	if (m_is_bit_set(FLAGS, CRRY))
+	if (FLAG_CHECK(CRRY))
 	{
 		printf("\033[0m1   \n");
 	} else {
