@@ -1,9 +1,9 @@
-ifdef USE_CLANG
-# Use LLVM's frontend CLANG
-CC = clang
-else
+ifdef USE_GCC
 # Use GNU's GCC Compiler
 CC = gcc
+else
+# Use LLVM's frontend CLANG
+CC = clang
 endif
 
 # Setup the Windows Compiler (In this cross-compiling using mingw64)
