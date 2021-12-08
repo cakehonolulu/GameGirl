@@ -301,7 +301,7 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
 
 uint16_t mmu_read_word(uint16_t m_addr)
 {
-    return (mmu_read_byte(m_addr) | (mmu_read_byte(m_addr + 1) << 8));
+    return ((mmu_read_byte(m_addr) << 8) | (mmu_read_byte(m_addr + 1)));
 }
 
 uint8_t mmu_write_word(uint16_t m_addr, uint16_t m_data)
