@@ -1205,7 +1205,7 @@ void m_push_bc()
 */
 void m_ret()
 {
-	uint8_t m_addr = mmu_read_byte(SP + 1);
+	uint16_t m_addr = mmu_read_word(SP);
 
 #ifdef OPCODE_DEBUG
 	printf("Addr: 0x%04X\n", m_addr);
@@ -1246,12 +1246,10 @@ void m_call(uint16_t m_addr)
 	printf("\033[1;31mCALL $%04X\033[1;0m\n", m_addr);
 #endif
 
-	SP--;
+	SP -= 2;
 
-	mmu_write_byte(SP, (uint8_t) (PC & 0x00ff));
+	mmu_write_word(SP, PC);
 	
-	SP--;
-
 	PC = m_addr;
 }
 
