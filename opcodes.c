@@ -600,15 +600,17 @@ void m_jr_nz_s8(int8_t m_s8)
 	printf("Operand: 0x%X\n", (uint8_t) m_s8);
 #endif
 
-	if (!FLAG_CHECK(ZERO))
+	if (FLAG_CHECK(ZERO))
+	{
+		PC += 2;
+	}
+	else
 	{
 		// Set the PC Offset at the end of the JR NZ, s8
 		PC += 2;
 
 		// Add m_operand as an int8_t (Can go forward or backward)
-		PC += (int8_t) m_s8;
-	} else {
-		PC += 2;
+		PC += (int8_t) m_s8;	
 	}
 }
 
