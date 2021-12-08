@@ -1181,10 +1181,10 @@ void m_push_bc()
 	printf("\033[1;31mPUSH BC\033[1;0m\n");
 #endif
 
-	mmu_write_byte((SP - 1), (uint8_t) (BC & 0x00ff));
-	mmu_write_byte((SP - 2), (uint8_t) (BC >> 8));
-
 	SP -= 2;
+
+	mmu_write_word(SP, BC);
+
 	PC += 1;
 }
 
@@ -1214,8 +1214,6 @@ void m_ret()
 	SP += 2;
 
 	PC = m_addr + 0x3;
-	//m_printregs(m_regs);
-	//exit(1);
 }
 
 /*
@@ -1248,7 +1246,7 @@ void m_call(uint16_t m_addr)
 	printf("\033[1;31mCALL $%04X\033[1;0m\n", m_addr);
 #endif
 
-	SP --;
+	SP--;
 
 	mmu_write_byte(SP, (uint8_t) (PC & 0x00ff));
 	
