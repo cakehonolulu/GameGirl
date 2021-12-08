@@ -1205,6 +1205,23 @@ void m_push_bc()
 */
 void m_ret()
 {
+
+	/*
+		Once we start processing the RET opcode, what we'll do is assign the call to
+		mmu_read_word (It iterates +1 on specified addr: 0xFFFA -> 0xFFFB) into a variable
+		and set PC to it; after that, increase SP by 2 (0xFFFA -> 0xFFFC) to re-index the
+		previous stack content. Finally, set PC to the address and add 3 as the byte offset from RET
+
+		End of opcode diagram:
+		m_addr: 0x27A3
+		[0xFFFA][0xFFFB][0xFFFC]
+		  0x27    0xA3    0x33
+		   ^			   ^
+		   |			   |
+		 Old SP          New SP
+
+	*/
+
 	uint16_t m_addr = mmu_read_word(SP);
 
 #ifdef OPCODE_DEBUG
@@ -1246,6 +1263,21 @@ void m_call(uint16_t m_addr)
 	printf("\033[1;31mCALL $%04X\033[1;0m\n", m_addr);
 #endif
 
+	/*
+		Once we start processing the CALL opcode, what we'll do is
+		deduct 2 from SP (0xFFFC -> 0xFFFA); call mmu_write_word
+		(It iterates +1 on specified addr: 0xFFFA -> 0xFFFB) and set
+		PC to the m_addr specified by the fetch loop.
+
+		End of opcode diagram:
+		m_addr: 0x27A3
+		[0xFFFA][0xFFFB][0xFFFC]
+		  0x27    0xA3    0x33
+		   ^			   ^
+		   |			   |
+		 New SP          Old SP
+
+	*/
 	SP -= 2;
 
 	mmu_write_word(SP, PC);
