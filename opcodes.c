@@ -1139,8 +1139,8 @@ void m_pop_bc()
 
 	uint16_t m_val = mmu_read_word(SP);
 
-	B = m_val & 0xFF;
-	C = m_val >> 8;
+	B = m_val >> 8;
+	C = m_val & 0xFF;
 
 	SP += 2;
 	PC++;
