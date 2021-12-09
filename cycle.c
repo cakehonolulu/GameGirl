@@ -163,12 +163,6 @@ uint16_t m_fetchopword()
 	return (uint16_t) m_w;
 }
 
-/*bool m_is_bit_set(uint8_t m_register, size_t m_bit)
-{
-	return 1 == ((m_register >> m_bit) & 1);
-}
-*/
-
 uint8_t m_opcode;
 uint8_t m_boperand;
 uint16_t m_woperand;

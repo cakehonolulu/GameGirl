@@ -22,11 +22,7 @@ int m_run_debugger()
 	uint8_t m_dbgopc = READB(PC);
 
 	m_printregs();
-
-
-	printf("m_gb_instr[m_opcode].m_operand = %d\n", m_gb_instr[m_dbgopc].m_operand);
-	printf("m_gb_instr[m_dbgopc].m_operand = %d\n", m_gb_instr[m_dbgopc].m_operand);
-
+	
 	printf("Legend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
 
 	// Check if we're on the start of the BootROM (Don't print previous opcode as it doesn't exist)
@@ -118,11 +114,6 @@ int m_run_debugger()
 					m_int_check();
 
 					m_printregs();
-
-
-					printf("m_gb_instr[m_opcode].m_operand = %d\n", m_gb_instr[m_opcode].m_operand);
-					printf("m_gb_instr[m_dbgopc].m_operand = %d\n", m_gb_instr[m_dbgopc].m_operand);
-
 
 					printf("Legend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
 
