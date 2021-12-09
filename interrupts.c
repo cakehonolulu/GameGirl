@@ -1,4 +1,4 @@
-#include <int.h>
+#include <interrupts.h>
 #include <stdio.h>
 
 m_interrupts ints;
