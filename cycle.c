@@ -252,7 +252,9 @@ void m_printregs()
 	printf("\033[1;32mProgram Flow Registers:\033[0:0m\n");
 	printf("\033[1;35mPC:\033[0m 0x%04X\n\n", PC);
 
-	printf("\033[1;34mFLAGS:\033[0:0m\n");
+	printf("\033[1;35mINT: \033[0m%d\n\n", mmu->gb_mmap.intenable);
+
+	printf("\033[1;35mFLAGS:\033[0:0m\n");
 
 	printf("\033[1;35mZ: ");
 
@@ -285,9 +287,9 @@ void m_printregs()
 
 	if (FLAG_CHECK(CRRY))
 	{
-		printf("\033[0m1   \n");
+		printf("\033[0m1   \n\n");
 	} else {
-		printf("\033[0m0   \n");
+		printf("\033[0m0   \n\n");
 	}
 
 	printf("\033[1;35mCurrent CPU Ticks:\033[0m %lu\n", m_cpu_ticks);
