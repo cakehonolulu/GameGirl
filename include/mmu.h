@@ -157,4 +157,9 @@ uint8_t mmu_write_word(uint16_t m_addr, uint16_t m_data);
 
 void m_load_bootrom(unsigned char *m_bootrom);
 
+/* Macro declarations */
+#define READB(addr) (mmu_read_byte(addr))
+#define WRITEB(addr, val) (mmu_write_byte(addr, val))
+#define READW(addr) (mmu_read_word(addr))
+#define WRITEW(addr, val) (mmu_write_word(addr, val))
 #endif

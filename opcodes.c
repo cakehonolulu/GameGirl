@@ -550,7 +550,7 @@ void m_ld_a_de()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD A, (DE)\033[1;0m\n");
 #endif
-	A = mmu_read_byte(DE);
+	A = READB(DE);
 	PC += 1;
 }
 
@@ -657,7 +657,7 @@ void m_ld_hlplus_a()
 
 	m_regs.hl++;
 
-	mmu_write_byte(m_regs.hl, A);
+	WRITEB(m_regs.hl, A);
 
 	PC++;
 }
@@ -732,7 +732,7 @@ void m_jr_z_s8(int8_t m_s8)
 void m_ld_a_hlplusp()
 {
 	HL++;
-	A = mmu_read_byte(HL);
+	A = READB(HL);
 	PC++;
 }
 
@@ -791,7 +791,7 @@ void m_ld_hlminus_a()
 	printf("\033[1;31mLD (HL-), A\033[1;0m\n");
 #endif
 
-	mmu_write_byte(m_regs.hl, m_regs.a);
+	WRITEB(m_regs.hl, m_regs.a);
 	m_regs.hl--;
 
 	PC += 1;
@@ -807,7 +807,7 @@ void m_ld_hlminus_a()
 */
 void m_ld_hlp_d8(uint8_t m_d8)
 {
-	mmu_write_byte(HL, m_d8);
+	WRITEB(HL, m_d8);
 	PC += 2;
 }
 
@@ -909,7 +909,7 @@ void m_ld_hl_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL), A\033[1;0m\n");
 #endif
-	mmu_write_byte(HL, A);
+	WRITEB(HL, A);
 	PC += 1;
 }
 
@@ -983,7 +983,7 @@ void m_ld_a_l()
 */
 void m_ld_a_phl()
 {
-	addition(&A, mmu_read_byte(HL));
+	addition(&A, READB(HL));
 	PC++;
 }
 
@@ -1095,21 +1095,21 @@ void m_cp_hl()
 {
 	FLAG_SET(NGTV);
 
-	if (A == mmu_read_byte(HL))
+	if (A == READB(HL))
 	{
 		FLAG_SET(ZERO);
 	} else {
 		FLAG_UNSET(ZERO);
 	}
 
-	if (mmu_read_byte(HL) > A)
+	if (READB(HL) > A)
 	{
 		FLAG_SET(CRRY);
 	} else {
 		FLAG_UNSET(CRRY);
 	}
 
-	if ((mmu_read_byte(HL) & 0b00001111) > (A & 0b00001111))
+	if ((READB(HL) & 0b00001111) > (A & 0b00001111))
 	{
 		FLAG_SET(HALF);
 	} else {
@@ -1205,7 +1205,7 @@ void m_ret()
 
 	/*
 		Once we start processing the RET opcode, what we'll do is assign the call to
-		mmu_read_word (It iterates +1 on specified addr: 0xFFFA -> 0xFFFB) into a variable
+		POPW (It iterates +1 on specified addr: 0xFFFA -> 0xFFFB) into a variable
 		and set PC to it; after that, increase SP by 2 (0xFFFA -> 0xFFFC) to re-index the
 		previous stack content. Finally, set PC to the address and add 3 as the byte offset from RET
 
@@ -1260,7 +1260,7 @@ void m_call(uint16_t m_addr)
 
 	/*
 		Once we start processing the CALL opcode, what we'll do is
-		deduct 2 from SP (0xFFFC -> 0xFFFA); call mmu_write_word
+		deduct 2 from SP (0xFFFC -> 0xFFFA); call PUSWH
 		(It iterates +1 on specified addr: 0xFFFA -> 0xFFFB) and set
 		PC to the m_addr specified by the fetch loop.
 
@@ -1301,7 +1301,7 @@ void m_ld_a8_a(uint8_t m_a8)
 	printf("\033[1;31mLD ($%04X), A\033[1;0m\n", m_a8);
 #endif
 
-	mmu_write_byte((0xFF00 + m_a8), A);
+	WRITEB((0xFF00 + m_a8), A);
 	PC += 2;
 }
 
@@ -1323,7 +1323,7 @@ void m_ld_cpar_a()
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (C), A\033[1;0m\n");
 #endif
-	mmu_write_byte((0xFF00 + C), A);
+	WRITEB((0xFF00 + C), A);
 	PC += 1;
 }
 
@@ -1341,7 +1341,7 @@ void m_ld_a16_a(uint16_t m_a16)
 	printf("\033[1;31mLD ($%04X), A\033[1;0m\n", m_a16);
 #endif
 
-	mmu_write_byte(m_a16, A);
+	WRITEB(m_a16, A);
 
 	PC += 3;
 }
@@ -1361,7 +1361,7 @@ void m_ld_a16_a(uint16_t m_a16)
 */
 void m_ld_a_a8(uint8_t m_a8)
 {
-	A = mmu_read_byte(0xFF00 + m_a8);
+	A = READB(0xFF00 + m_a8);
 	PC += 2;
 }
 
