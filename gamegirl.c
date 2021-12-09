@@ -294,6 +294,8 @@ int main(int argc, char **argv)
 				m_run_debugger();
 			}
 
+			prev_pc = PC;
+			
 			// Start fetching & executing instructions
 			m_exec();
 
