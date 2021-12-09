@@ -1137,12 +1137,11 @@ void m_pop_bc()
 	printf("\033[1;31mPOP BC\033[1;0m\n");
 #endif
 
-	uint16_t m_val = mmu_read_word(SP);
+	uint16_t m_val = POPW();
 
 	B = m_val >> 8;
 	C = m_val & 0xFF;
 
-	SP += 2;
 	PC++;
 }
 
