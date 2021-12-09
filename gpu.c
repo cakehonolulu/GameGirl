@@ -1,5 +1,5 @@
 #include <gpu.h>
-#include <int.h>
+#include <interrupts.h>
 
 static uint64_t m_gpu_elapsed_ticks = 0;
 

@@ -1,7 +1,7 @@
 #include <cycle.h>
 #include <opcodes.h>
 #include <gpu.h>
-#include <int.h>
+#include <interrupts.h>
 
 uint64_t m_cpu_ticks;
 

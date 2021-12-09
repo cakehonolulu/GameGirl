@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <mmu.h>
 #include <cycle.h>
-#include <int.h>
+#include <interrupts.h>
 #include <alu.h>
 #include <stack.h>
 #include <gamegirl.h>

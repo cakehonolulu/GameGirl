@@ -1,7 +1,7 @@
 #include <mmu.h>
 #include <gamegirl.h>
 #include <gpu.h>
-#include <int.h>
+#include <interrupts.h>
 #include <limits.h>
 
 gb_mmu_t *mmu_init()

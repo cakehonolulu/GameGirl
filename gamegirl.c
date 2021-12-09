@@ -5,7 +5,7 @@
 #include <mmu.h>
 #include <cycle.h>
 #include <opcodes.h>
-#include <int.h>
+#include <interrupts.h>
 #include <sys/time.h>
 #include <gpu.h>
 
