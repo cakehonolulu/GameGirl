@@ -1181,9 +1181,7 @@ void m_push_bc()
 	printf("\033[1;31mPUSH BC\033[1;0m\n");
 #endif
 
-	SP -= 2;
-
-	mmu_write_word(SP, BC);
+	PUSHW(BC);
 
 	PC += 1;
 }
