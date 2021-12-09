@@ -1219,13 +1219,11 @@ void m_ret()
 
 	*/
 
-	uint16_t m_addr = mmu_read_word(SP);
+	uint16_t m_addr = POPW();
 
 #ifdef OPCODE_DEBUG
 	printf("Addr: 0x%04X\n", m_addr);
 #endif
-
-	SP += 2;
 
 	PC = m_addr + 0x3;
 }
