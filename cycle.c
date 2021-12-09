@@ -252,9 +252,9 @@ void m_printregs()
 	printf("\033[1;32mProgram Flow Registers:\033[0:0m\n");
 	printf("\033[1;35mPC:\033[0m 0x%04X\n\n", PC);
 
-	printf("\033[1;35mINT: \033[0m%d\n\n", mmu->gb_mmap.intenable);
+	printf("\033[1;34mInterrupts: \033[0m%d\n\n", mmu->gb_mmap.intenable);
 
-	printf("\033[1;35mFLAGS:\033[0:0m\n");
+	printf("\033[1;35mFlags:\033[0:0m\n");
 
 	printf("\033[1;35mZ: ");
 
