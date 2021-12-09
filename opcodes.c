@@ -1278,9 +1278,7 @@ void m_call(uint16_t m_addr)
 		 New SP          Old SP
 
 	*/
-	SP -= 2;
-
-	mmu_write_word(SP, PC);
+	PUSHW(PC);
 	
 	PC = m_addr;
 }
