@@ -253,7 +253,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xF9
 	{NULL, 0, NULL},                           // 0xFA
-	{NULL, 0, NULL},                           // 0x00
+	{"EI", 0, m_ei},                           // 0xFB
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{"CP ", 1, m_cp_d8},                       // 0xFE
@@ -1379,6 +1379,25 @@ void m_ld_a_a8(uint8_t m_a8)
 void m_di()
 {
 	interrupts.m_master = 0;
+	PC++;
+}
+
+/*
+	EI
+	Opcode: 0xFB
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Set the interrupt master enable (IME) flag and enable maskable interrupts.
+	This instruction can be used in an interrupt routine to enable higher-order interrupts.
+
+	The IME flag is reset immediately after an interrupt occurs. The IME flag reset remains
+	in effect if coontrol is returned from the interrupt routine by a RET instruction.
+	However, if an EI instruction is executed in the interrupt routine, control is returned with IME = 1.
+*/
+void m_ei()
+{
+	interrupts.m_master = 1;
 	PC++;
 }
 

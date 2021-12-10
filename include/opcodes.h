@@ -178,5 +178,8 @@ void m_ld_a_a8(uint8_t m_a8);
 // 0xF3
 void m_di();
 
+// 0xFB
+void m_ei();
+
 // 0xFE
 void m_cp_d8(uint8_t m_d8);
