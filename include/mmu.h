@@ -124,7 +124,7 @@ typedef struct gb_mmu
 						// Zero Page - 127 bytes
 						uint8_t zero_page[0x80 - 1];
 						// Interrupt Enable
-						unsigned _BitInt(1) intenable;
+						uint8_t intenable;
 					};
 
 					// Zero-Page RAM
