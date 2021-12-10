@@ -3,7 +3,7 @@
 // Operand Methodology Inspired by CTurt
 const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"NOP", 0, m_nop},						   // 0x00
-	{"LD BC, d16", 2, m_ld_bc_d16},			   // 0x01
+	{"LD BC, ", 2, m_ld_bc_d16},			   // 0x01
 	{NULL, 0, NULL},                           // 0x02
 	{NULL, 0, NULL},                           // 0x03
 	{"INC B", 0, m_inc_b},                           // 0x04
@@ -24,7 +24,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"INC DE", 0, m_inc_de},				   // 0x13
 	{NULL, 0, NULL},                           // 0x14
 	{"DEC D", 0, m_dec_d},					   // 0x15
-	{"LD D, d8", 1, m_ld_d_d8},				   // 0x16
+	{"LD D, ", 1, m_ld_d_d8},				   // 0x16
 	{"RLA", 0, m_rla},                         // 0x17
 	{"JR ", 1, m_jr_s8},                           // 0x18
 	{NULL, 0, NULL},                           // 0x19
@@ -32,7 +32,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x1B
 	{NULL, 0, NULL},                           // 0x1C
 	{"DEC E", 0, m_dec_e},					   // 0x1D
-	{"LD E, d8", 1, m_ld_e_d8},				    // 0x1E
+	{"LD E, ", 1, m_ld_e_d8},				    // 0x1E
 	{NULL, 0, NULL},							// 0x1F
 	{"JR NZ, ", 1, m_jr_nz_s8},			   // 0x20
 	{"LD HL, ", 2, m_ld_hl_d16},			   // 0x21
@@ -56,7 +56,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x33
 	{NULL, 0, NULL},                           // 0x34
 	{NULL, 0, NULL},                           // 0x35
-	{"LD (HL), d8", 1, m_ld_hlp_d8},		   // 0x36
+	{"LD (HL), ", 1, m_ld_hlp_d8},		   // 0x36
 	{NULL, 0, NULL},                           // 0x37
 	{NULL, 0, NULL},                           // 0x38
 	{NULL, 0, NULL},                           // 0x39
@@ -197,7 +197,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xC0
 	{"POP BC", 0, m_pop_bc},                   // 0xC1
 	{NULL, 0, NULL},                           // 0xC2
-	{"JP a16", 2, m_jp_a16},				   // 0xC3
+	{"JP ", 2, m_jp_a16},				   // 0xC3
 	{NULL, 0, NULL},                           // 0xC4
 	{"PUSH BC", 0, m_push_bc},				   // 0xC5
 	{NULL, 0, NULL},                           // 0xC6
@@ -236,13 +236,13 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xE9
-	{"LD (a16), A", 2, m_ld_a16_a},			   // 0xEA
+	{"LD (a16), A -> a16: ", 2, m_ld_a16_a},			   // 0xEA
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xEF
-	{"LD A, (a8)", 1, m_ld_a_a8},              // 0xF0
+	{"LD A, (a8) -> a8: ", 1, m_ld_a_a8},              // 0xF0
 	{NULL, 0, NULL},                           // 0xF1
 	{NULL, 0, NULL},                           // 0xF2
 	{"DI", 0, m_di},						   // 0xF3
