@@ -19,6 +19,10 @@ typedef struct m_interrupt
 
 extern m_interrupts interrupts;
 
+#define IME (interrupts.m_master)
+#define IE (interrupts.m_enabled)
+#define IF (interrupts.m_flags)
+
 void m_interrupt_check();
 
 #endif
