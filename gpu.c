@@ -43,9 +43,9 @@ void m_gpu_step()
 
 				if (gpu.m_scanline == 143)
 				{
-					/*if (ints.m_enabled & INT_VBLANK)
+					/*if (interrupts.m_enabled & INT_VBLANK)
 					{
-						ints.m_flags |= INT_VBLANK;*/
+						interrupts.m_flags |= INT_VBLANK;*/
 						gpu.m_stat = M_GPU_VBLANK;
 					/*} else {
 						gpu.m_cgpu_mode = M_GPU_OAM;

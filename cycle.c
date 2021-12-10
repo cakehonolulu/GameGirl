@@ -128,13 +128,13 @@ void m_init_registers()
 	gpu.m_horitzontalscroll = 0;
 
 	// Setup Interrupts State
-	ints.m_master = 0;
-	ints.m_enabled = mmu->gb_mmap.intenable;
-	ints.m_flags = mmu->gb_address_space[0xFF0F];
+	interrupts.m_master = 0;
+	interrupts.m_enabled = mmu->gb_mmap.intenable;
+	interrupts.m_flags = mmu->gb_address_space[0xFF0F];
 
 	// Disable Interrupts and Clear Interrupt's Flags
-	ints.m_enabled = 0;
-	ints.m_flags = 0;
+	interrupts.m_enabled = 0;
+	interrupts.m_flags = 0;
 }
 
 uint8_t m_fetch()
@@ -252,7 +252,7 @@ void m_printregs()
 	printf("\033[1;32mProgram Flow Registers:\033[0:0m\n");
 	printf("\033[1;35mPC:\033[0m 0x%04X\n\n", PC);
 
-	printf("\033[1;34mInterrupts: \033[0m%d\n\n", mmu->gb_mmap.intenable);
+	printf("\033[1;34mInterrupts: \033[0m%d\n\n", interrupts.m_enabled);
 
 	printf("\033[1;35mFlags:\033[0:0m\n");
 

@@ -10,13 +10,13 @@
 #define INT_SERIAL	(1 << 3)
 #define INT_JOYPAD	(1 << 4)
 
-typedef struct m_int
+typedef struct m_interrupt
 {
 	uint8_t m_master;
 	uint8_t m_enabled;
 	uint8_t m_flags;
 } m_interrupts;
 
-extern m_interrupts ints;
+extern m_interrupts interrupts;
 
 #endif
