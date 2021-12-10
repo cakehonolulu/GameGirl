@@ -3,9 +3,9 @@
 
 m_interrupts interrupts;
 
-void m_int_check()
+void m_interrupt_check()
 {
-	if(interrupts.m_master && interrupts.m_enabled && interrupts.m_flags)
+	if (interrupts.m_master && interrupts.m_enabled && interrupts.m_flags)
 	{
 		uint8_t m_int = interrupts.m_enabled & interrupts.m_flags;
 		

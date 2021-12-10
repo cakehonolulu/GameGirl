@@ -111,7 +111,7 @@ int m_run_debugger()
 
 					m_exec();
 					m_gpu_step();
-					m_int_check();
+					m_interrupt_check();
 
 					m_printregs();
 

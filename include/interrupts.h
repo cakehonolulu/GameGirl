@@ -19,4 +19,6 @@ typedef struct m_interrupt
 
 extern m_interrupts interrupts;
 
+void m_interrupt_check();
+
 #endif

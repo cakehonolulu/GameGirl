@@ -303,7 +303,7 @@ int main(int argc, char **argv)
 			m_gpu_step();
 
 			// Execute the Interrupt Subsystem
-			m_int_check();
+			m_interrupt_check();
 		}
 
 		// End of operation
