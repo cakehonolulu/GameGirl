@@ -12,7 +12,7 @@
 
 typedef struct m_interrupt
 {
-	uint8_t m_master;
+	unsigned _BitInt(1) m_master;
 	uint8_t m_enabled;
 	uint8_t m_flags;
 } m_interrupts;
