@@ -1378,7 +1378,7 @@ void m_ld_a_a8(uint8_t m_a8)
 */
 void m_di()
 {
-	interrupts.m_enabled = 0;
+	interrupts.m_master = 0;
 	PC++;
 }
 

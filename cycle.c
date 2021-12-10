@@ -252,7 +252,7 @@ void m_printregs()
 	printf("\033[1;32mProgram Flow Registers:\033[0:0m\n");
 	printf("\033[1;35mPC:\033[0m 0x%04X\n\n", PC);
 
-	printf("\033[1;34mInterrupts: \033[0m%d\n\n", interrupts.m_enabled);
+	printf("\033[1;34mInterrupts: \033[0m%d\n\n", interrupts.m_master);
 
 	printf("\033[1;35mFlags:\033[0:0m\n");
 
