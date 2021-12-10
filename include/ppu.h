@@ -24,7 +24,7 @@ enum {
 
 // Declare a structure with the PPU's foundations
 // DMG-01's Screen's Resolution equals to 160 x 144 (px)
-typedef struct gpu_t
+typedef struct ppu_t
 {
 	uint8_t m_lcdc;					// Current PPU Mode [$FF40]
 	uint8_t m_stat;					// PPU Tileset Control [$FF41]
@@ -41,6 +41,6 @@ typedef struct gpu_t
     uint32_t framebuffer[160 * 144];
 
 	uint64_t m_ticks;				// Current PPU Ticks
-} m_gpu_t;
+} m_ppu_t;
 
-extern m_gpu_t gpu;
+extern m_ppu_t ppu;

@@ -1,6 +1,6 @@
 #include <cycle.h>
 #include <opcodes.h>
-#include <gpu.h>
+#include <ppu.h>
 #include <interrupts.h>
 
 uint64_t m_cpu_ticks;
@@ -112,20 +112,20 @@ void m_init_registers()
 	}
 
 	// Setup the PPU, point each GPU struct member to it's MMAP Addr.
-	gpu.m_lcdc = mmu->gb_address_space[0xFF40];
-	gpu.m_stat = mmu->gb_address_space[0xFF41];
-	gpu.m_verticalscroll = mmu->gb_address_space[0xFF42];
-	gpu.m_horitzontalscroll = mmu->gb_address_space[0xFF43];
-	gpu.m_scanline = mmu->gb_address_space[0xFF44];
+	ppu.m_lcdc = mmu->gb_address_space[0xFF40];
+	ppu.m_stat = mmu->gb_address_space[0xFF41];
+	ppu.m_verticalscroll = mmu->gb_address_space[0xFF42];
+	ppu.m_horitzontalscroll = mmu->gb_address_space[0xFF43];
+	ppu.m_scanline = mmu->gb_address_space[0xFF44];
 
 	// Set the current GPU Mode to HBLANK
-	gpu.m_lcdc = 0;
-	gpu.m_stat = M_GPU_HBLANK;
+	ppu.m_lcdc = 0;
+	ppu.m_stat = M_GPU_HBLANK;
 
 	// *Actually* set the values
-	gpu.m_scanline = 0;
-	gpu.m_verticalscroll = 0;
-	gpu.m_horitzontalscroll = 0;
+	ppu.m_scanline = 0;
+	ppu.m_verticalscroll = 0;
+	ppu.m_horitzontalscroll = 0;
 
 	// Setup Interrupts State
 	interrupts.m_master = 0;
@@ -293,5 +293,5 @@ void m_printregs()
 	}
 
 	printf("\033[1;35mCurrent CPU Ticks:\033[0m %lu\n", m_cpu_ticks);
-	printf("\033[1;35mCurrent GPU Ticks:\033[0m %lu\n", gpu.m_ticks);
+	printf("\033[1;35mCurrent GPU Ticks:\033[0m %lu\n", ppu.m_ticks);
 }

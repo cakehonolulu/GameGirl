@@ -110,7 +110,7 @@ int m_run_debugger()
 					prev_pc = PC;
 
 					m_exec();
-					m_gpu_step();
+					m_ppu_step();
 					m_interrupt_check();
 
 					m_printregs();

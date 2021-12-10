@@ -1,5 +1,5 @@
 #include <render.h>
-#include <gpu.h>
+#include <ppu.h>
 #include <mmu.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -11,7 +11,7 @@ extern SDL_Texture *m_texture;
 
 void m_sdl_draw_screen()
 {
-	SDL_UpdateTexture(m_texture, NULL, gpu.framebuffer, 160 * sizeof(uint32_t));
+	SDL_UpdateTexture(m_texture, NULL, ppu.framebuffer, 160 * sizeof(uint32_t));
 	SDL_RenderClear(m_renderer);
 	SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
 	SDL_RenderPresent(m_renderer);
@@ -19,12 +19,12 @@ void m_sdl_draw_screen()
 
 void m_render_sc()
 {
-	int mapOffset = (gpu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1c00 : 0x1800;
-	mapOffset += (((gpu.m_scanline + gpu.m_verticalscroll) & 255) >> 3) << 5;
+	int mapOffset = (ppu.m_lcdc & GPU_CONTROL_TILEMAP) ? 0x1c00 : 0x1800;
+	mapOffset += (((ppu.m_scanline + ppu.m_verticalscroll) & 255) >> 3) << 5;
 
-	uint8_t lineOffset = gpu.m_horitzontalscroll >> 3;
+	uint8_t lineOffset = ppu.m_horitzontalscroll >> 3;
 
-	uint8_t y = (gpu.m_scanline + gpu.m_verticalscroll) & 7;
+	uint8_t y = (ppu.m_scanline + ppu.m_verticalscroll) & 7;
 
 	int8_t tile;
 	uint32_t color;
@@ -33,8 +33,8 @@ void m_render_sc()
 	{
 		tile = (int8_t)mmu->gb_mmap.vram[mapOffset + lineOffset + (x / 8)];
 
-		color = gpu.colors[gpu.palette[gpu.tileset[tile][x % 8][y]]];
-		gpu.framebuffer[x + 160 * gpu.m_scanline] = color;
+		color = ppu.colors[ppu.palette[ppu.tileset[tile][x % 8][y]]];
+		ppu.framebuffer[x + 160 * ppu.m_scanline] = color;
 	}
 
 }

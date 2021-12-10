@@ -7,7 +7,7 @@
 #include <opcodes.h>
 #include <interrupts.h>
 #include <sys/time.h>
-#include <gpu.h>
+#include <ppu.h>
 
 // Init MMU
 gb_mmu_t *mmu;
@@ -258,7 +258,7 @@ int main(int argc, char **argv)
 	// Setup the texture trick that'll enable us to display emulator output
 	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 160, 144);
 	
-	m_gpu_init();
+	m_ppu_init();
 
 	while (true)
 	{
@@ -300,7 +300,7 @@ int main(int argc, char **argv)
 			m_exec();
 
 			// Execute the GPU Subsystem
-			m_gpu_step();
+			m_ppu_step();
 
 			// Execute the Interrupt Subsystem
 			m_interrupt_check();
@@ -325,13 +325,13 @@ int main(int argc, char **argv)
 		usleep(m_sleep);
 
 		// Update the SDL Texture only if LCDC's Display Enable Bit is on
-		if (gpu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen();
+		if (ppu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen();
 		
 		// Set CPU Ticks back to 0
 		m_cpu_ticks = 0;
 
 		// Set GPU Ticks back to 0
-		gpu.m_ticks = 0;
+		ppu.m_ticks = 0;
 		
 	}
 

@@ -1,6 +1,6 @@
 #include <mmu.h>
 #include <gamegirl.h>
-#include <gpu.h>
+#include <ppu.h>
 #include <interrupts.h>
 #include <limits.h>
 
@@ -142,23 +142,23 @@ uint8_t mmu_read_byte(uint16_t m_addr)
     }
     else if (m_addr == 0xFF40)
     {
-        return gpu.m_lcdc;
+        return ppu.m_lcdc;
     }
     else if (m_addr == 0xFF41)
     {
-        return gpu.m_stat;
+        return ppu.m_stat;
     }
     else if (m_addr == 0xFF42)
     {
-        return gpu.m_verticalscroll;
+        return ppu.m_verticalscroll;
     }
     else if (m_addr == 0xFF43)
     {
-        return gpu.m_horitzontalscroll;
+        return ppu.m_horitzontalscroll;
     }
     else if (m_addr == 0xFF44)
     {
-        return gpu.m_scanline;
+        return ppu.m_scanline;
     }
     else if (m_addr >= 0xFF00 && 0xFF7F >= m_addr)
     {
@@ -203,7 +203,7 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
         
         if(m_addr <= 0x97FF)
         {
-            m_gpu_update_tile(m_addr);
+            m_ppu_update_tile(m_addr);
         }
     }
     else if (m_addr >= 0xA000 && 0xBFFF >= m_addr)          // Cartridge RAM (If Exists) [0xA000 - 0xBFFF]
@@ -236,19 +236,19 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF40)
     {
-        return gpu.m_lcdc = m_data;
+        return ppu.m_lcdc = m_data;
     }
     else if (m_addr == 0xFF41)
     {
-        return gpu.m_stat = m_data;
+        return ppu.m_stat = m_data;
     }
     else if (m_addr == 0xFF42)
     {
-        return gpu.m_verticalscroll = m_data;
+        return ppu.m_verticalscroll = m_data;
     }
     else if (m_addr == 0xFF43)
     {
-        return gpu.m_horitzontalscroll = m_data;
+        return ppu.m_horitzontalscroll = m_data;
     }
     else if(m_addr == 0xff46)
     {
@@ -256,8 +256,8 @@ uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF47)
     {
-        m_gpu_update_palette(m_data);
-        return gpu.m_palette = m_data; // write only
+        m_ppu_update_palette(m_data);
+        return ppu.m_palette = m_data; // write only
     }
     else if (m_addr == 0xFF48)
     {
