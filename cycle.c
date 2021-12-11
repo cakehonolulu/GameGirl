@@ -111,28 +111,17 @@ void m_init_registers()
 		m_cpu_ticks = 0;
 	}
 
-	// Setup the PPU, point each GPU struct member to it's MMAP Addr.
-	ppu.m_lcdc = mmu->gb_address_space[0xFF40];
-	ppu.m_stat = mmu->gb_address_space[0xFF41];
-	ppu.m_verticalscroll = mmu->gb_address_space[0xFF42];
-	ppu.m_horitzontalscroll = mmu->gb_address_space[0xFF43];
-	ppu.m_scanline = mmu->gb_address_space[0xFF44];
+	// Setup the PPU
+	ppu.m_scanline = 0;
+	ppu.m_verticalscroll = 0;
+	ppu.m_horitzontalscroll = 0;
 
 	// Set the current GPU Mode to HBLANK
 	ppu.m_lcdc = 0;
 	ppu.m_stat = M_GPU_HBLANK;
 
-	// *Actually* set the values
-	ppu.m_scanline = 0;
-	ppu.m_verticalscroll = 0;
-	ppu.m_horitzontalscroll = 0;
-
-	// Setup Interrupts State
+	// Setup Interrupts State (Disable Interrupts and Clear Interrupt's Flags)
 	interrupts.m_master = 0;
-	interrupts.m_enabled = mmu->gb_mmap.intenable;
-	interrupts.m_flags = mmu->gb_address_space[0xFF0F];
-
-	// Disable Interrupts and Clear Interrupt's Flags
 	interrupts.m_enabled = 0;
 	interrupts.m_flags = 0;
 }
