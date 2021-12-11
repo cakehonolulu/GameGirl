@@ -60,8 +60,6 @@ void m_init_registers()
 		m_regs.m_flags.half = 0;
 		m_regs.m_flags.crry = 0;
 
-		m_cpu_ticks = 0;
-
 		WRITEB(0xFF05, 0);
 		WRITEB(0xFF06, 0);
 		WRITEB(0xFF07, 0);
@@ -107,9 +105,10 @@ void m_init_registers()
 		m_regs.m_flags.ngtv = 0;
 		m_regs.m_flags.half = 0;
 		m_regs.m_flags.crry = 0;
-
-		m_cpu_ticks = 0;
 	}
+
+	// Set the CPU Ticks to 0
+	m_cpu_ticks = 0;
 
 	// Setup the PPU
 	ppu.m_scanline = 0;
