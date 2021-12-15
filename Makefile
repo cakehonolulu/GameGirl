@@ -11,9 +11,9 @@ MINGW64 = x86_64-w64-mingw32-gcc-10-win32
 
 # Setup the basic compilation flags
 # Warn all, extra and compile for c2x
-CFLAGS := -Wall -Wextra -std=c2x -lm -Iinclude/
+CFLAGS := -Wall -Wextra -std=c2x -Iinclude/
 SDLFLAGS = `sdl2-config --cflags --libs`
-OPENGLFLAGS = -lGL
+LDFLAGS = -lm
 
 ifdef OPCODE_DEBUG
 CFLAGS += -DOPCODE_DEBUG
@@ -23,6 +23,9 @@ CFLAGS += -g
 endif
 ifdef FSANITIZE
 CFLAGS += -fsanitize=address
+endif
+ifdef OLD_COMPILER
+CFLAGS += -DPREC23
 endif
 
 ifdef WIN32
@@ -38,7 +41,7 @@ all: clean $(BINARY)
 $(BINARY): *.c
 	@echo "🚧 Building..."
 ifdef UNIX
-	$(CC) $(CFLAGS) $(SDLFLAGS) $^ -o $@ $(SDLFLAGS) $(OPENGLFLAGS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(SDLFLAGS) $^ -o $@ $(SDLFLAGS) $(LDFLAGS)
 endif
 ifdef WIN32
 	$(MINGW64) $(CFLAGS) -I$(Win32SDL2Headers) -L$(Win32SDL2Libs) $^ -o $@ -lmingw32 -lSDL2main -lSDL2
