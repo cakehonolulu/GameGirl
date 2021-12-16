@@ -15,16 +15,16 @@ CFLAGS := -Wall -Wextra -std=c2x -Iinclude/
 SDLFLAGS = `sdl2-config --cflags --libs`
 LDFLAGS = -lm
 
-ifdef OPCODE_DEBUG
+ifdef DBG_OPCODE
 CFLAGS += -DOPCODE_DEBUG
 endif
-ifdef DEBUG
+ifdef DGB
 CFLAGS += -g
 endif
-ifdef FSANITIZE
+ifdef ASAN
 CFLAGS += -fsanitize=address
 endif
-ifdef OLD_COMPILER
+ifdef PREC23
 CFLAGS += -DPREC23
 endif
 
