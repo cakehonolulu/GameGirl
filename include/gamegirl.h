@@ -108,25 +108,25 @@ extern gb_registers_t m_regs;
 
 // Flag register flags
 #ifdef PREC23
-#define ZERO 0b0111 // 7th bit
+#define ZERO 0x7 // 7th bit
 #else
 #define ZERO 4 // 4th bit
 #endif
 
 #ifdef PREC23
-#define NGTV 0b0110 // 6th bit
+#define NGTV 0x6 // 6th bit
 #else
 #define NGTV 3 // 3rd bit
 #endif
 
 #ifdef PREC23
-#define HALF 0b0101 // 5th bit
+#define HALF 0x5 // 5th bit
 #else
 #define HALF 2 // 2nd bit
 #endif
 
 #ifdef PREC23
-#define CRRY 0b0100 // 4th bit
+#define CRRY 0x4 // 4th bit
 #else
 #define CRRY 1 // 1st bit
 #endif

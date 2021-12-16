@@ -16,7 +16,11 @@ uint8_t increment(uint8_t m_register)
 		Mask the lower nibble of the register and
 		compare it with 0b00001111
 	*/
+#ifdef PREC23
+	if ((m_register & 0xF) == 0xF)
+#else
 	if ((m_register & 0b00001111) == 0b00001111)
+#endif
 	{
 		// Set the Half-Carry bit
 		FLAG_SET(HALF);
@@ -52,7 +56,11 @@ uint8_t increment(uint8_t m_register)
 uint8_t decrement(uint8_t m_register)
 {
 	// Check if we need to enable half-carry bit
+#ifdef PREC23
+	if (m_register & 0xF)
+#else
 	if (m_register & 0b00001111)
+#endif
 	{
 		// Clear the Half-Carry bit
 		FLAG_UNSET(HALF);
@@ -86,7 +94,11 @@ uint8_t addition(uint8_t *m_register, uint8_t m_value)
 {
 	uint32_t m_result = *m_register + m_value;
 
+#ifdef PREC23
+	if (m_result & 0xF0)
+#else
 	if (m_result & 0b11110000)
+#endif
 	{
 		FLAG_SET(CRRY);
 	}

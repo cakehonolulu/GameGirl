@@ -506,7 +506,11 @@ void m_rla()
 
 	uint8_t carry = FLAG_CHECK(CRRY) ? 1 : 0;
 
+#ifdef PREC23
+	if (A & 0x40)
+#else
 	if (A & 0b1000000)
+#endif
 	{
 		FLAG_SET(CRRY);
 	} else {
@@ -1007,7 +1011,11 @@ void m_sub_b()
 		FLAG_UNSET(CRRY);
 	}
 	
+#ifdef PREC23
+	if ((B & 0xF) > (A & 0xF))
+#else
 	if ((B & 0b00001111) > (A & 0b00001111))
+#endif
 	{
 		FLAG_SET(HALF);
 	} else {
@@ -1109,7 +1117,11 @@ void m_cp_hl()
 		FLAG_UNSET(CRRY);
 	}
 
+#ifdef PREC23
+	if ((READB(HL) & 0xF) > (A & 0xF))
+#else
 	if ((READB(HL) & 0b00001111) > (A & 0b00001111))
+#endif
 	{
 		FLAG_SET(HALF);
 	} else {
@@ -1434,7 +1446,11 @@ void m_cp_d8(uint8_t m_d8)
 		FLAG_UNSET(CRRY);
 	}
 
+#ifdef PREC23
+	if ((m_d8 & 0xF) > (A & 0xF))
+#else
 	if ((m_d8 & 0b00001111) > (A & 0b00001111))
+#endif
 	{
 		FLAG_SET(HALF);
 	} else {
