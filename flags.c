@@ -1,5 +1,6 @@
 #include <gamegirl.h>
 
+#ifndef PREC23
 // Flag set-unset-check macros
 void flag_set(uint8_t m_flag)
 {
@@ -71,3 +72,4 @@ uint8_t flag_check(uint8_t m_flag)
 			break;
 	}
 }
+#endif

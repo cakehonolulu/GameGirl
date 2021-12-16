@@ -1,5 +1,6 @@
 #include <stdint.h>
 
+#ifdef PREC23
 /*
 	Intended use for byte-sized variables (uint8_t)
 */
@@ -11,3 +12,4 @@
 
 // Checks [in]'s bit state
 #define BIT_CHECK(in, bit) ((in & (1 << bit)))
+#endif

@@ -12,12 +12,14 @@
 
 #define GB_BOOTROM_SZ 0x100
 
+#ifndef PREC23
 struct m_gb_flags {
 	unsigned _BitInt(1) zero;
 	unsigned _BitInt(1) ngtv;
 	unsigned _BitInt(1) half;
 	unsigned _BitInt(1) crry;
 };
+#endif
 
 typedef struct gb_registers {
 	struct {
@@ -63,7 +65,11 @@ typedef struct gb_registers {
 	uint16_t sp;
 	uint16_t pc;
 
+#ifdef PREC23
+	uint8_t flags;
+#else
 	struct m_gb_flags m_flags;
+#endif
 
 	bool isUnimplemented;
 } gb_registers_t;
@@ -101,14 +107,47 @@ extern gb_registers_t m_regs;
 #define FLAGS (m_regs.flags)
 
 // Flag register flags
+#ifdef PREC23
+#define ZERO 0b0111 // 7th bit
+#else
 #define ZERO 4 // 4th bit
+#endif
+
+#ifdef PREC23
+#define NGTV 0b0110 // 6th bit
+#else
 #define NGTV 3 // 3rd bit
+#endif
+
+#ifdef PREC23
+#define HALF 0b0101 // 5th bit
+#else
 #define HALF 2 // 2nd bit
+#endif
+
+#ifdef PREC23
+#define CRRY 0b0100 // 4th bit
+#else
 #define CRRY 1 // 1st bit
+#endif
 
 // Flag set-unset-check macros
+#ifdef PREC23
+#define FLAG_SET(bit) BIT_SET(FLAGS, bit)
+#else
 #define FLAG_SET(flag) flag_set(flag)
+#endif
+
+#ifdef PREC23
+#define FLAG_UNSET(bit) BIT_UNSET(FLAGS, bit)
+#else
 #define FLAG_UNSET(flag) flag_unset(flag)
+#endif
+
+#ifdef PREC23
+#define FLAG_CHECK(bit) BIT_CHECK(FLAGS, bit)
+#else
 #define FLAG_CHECK(flag) flag_check(flag)
+#endif
 
 #endif
