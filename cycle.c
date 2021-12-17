@@ -162,7 +162,7 @@ uint8_t m_opcode;
 uint8_t m_boperand;
 uint16_t m_woperand;
 
-void m_exec()
+size_t m_exec()
 {
 	m_opcode = m_fetch();
 
@@ -227,8 +227,10 @@ void m_exec()
 	if (m_opcode == 0xCB)
 	{
 		m_cpu_ticks += m_ticks_by_cbopcode[m_fetchopbyte()];
+		return m_ticks_by_cbopcode[m_fetchopbyte()];
 	} else {
 		m_cpu_ticks += m_ticks_by_opcode[m_opcode];
+		return m_ticks_by_opcode[m_opcode];
 	}
 	
 }

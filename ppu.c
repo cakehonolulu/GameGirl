@@ -1,8 +1,6 @@
 #include <ppu.h>
 #include <interrupts.h>
 
-static uint64_t m_ppu_elapsed_ticks = 0;
-
 m_ppu_t ppu;
 
 void m_ppu_init()
@@ -28,12 +26,10 @@ void m_ppu_update_palette(uint8_t m_data)
 	ppu.palette[0] = (m_data & 0x03);
 }
 
-void m_ppu_step()
+void m_ppu_step(size_t m_cycles)
 {
-	ppu.m_ticks += m_cpu_ticks;// - m_ppu_elapsed_ticks;
+	ppu.m_ticks += m_cycles;
 	
-	//m_ppu_elapsed_ticks = m_cpu_ticks;
-
 	switch (ppu.m_stat)
 	{
 		case M_GPU_HBLANK:
