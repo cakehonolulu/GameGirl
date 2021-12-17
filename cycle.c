@@ -226,10 +226,12 @@ size_t m_exec()
 
 	if (m_opcode == 0xCB)
 	{
-		m_cpu_ticks += m_ticks_by_cbopcode[m_fetchopbyte()];
+		if (!m_speedhack) { m_cpu_ticks += m_ticks_by_cbopcode[m_fetchopbyte()]; } else { m_cpu_ticks = m_ticks_by_cbopcode[m_fetchopbyte()]; }
 		return m_ticks_by_cbopcode[m_fetchopbyte()];
-	} else {
-		m_cpu_ticks += m_ticks_by_opcode[m_opcode];
+	}
+	else
+	{
+		if (!m_speedhack) { m_cpu_ticks += m_ticks_by_opcode[m_opcode]; } else { m_cpu_ticks = m_ticks_by_opcode[m_opcode]; }
 		return m_ticks_by_opcode[m_opcode];
 	}
 	

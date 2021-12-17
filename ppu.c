@@ -1,5 +1,6 @@
 #include <ppu.h>
 #include <interrupts.h>
+#include <gamegirl.h>
 
 m_ppu_t ppu;
 
@@ -39,6 +40,7 @@ void m_ppu_step(size_t m_cycles)
 
 				if (ppu.m_scanline == 143)
 				{
+					if (m_speedhack) { if (ppu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen(); }
 					/*if (interrupts.m_enabled & INT_VBLANK)
 					{
 						interrupts.m_flags |= INT_VBLANK;*/

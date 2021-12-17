@@ -150,4 +150,6 @@ extern gb_registers_t m_regs;
 #define FLAG_CHECK(flag) flag_check(flag)
 #endif
 
+extern bool m_speedhack;
+
 #endif
