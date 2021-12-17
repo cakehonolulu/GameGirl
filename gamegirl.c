@@ -54,79 +54,71 @@ int main(int argc, char **argv)
 	// Declare a char pointer with the names of the filenames to load
 	[[maybe_unused]] const char *m_bootromname = NULL;
 	[[maybe_unused]] const char *m_programname = NULL;
-
-	// Declare booleans to check if we found the programs
-	[[maybe_unused]] bool m_foundbootrom = false;
-	[[maybe_unused]] bool m_foundprogram = false;
 #endif
 
 	uint32_t m_breakpoint = 0xFFFFFFFF;
 
 #ifdef __unix__
-	for (int i = 1; i < argc; i++)
+	for (size_t m_args = 1; m_args < argc; m_args++)
 	{
-		if (m_foundbootrom != true || m_foundprogram != true)
+		if (!strcmp(argv[m_args], "-bootrom"))
 		{
-			if ((strstr(argv[i], ".gb") != NULL) || (strstr(argv[i], ".rom") != NULL))
+			if ((strstr(argv[m_args + 1], ".bin") != NULL))
 			{
-				m_programname = argv[i];
-				m_foundprogram = true;
-				printf("ROM File: %s\n", m_programname);
+				m_bootromname = argv[m_args + 1];
+				printf("BootROM File: %s\n", m_bootromname);
+				m_args++;
 			}
 			else
-			if (strstr(argv[i], ".bin") != NULL)
 			{
-				m_bootromname = argv[i];
-				m_foundbootrom = true;
-				printf("BootROM File: %s\n", m_bootromname);
+				printf("BootROM File Extension not Supported!\n");
+				printf("Valid Format: .bin\n");
+				exit(EXIT_FAILURE);
+			}
+		}
+		else
+		if (!strcmp(argv[m_args], "-rom"))
+		{
+			if ((strstr(argv[m_args + 1], ".gb") != NULL) || (strstr(argv[m_args + 1], ".rom") != NULL))
+			{
+				m_programname = argv[m_args + 1];
+				printf("ROM File: %s\n", m_programname);
+				m_args++;
+			}
+			else
+			{
+				printf("ROM File Extension not Supported!\n");
+				printf("Valid Formats: .gb .rom\n");
+				exit(EXIT_FAILURE);
+			}
+		}
+		else
+		if (!strcmp(argv[m_args], "-break"))
+		{
+			if (strstr(argv[m_args + 1], "0x") != NULL)
+			{
+				m_breakpoint = strtol(argv[m_args + 1], NULL, 0);
+				printf("Breakpoint set at: $%02X\n", m_breakpoint);
+				m_args++;
+			}
+			else
+			{
+				printf("Invalid Breakpoint Declaration!\n");
+				printf("Valid example: 0x4213\n");
+				exit(EXIT_FAILURE);
 			}
 		}
 		else
 		{
-			if (m_foundbootrom == true)
-			{
-				if (argc < 4 && m_foundprogram != true)
-				{
-					uint32_t conv = strtol(argv[2], NULL, 0);
-
-					m_breakpoint = conv;
-
-					printf("0x%02X\n", m_breakpoint);
-				}
-				else
-				if (argc < 5 && m_foundprogram == true)
-				{
-					uint32_t conv = strtol(argv[3], NULL, 0);
-
-					m_breakpoint = conv;
-
-					printf("0x%02X\n", m_breakpoint);
-				}
-			}
-			else
-			if (m_foundbootrom != true && m_foundprogram == true)
-			{
-				if (argc < 3 && m_foundbootrom != true)
-				{
-					uint32_t conv = strtol(argv[2], NULL, 0);
-
-					m_breakpoint = conv;
-
-					printf("0x%02X\n", m_breakpoint);
-				}
-			}
-			else
-			{
-				printf("Unknown argument: %s\n", argv[i]);
-				exit(EXIT_FAILURE);
-			}
+			printf("Unknown argument: %s\n", argv[m_args]);
+			exit(EXIT_FAILURE);
 		}
 	}
 
 	// 0xFF50 Controls whether the BootROM is mapped (0x0) or not (0x1)
 	mmu->m_in_bootrom = mmu->gb_address_space[0xFF50];
 
-	if (m_foundbootrom)
+	if (m_bootromname)
 	{
 #endif
 		FILE *m_bootrom;
@@ -175,13 +167,13 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		printf("No BootROM!\n");
+		printf("BootROM-less booting\n");
 		mmu->m_in_bootrom = 0x1;
 	}
 #endif
 
 #ifdef __unix__
-	if (m_foundprogram)
+	if (m_programname)
 	{
 #endif
 		FILE *m_romfile;
