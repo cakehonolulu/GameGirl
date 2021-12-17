@@ -46,7 +46,7 @@ const uint8_t m_ticks_by_cbopcode[256] = {
 void m_init_registers()
 {
 	// If BootROM isn't loaded, bootstrap manually into cart area
-	if (mmu->m_in_bootrom)
+	if (!mmu->m_in_bootrom)
 	{
 		PC = 0x100;
 		AF = 0x01B0;
@@ -127,9 +127,9 @@ void m_init_registers()
 
 uint8_t m_fetch()
 {
-	if (!mmu->m_in_bootrom && PC >= 0xFF)
+	if (mmu->m_in_bootrom && PC >= 0xFF)
 	{
-		mmu->m_in_bootrom = 0x1;
+		mmu->m_in_bootrom = 0;
 	}
 
 	return (uint8_t) READB(PC);

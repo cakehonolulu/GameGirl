@@ -115,9 +115,6 @@ int main(int argc, char **argv)
 		}
 	}
 
-	// 0xFF50 Controls whether the BootROM is mapped (0x0) or not (0x1)
-	mmu->m_in_bootrom = mmu->gb_address_space[0xFF50];
-
 	if (m_bootromname)
 	{
 #endif
@@ -132,7 +129,7 @@ int main(int argc, char **argv)
 #endif
 
 		// Check if the file has been opened
-		if(m_bootrom == NULL)
+		if (m_bootrom == NULL)
 		{
 			printf("Could not open the BootROM file, exiting...\n");
 			return EXIT_FAILURE;
@@ -163,12 +160,14 @@ int main(int argc, char **argv)
 		
 		// Load Bootrom
 		m_load_bootrom(m_bootrom_buf);
+
+		mmu->m_in_bootrom = 1;
 #ifdef __unix__
 	}
 	else
 	{
 		printf("BootROM-less booting\n");
-		mmu->m_in_bootrom = 0x1;
+		mmu->m_in_bootrom = 0;
 	}
 #endif
 
@@ -187,7 +186,7 @@ int main(int argc, char **argv)
 #endif
 
 		// Check if the file has been opened
-		if(m_romfile == NULL)
+		if (m_romfile == NULL)
 		{
 			printf("Could not open the ROM File, exiting...\n");
 			return EXIT_FAILURE;
@@ -263,7 +262,6 @@ int main(int argc, char **argv)
 				goto exit;
 			}
 		}
-
 
 		// Start of operation
 		gettimeofday(&t1, NULL);
