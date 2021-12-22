@@ -1,30 +1,26 @@
 # GameGirl
 <p align="center">
-  <img src="resources/icon.png" style="height: 150px; width: 150px"/>
+  <img src="resources/banner.png"/>
 </p>
 
-## GameGirl is a C2X, SDL2-Driven GameBoy (DMG-01) emulator
+`GameGirl` is a GameBoy (DMG-01) emulator written in C.
 
-###
+It's prupose is to serve as a low-level learning experience for me.
+
+## Features
+* DMG-01 CPU Implementation (4.194304 MHz, 8-bit Sharp LR35902) -> 💖💖🖤🖤🖤🖤🖤🖤🖤🖤 (10%)
+* DMG-01 PPU Implementation 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -> 💖💖🖤🖤🖤🖤🖤🖤🖤🖤 (10%)
+* BootROM emulation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -> 💖💖💖💖💖💖💖💖💖💖 (100%)
+
+Cart-less boot | Inserted cart boot
+:-------------------------:|:-------------------------:
+<img src="resources/bromnocart.gif" width="400"> | <img src="resources/bromcart.gif" width="400">
+
+### Interesting development facts
 51 Instructions needed to be implemented to execute DMG-01's BootROM until the end (Infinite Loop)
 
-### BootROM Rendering Development Phases
-* Multiple bugs around the source, didn't entirely grasp the draw concepts
+### Credits
+Logo Font: Yoster Island Font made by codeman38
 
-![First Try](resources/brom1.png)
-
-* Multiple bugs related to offset calculation, basic LCY & WindowX understanding
-
-![Second Try](resources/brom2.png)
-
-* Tilemap and tiledata selection bugs, I got this pretty funny bug
-
-![Third Try](resources/bromfunnybug.gif)
-
-* First working version of the tile mechanism, looks as expected but contains a few hacks
-
-![Fourth Try](resources/bromw.gif)
-
-* Good working no-cart and cart BootROM Loading, Switched over to Texture Rendering, deprecated OpenGL DrawPixel rendering, fixed bugs in Opcode implementations
-
-![No Cart](resources/bromnocart.gif) ![Inserted Cart](resources/bromcart.gif)
+Emulator and Logo Palette: WildLeoKnight Gameboy Palettes Set
