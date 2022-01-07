@@ -102,12 +102,12 @@ void m_ppu_update_tile(uint16_t m_addr)
 {
 	m_addr &= 0x1FFE;
 
-	uint16_t tile = (m_addr >> 4) & 511;
+	uint16_t tile = (m_addr >> 4) & 383;
 
 	uint16_t y = (m_addr >> 1) & 7;
 
 	uint8_t bitIndex;
-	
+
 	for (int x = 0; x < 8; x++)
 	{
 		bitIndex = 1 << (7 - x);

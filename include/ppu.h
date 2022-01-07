@@ -36,7 +36,7 @@ typedef struct ppu_t
 	uint32_t colors[4];
 	uint8_t palette[4];
 
-	uint8_t tileset[0x200][8][8];
+	uint8_t tileset[0x180][8][8];
 
     uint32_t framebuffer[160 * 144];
 
