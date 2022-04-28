@@ -2,6 +2,7 @@
 #include <gamegirl.h>
 #include <opcodes.h>
 #include <cb_opcodes.h>
+#include <ppu.h>
 
 SDL_Event m_dbgevent;
 

@@ -1,6 +1,7 @@
 #include <ppu.h>
 #include <interrupts.h>
 #include <gamegirl.h>
+#include <render.h>
 
 m_ppu_t ppu;
 
