@@ -9,3 +9,5 @@ gamegirl
 
 # BIN Files
 *.bin
+
+.vscode
