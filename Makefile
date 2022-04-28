@@ -26,6 +26,8 @@ CFLAGS += -fsanitize=address
 endif
 ifdef PREC23
 CFLAGS += -DPREC23
+else
+CFLAGS += -std=c2x
 endif
 
 ifdef WIN32

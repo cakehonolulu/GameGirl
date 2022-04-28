@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 {
 	printf("GameGirl - A C-21 Multiplatform Game Boy Emulator\n");
 
-#if defined __unix__ ||defined  __APPLE__
+#if defined (__unix__) || defined (__APPLE__)
 	if (argc < 2)
 	{
 		printf("Usage: ./gamegirl [bootrom] [progname]\n");
@@ -52,12 +52,15 @@ int main(int argc, char **argv)
 	// Init Address Space
 	m_init_address_space();
 
+#if defined (__unix__) || defined (__APPLE__)
 	// Declare a char pointer with the names of the filenames to load
-	const char *m_bootromname = NULL;
-	const char *m_programname = NULL;
+	__attribute__((unused)) const char *m_bootromname = NULL;
+	__attribute__((unused)) const char *m_programname = NULL;
+#endif
 
 	uint32_t m_breakpoint = 0xFFFFFFFF;
 
+#if defined (__unix__) || defined (__APPLE__)
 	for (size_t m_args = 1; m_args < argc; m_args++)
 	{
 		if (!strcmp(argv[m_args], "-bootrom"))
@@ -122,9 +125,12 @@ int main(int argc, char **argv)
 
 	if (m_bootromname)
 	{
+#endif
 		FILE *m_bootrom;
 
+#if defined (__unix__) || defined (__APPLE__)
 		m_bootrom = fopen(m_bootromname, "rb");
+#endif
 
 #ifdef WIN32
 		m_bootrom = fopen("bootrom.bin", "rb");
@@ -164,18 +170,24 @@ int main(int argc, char **argv)
 		m_load_bootrom(m_bootrom_buf);
 
 		mmu->m_in_bootrom = 1;
+#if defined (__unix__) || defined (__APPLE__)
 	}
 	else
 	{
 		printf("BootROM-less booting\n");
 		mmu->m_in_bootrom = 0;
 	}
+#endif
 
+#if defined (__unix__) || defined (__APPLE__)
 	if (m_programname)
 	{
+#endif
 		FILE *m_romfile;
 
+#if defined (__unix__) || defined (__APPLE__)
 		m_romfile = fopen(m_programname, "rb");
+#endif
 
 #ifdef WIN32
 		m_romfile = fopen("tetris.gb", "rb");
@@ -212,7 +224,9 @@ int main(int argc, char **argv)
 		printf("ROM size: %d bytes\n", (unsigned int) m_romsz);
 
 		m_load_rom(m_rom_buf, m_romsz);
+#if defined (__unix__) || defined (__APPLE__)
 	}
+#endif
 
 	// Initialize Registers
 	m_init_registers();

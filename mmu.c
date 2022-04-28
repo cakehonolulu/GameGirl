@@ -44,7 +44,7 @@ void mmu_halt()
 }
 
 // Unsafe Option (DMA, no MMU Processing at all)
-uint8_t mmu_read_addr8(uint16_t m_addr)
+uint8_t mmu_read_addr8(uint16_t m_addr) __attribute__((deprecated("Unsafe Option", "mmu_read_byte")))
 {
 #pragma GCC diagnostic ignored "-Wtype-limits"
 	if (m_addr >= 0x00 && m_addr <= UCHAR_MAX)
@@ -57,13 +57,13 @@ uint8_t mmu_read_addr8(uint16_t m_addr)
 }
 
 // Unsafe Option (DMA, no MMU Processing at all)
-void mmu_write_addr8(uint16_t m_addr, uint8_t m_data)
+void mmu_write_addr8(uint16_t m_addr, uint8_t m_data) __attribute__((deprecated("Unsafe Option", "mmu_write_byte")))
 {	
 	mmu->gb_address_space[m_addr] = m_data;
 }
 
 // Unsafe Option (DMA, no MMU Processing at all)
-uint16_t mmu_read_addr16(uint16_t m_addr)
+uint16_t mmu_read_addr16(uint16_t m_addr) __attribute__((deprecated("Unsafe Option", "mmu_read_byte")))
 {
 #pragma GCC diagnostic ignored "-Wtype-limits"
 	if (m_addr >= 0x00 && m_addr <= UCHAR_MAX)
@@ -76,7 +76,7 @@ uint16_t mmu_read_addr16(uint16_t m_addr)
 }
 
 // Unsafe Option (DMA, no MMU Processing at all)
-void mmu_write_addr16(uint16_t m_addr, uint16_t m_data)
+void mmu_write_addr16(uint16_t m_addr, uint16_t m_data) __attribute__((deprecated("Unsafe Option", "mmu_write_byte")))
 {
 	uint16_t *m_pos = ((uint16_t*)(mmu->gb_address_space + m_addr));
 	*m_pos = m_data;
