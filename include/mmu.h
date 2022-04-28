@@ -4,7 +4,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stddef.h>
+#ifdef PREC23
 #include <stdbool.h>
+#endif
 #include <string.h>
 
 // GameBoy's Bootrom Size is 256 bytes
@@ -47,7 +49,7 @@ typedef struct gb_mmu
 				$FF80-$FFFE	Zero Page - 127 bytes
 				$FFFF		Interrupt Enable Flag
 			*/
-			uint8_t gb_address_space[2^16];
+			uint8_t gb_address_space[1 << 16];
 
 			struct
 			{

@@ -44,9 +44,9 @@ void mmu_halt()
 }
 
 // Unsafe Option (DMA, no MMU Processing at all)
-uint8_t mmu_read_addr8(uint16_t m_addr) __attribute__((deprecated("Unsafe Option", "mmu_read_byte")))
+__attribute__((deprecated("Unsafe Option", "mmu_read_byte"))) uint8_t mmu_read_addr8(uint16_t m_addr)
 {
-#pragma GCC diagnostic ignored "-Wtype-limits"
+#pragma GCC diagnostic push "-Wtype-limits"
 	if (m_addr >= 0x00 && m_addr <= UCHAR_MAX)
     {
 		return mmu->gb_bootrom[m_addr];
@@ -57,15 +57,15 @@ uint8_t mmu_read_addr8(uint16_t m_addr) __attribute__((deprecated("Unsafe Option
 }
 
 // Unsafe Option (DMA, no MMU Processing at all)
-void mmu_write_addr8(uint16_t m_addr, uint8_t m_data) __attribute__((deprecated("Unsafe Option", "mmu_write_byte")))
+__attribute__((deprecated("Unsafe Option", "mmu_write_byte"))) void mmu_write_addr8(uint16_t m_addr, uint8_t m_data)
 {	
 	mmu->gb_address_space[m_addr] = m_data;
 }
 
 // Unsafe Option (DMA, no MMU Processing at all)
-uint16_t mmu_read_addr16(uint16_t m_addr) __attribute__((deprecated("Unsafe Option", "mmu_read_byte")))
+__attribute__((deprecated("Unsafe Option", "mmu_read_byte"))) uint16_t mmu_read_addr16(uint16_t m_addr)
 {
-#pragma GCC diagnostic ignored "-Wtype-limits"
+#pragma GCC diagnostic push "-Wtype-limits"
 	if (m_addr >= 0x00 && m_addr <= UCHAR_MAX)
     {
 		return *((uint16_t*)(mmu->gb_bootrom + m_addr));
@@ -76,7 +76,7 @@ uint16_t mmu_read_addr16(uint16_t m_addr) __attribute__((deprecated("Unsafe Opti
 }
 
 // Unsafe Option (DMA, no MMU Processing at all)
-void mmu_write_addr16(uint16_t m_addr, uint16_t m_data) __attribute__((deprecated("Unsafe Option", "mmu_write_byte")))
+__attribute__((deprecated("Unsafe Option", "mmu_write_byte"))) void mmu_write_addr16(uint16_t m_addr, uint16_t m_data)
 {
 	uint16_t *m_pos = ((uint16_t*)(mmu->gb_address_space + m_addr));
 	*m_pos = m_data;
@@ -85,7 +85,7 @@ void mmu_write_addr16(uint16_t m_addr, uint16_t m_data) __attribute__((deprecate
 // Safe Option, goes through MMU
 uint8_t mmu_read_byte(uint16_t m_addr)
 {
-#pragma GCC diagnostic ignored "-Wtype-limits"
+#pragma GCC diagnostic push "-Wtype-limits"
     // While on BootROM, 0x00 -> 0xFF are R/O
     if (mmu->m_in_bootrom && m_addr >= 0x00 && m_addr <= 0xFF)
         return mmu->gb_bootrom[m_addr];
@@ -182,7 +182,7 @@ int i = 0;
 // Safe Option, goes through MMU
 uint8_t mmu_write_byte(uint16_t m_addr, uint8_t m_data)
 {
-#pragma GCC diagnostic ignored "-Wtype-limits"
+#pragma GCC diagnostic push "-Wtype-limits"
     // While on BootROM, 0x00 -> 0xFF are R/O
     if (mmu->m_in_bootrom && m_addr >= 0x00 && m_addr <= 0xFF)
         return 0;

@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stddef.h>
 
 extern uint64_t m_cpu_ticks;
 
@@ -45,7 +46,7 @@ typedef struct ppu_t
 
 extern m_ppu_t ppu;
 
-void m_ppu_step();
+void m_ppu_step(size_t m_cycles);
 void m_ppu_update_palette(uint8_t m_data);
 void m_ppu_update_tile(uint16_t m_addr);
 void m_ppu_init();

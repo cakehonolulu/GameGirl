@@ -4,8 +4,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#ifdef PREC23
 #include <stdbool.h>
+#endif
 #include <mmu.h>
+#include <flags.h>
 #include <bit/bits.h>
 
 #define GB_INITIAL_PC 0x0000

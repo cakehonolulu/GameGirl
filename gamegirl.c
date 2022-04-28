@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	uint32_t m_breakpoint = 0xFFFFFFFF;
 
 #if defined (__unix__) || defined (__APPLE__)
-	for (size_t m_args = 1; m_args < argc; m_args++)
+	for (int m_args = 1; m_args < argc; m_args++)
 	{
 		if (!strcmp(argv[m_args], "-bootrom"))
 		{

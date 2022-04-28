@@ -152,4 +152,6 @@ uint8_t or(uint8_t m_register)
 	FLAG_UNSET(NGTV);
 	FLAG_UNSET(HALF);
 #endif
+
+	return m_register;
 }

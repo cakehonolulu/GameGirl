@@ -71,5 +71,8 @@ uint8_t flag_check(uint8_t m_flag)
 		default:
 			break;
 	}
+
+	// Error?
+	return 9;
 }
 #endif

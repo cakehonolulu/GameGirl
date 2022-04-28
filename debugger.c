@@ -110,8 +110,8 @@ int m_run_debugger()
 
 					prev_pc = PC;
 
-					m_exec();
-					m_ppu_step();
+					size_t m_cycles = m_exec();
+					m_ppu_step(m_cycles);
 					m_interrupt_check();
 
 					m_printregs();
