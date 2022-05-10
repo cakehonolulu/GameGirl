@@ -259,7 +259,7 @@ const struct m_sharp_lr35902_instr_cb m_gb_instr_cb[256] = {
 	{NULL, NULL}                           	// 0x00
 };
 
-void m_cb_ext(uint8_t cb_instr)
+void m_cb_ext(m_dmg_t *m_dmg, uint8_t cb_instr)
 {
 #ifdef OPCODE_DEBUG
 	printf("CB Mode Instr!\n");
@@ -270,10 +270,10 @@ void m_cb_ext(uint8_t cb_instr)
 	if (m_gb_instr_cb[cb_instr].m_funct == NULL)
 	{
 		printf("Unimplemented Opcode: 0xCB%02X\n", cb_instr);
-		m_printregs();
+		m_printregs(m_dmg);
 		exit(EXIT_FAILURE);
 	} else {
-		((void (*)(void))m_gb_instr_cb[cb_instr].m_funct)();
+		((void (*)(m_dmg_t *m_dmg))m_gb_instr_cb[cb_instr].m_funct)(m_dmg);
 	}
 }
 
@@ -290,7 +290,7 @@ void m_cb_ext(uint8_t cb_instr)
 	for the rest of the register. The previous contents of the carry
 	(CY) flag are copied to bit 0 of register C.
 */
-void m_rl_c()
+void m_rl_c(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mRL C\033[1;0m\n");
@@ -329,7 +329,7 @@ void m_rl_c()
 	Copy the complement of the contents of bit 7 in register H
 	to the Z flag of the program status word (PSW).
 */
-void m_bit_7_h()
+void m_bit_7_h(m_dmg_t *m_dmg)
 {
 	if (BIT_CHECK(H, 7))
 	{

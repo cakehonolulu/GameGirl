@@ -268,7 +268,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 
 	Only advances the program counter by 1. Performs no other operations that would have an effect.
 */
-void m_nop()
+void m_nop(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mNOP\033[1;0m\n");
@@ -287,7 +287,7 @@ void m_nop()
 	The first byte of immediate data is the lower byte (i.e., bits 0-7),
 	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
 */
-void m_ld_bc_d16(uint16_t m_d16)
+void m_ld_bc_d16(m_dmg_t *m_dmg, uint16_t m_d16)
 {
 	BC = m_d16;
 	PC += 3;
@@ -301,10 +301,10 @@ void m_ld_bc_d16(uint16_t m_d16)
 
 	Increment the contents of register B by 1.
 */
-void m_inc_b()
+void m_inc_b(m_dmg_t *m_dmg)
 {
 	// Increment B by 1
-	INC(B);
+	INC(B_REG);
 
 	// Increment program counter by 1 (Byte)
 	PC++;
@@ -318,14 +318,14 @@ void m_inc_b()
 
 	Decrement the contents of register B by 1.
 */
-void m_dec_b()
+void m_dec_b(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mDEC B\033[1;0m\n");
 #endif
 	
 	// Decrement B register by 1
-	DEC(B);
+	DEC(B_REG);
 
 	PC++;
 }
@@ -338,13 +338,13 @@ void m_dec_b()
 
 	Load the 8-bit immediate operand d8 into register B.
 */
-void m_ld_b_d8(uint8_t m_d8)
+void m_ld_b_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD B, $%04X\033[1;0m\n", m_d8);
 #endif
 
-	B = m_d8;
+	B_REG = m_d8;
 	PC += 2;
 }
 
@@ -356,7 +356,7 @@ void m_ld_b_d8(uint8_t m_d8)
 
 	Decrement the contents of register pair BC by 1.
 */
-void m_dec_bc()
+void m_dec_bc(m_dmg_t *m_dmg)
 {
 	BC--;
 	PC++;
@@ -370,7 +370,7 @@ void m_dec_bc()
 
 	Increment the contents of register C by 1.
 */
-void m_inc_c()
+void m_inc_c(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mINC C\033[1;0m\n");
@@ -390,7 +390,7 @@ void m_inc_c()
 
 	Increment the contents of register C by 1.
 */
-void m_dec_c()
+void m_dec_c(m_dmg_t *m_dmg)
 {
 	// Decrement C register by 1
 	DEC(C);
@@ -406,7 +406,7 @@ void m_dec_c()
 
 	Load the 8-bit immediate operand d8 into register C.
 */
-void m_ld_c_d8(uint8_t m_d8)
+void m_ld_c_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (C), $%04X\033[1;0m\n", m_d8);
@@ -427,7 +427,7 @@ void m_ld_c_d8(uint8_t m_d8)
 	The first byte of immediate data is the lower byte (i.e., bits 0-7),
 	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
 */
-void m_ld_de_d16(uint16_t m_d16)
+void m_ld_de_d16(m_dmg_t *m_dmg, uint16_t m_d16)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD DE, $%04X\033[1;0m\n", m_d16);
@@ -446,7 +446,7 @@ void m_ld_de_d16(uint16_t m_d16)
 
 	Increment the contents of register pair DE by 1.
 */
-void m_inc_de()
+void m_inc_de(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mINC DE\033[1;0m\n");
@@ -464,7 +464,7 @@ void m_inc_de()
 	
 	Decrement the contents of register D by 1.
 */
-void m_dec_d()
+void m_dec_d(m_dmg_t *m_dmg)
 {
 	// Decrement D register by 1
 	DEC(D);
@@ -480,7 +480,7 @@ void m_dec_d()
 	
 	Load the 8-bit immediate operand d8 into register D.
 */
-void m_ld_d_d8(uint8_t m_d8)
+void m_ld_d_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 	D = m_d8;
 	PC += 2;
@@ -498,7 +498,7 @@ void m_ld_d_d8(uint8_t m_d8)
 	The same operation is repeated in sequence for the rest of the register.
 	The previous contents of the carry flag are copied to bit 0.
 */
-void m_rla()
+void m_rla(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mRLA\033[1;0m\n");
@@ -507,9 +507,9 @@ void m_rla()
 	uint8_t carry = FLAG_CHECK(CRRY) ? 1 : 0;
 
 #ifdef PREC23
-	if (A & 0x40)
+	if (A_REG & 0x40)
 #else
-	if (A & 0b1000000)
+	if (A_REG & 0b1000000)
 #endif
 	{
 		FLAG_SET(CRRY);
@@ -517,8 +517,8 @@ void m_rla()
 		FLAG_UNSET(CRRY);
 	}
 
-	A <<= 1;
-	A += carry;
+	A_REG <<= 1;
+	A_REG += carry;
 	
 	FLAG_UNSET(NGTV);
 	FLAG_UNSET(ZERO);
@@ -535,7 +535,7 @@ void m_rla()
 
 	Jump s8 steps from the current address in the program counter (PC). (Jump relative.)
 */
-void m_jr_s8(int8_t m_s8)
+void m_jr_s8(m_dmg_t *m_dmg, int8_t m_s8)
 {
 	PC += 2;
 	PC += (int8_t) m_s8;
@@ -549,12 +549,12 @@ void m_jr_s8(int8_t m_s8)
 
 	Load the 8-bit contents of memory specified by register pair DE into register A.
 */
-void m_ld_a_de()
+void m_ld_a_de(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD A, (DE)\033[1;0m\n");
 #endif
-	A = READB(DE);
+	A_REG = READB(DE);
 	PC += 1;
 }
 
@@ -566,7 +566,7 @@ void m_ld_a_de()
 
 	Decrement the contents of register E by 1.
 */
-void m_dec_e()
+void m_dec_e(m_dmg_t *m_dmg)
 {
 	// Decrement E register by 1
 	DEC(E);
@@ -582,7 +582,7 @@ void m_dec_e()
 
 	Load the 8-bit immediate operand d8 into register E.
 */
-void m_ld_e_d8(uint8_t m_d8)
+void m_ld_e_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 	E = m_d8;
 	PC += 2;
@@ -597,7 +597,7 @@ void m_ld_e_d8(uint8_t m_d8)
 	If the Z flag is 0, jump s8 steps from the current address stored in the program counter (PC).
 	If not, the instruction following the current JP instruction is executed (as usual).
 */
-void m_jr_nz_s8(int8_t m_s8)
+void m_jr_nz_s8(m_dmg_t *m_dmg, int8_t m_s8)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mJR NZ, $%04hhX\033[1;0m\n", m_s8);
@@ -628,7 +628,7 @@ void m_jr_nz_s8(int8_t m_s8)
 	The first byte of immediate data is the lower byte (i.e., bits 0-7),
 	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
 */
-void m_ld_hl_d16(uint16_t m_d16)
+void m_ld_hl_d16(m_dmg_t *m_dmg, uint16_t m_d16)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD HL, $%04X\033[1;0m\n", m_d16);
@@ -653,15 +653,15 @@ void m_ld_hl_d16(uint16_t m_d16)
 	Store the contents of register A into the memory location specified
 	by register pair HL, and simultaneously increment the contents of HL.
 */
-void m_ld_hlplus_a()
+void m_ld_hlplus_a(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL+), A\033[1;0m\n");
 #endif
 
-	m_regs.hl++;
+	m_dmg->m_cpu->m_registers->hl++;
 
-	WRITEB(m_regs.hl, A);
+	WRITEB(m_dmg->m_cpu->m_registers->hl, A_REG);
 
 	PC++;
 }
@@ -674,7 +674,7 @@ void m_ld_hlplus_a()
 
 	Increment the contents of register pair HL by 1.
 */
-void m_inc_hl()
+void m_inc_hl(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mINC HL\033[1;0m\n");
@@ -691,7 +691,7 @@ void m_inc_hl()
 
 	Increment the contents of register H by 1.
 */
-void m_inc_h()
+void m_inc_h(m_dmg_t *m_dmg)
 {
 	// Increment H by 1
 	INC(H);
@@ -709,7 +709,7 @@ void m_inc_h()
 	program counter (PC). If not, the instruction following the current JP
 	instruction is executed (as usual).
 */
-void m_jr_z_s8(int8_t m_s8)
+void m_jr_z_s8(m_dmg_t *m_dmg, int8_t m_s8)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mJR Z, $%04hhX\033[1;0m\n", m_s8);
@@ -733,10 +733,10 @@ void m_jr_z_s8(int8_t m_s8)
 
 	Load the contents of memory specified by register pair HL into register A, and simultaneously increment the contents of HL.
 */
-void m_ld_a_hlplusp()
+void m_ld_a_hlplusp(m_dmg_t *m_dmg)
 {
 	HL++;
-	A = READB(HL);
+	A_REG = READB(HL);
 	PC++;
 }
 
@@ -748,7 +748,7 @@ void m_ld_a_hlplusp()
 
 	Load the 8-bit immediate operand d8 into register L.
 */
-void m_ld_l_d8(uint8_t m_d8)
+void m_ld_l_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 	L = m_d8;
 	PC += 2;
@@ -764,7 +764,7 @@ void m_ld_l_d8(uint8_t m_d8)
 	The first byte of immediate data is the lower byte (i.e., bits 0-7),
 	and the second byte of immediate data is the higher byte (i.e., bits 8-15).
 */
-void m_ld_sp_d16(uint16_t m_d16)
+void m_ld_sp_d16(m_dmg_t *m_dmg, uint16_t m_d16)
 {
 
 #ifdef OPCODE_DEBUG
@@ -789,14 +789,14 @@ void m_ld_sp_d16(uint16_t m_d16)
 	Store the contents of register A into the memory location specified
 	by register pair HL, and simultaneously decrement the contents of HL.
 */
-void m_ld_hlminus_a()
+void m_ld_hlminus_a(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL-), A\033[1;0m\n");
 #endif
 
-	WRITEB(m_regs.hl, m_regs.a);
-	m_regs.hl--;
+	WRITEB(m_dmg->m_cpu->m_registers->hl, m_dmg->m_cpu->m_registers->a);
+	m_dmg->m_cpu->m_registers->hl--;
 
 	PC += 1;
 }
@@ -809,7 +809,7 @@ void m_ld_hlminus_a()
 
 	Store the contents of 8-bit immediate operand d8 in the memory location specified by register pair HL.
 */
-void m_ld_hlp_d8(uint8_t m_d8)
+void m_ld_hlp_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 	WRITEB(HL, m_d8);
 	PC += 2;
@@ -823,14 +823,14 @@ void m_ld_hlp_d8(uint8_t m_d8)
 
 	Decrement the contents of register A by 
 */
-void m_dec_a()
+void m_dec_a(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mDEC A\033[1;0m\n");
 #endif
 
 	// Decrement A register by 1
-	DEC(A);
+	DEC(A_REG);
 
 	PC++;
 }
@@ -843,13 +843,13 @@ void m_dec_a()
 
 	Load the 8-bit immediate operand d8 into register A.
 */
-void m_ld_a_d8(uint8_t m_d8)
+void m_ld_a_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (A), $%04X\033[1;0m\n", m_d8);
 #endif
 
-	A = m_d8;
+	A_REG = m_d8;
 	PC += 2;
 }
 
@@ -861,13 +861,13 @@ void m_ld_a_d8(uint8_t m_d8)
 
 	Load the contents of register A into register C.
 */
-void m_ld_c_a()
+void m_ld_c_a(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD C, A\033[1;0m\n");
 #endif
 
-	C = A;
+	C = A_REG;
 	PC += 1;
 }
 
@@ -880,9 +880,9 @@ void m_ld_c_a()
 
 	Load the contents of register A into register D.
 */
-void m_ld_d_a()
+void m_ld_d_a(m_dmg_t *m_dmg)
 {
-	D = A;
+	D = A_REG;
 	PC += 1;
 }
 
@@ -894,9 +894,9 @@ void m_ld_d_a()
 
 	Load the contents of register A into register H.
 */
-void m_ld_h_a()
+void m_ld_h_a(m_dmg_t *m_dmg)
 {
-	H = A;
+	H = A_REG;
 	PC++;
 }
 
@@ -908,12 +908,12 @@ void m_ld_h_a()
 
 	Store the contents of register A in the memory location specified by register pair HL.
 */
-void m_ld_hl_a()
+void m_ld_hl_a(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (HL), A\033[1;0m\n");
 #endif
-	WRITEB(HL, A);
+	WRITEB(HL, A_REG);
 	PC += 1;
 }
 
@@ -925,9 +925,9 @@ void m_ld_hl_a()
 
 	Load the contents of register B into register A.
 */
-void m_ld_a_b()
+void m_ld_a_b(m_dmg_t *m_dmg)
 {
-	A = B;
+	A_REG = B_REG;
 	PC++;
 }
 
@@ -939,13 +939,13 @@ void m_ld_a_b()
 
 	Load the contents of register E into register A.
 */
-void m_ld_a_e()
+void m_ld_a_e(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD A, E\033[1;0m\n");
 #endif
 
-	A = E;
+	A_REG = E;
 	PC++;
 }
 
@@ -957,9 +957,9 @@ void m_ld_a_e()
 
 	Load the contents of register H into register A.
 */
-void m_ld_a_h()
+void m_ld_a_h(m_dmg_t *m_dmg)
 {
-	A = H;
+	A_REG = H;
 	PC++;
 }
 
@@ -971,9 +971,9 @@ void m_ld_a_h()
 
 	Load the contents of register L into register A.
 */
-void m_ld_a_l()
+void m_ld_a_l(m_dmg_t *m_dmg)
 {
-	A = L;
+	A_REG = L;
 	PC++;
 }
 
@@ -985,9 +985,9 @@ void m_ld_a_l()
 
 	Add the contents of memory specified by register pair HL to the contents of register A, and store the results in register A.
 */
-void m_ld_a_phl()
+void m_ld_a_phl(m_dmg_t *m_dmg)
 {
-	addition(&A, READB(HL));
+	addition(m_dmg, &A_REG, READB(HL));
 	PC++;
 }
 
@@ -1000,11 +1000,11 @@ void m_ld_a_phl()
 	Subtract the contents of register B from the contents of
 	register A, and store the results in register A.
 */
-void m_sub_b()
+void m_sub_b(m_dmg_t *m_dmg)
 {
 	FLAG_SET(NGTV);
 	
-	if (B > A)
+	if (B_REG > A_REG)
 	{
 		FLAG_SET(CRRY);
 	} else {
@@ -1012,9 +1012,9 @@ void m_sub_b()
 	}
 	
 #ifdef PREC23
-	if ((B & 0xF) > (A & 0xF))
+	if ((B_REG & 0xF) > (A_REG & 0xF))
 #else
-	if ((B & 0b00001111) > (A & 0b00001111))
+	if ((B_REG & 0b00001111) > (A_REG & 0b00001111))
 #endif
 	{
 		FLAG_SET(HALF);
@@ -1022,9 +1022,9 @@ void m_sub_b()
 		FLAG_UNSET(HALF);
 	}
 	
-	A -= B;
+	A_REG -= B_REG;
 	
-	if (A)
+	if (A_REG)
 	{
 		FLAG_UNSET(ZERO);
 	} else {
@@ -1044,15 +1044,15 @@ void m_sub_b()
 	Take the logical exclusive-OR for each bit of the contents of register A
 	and the contents of register A, and store the results in register A.
 */
-void m_xor_a()
+void m_xor_a(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mXOR A\033[1;0m\n");
 #endif
 
-	A ^= A;
+	A_REG ^= A_REG;
 
-	if (A == 0)
+	if (A_REG == 0)
 	{
 		FLAG_SET(ZERO);
 	}
@@ -1081,9 +1081,9 @@ void m_xor_a()
 	Take the logical OR for each bit of the contents of register C
 	and the contents of register A, and store the results in register A.
 */
-void m_or_c()
+void m_or_c(m_dmg_t *m_dmg)
 {
-	or(C);
+	or(m_dmg, C);
 
 	PC++;
 }
@@ -1099,18 +1099,18 @@ void m_or_c()
 
 	The execution of this instruction does not affect the contents of register A.
 */
-void m_cp_hl()
+void m_cp_hl(m_dmg_t *m_dmg)
 {
 	FLAG_SET(NGTV);
 
-	if (A == READB(HL))
+	if (A_REG == READB(HL))
 	{
 		FLAG_SET(ZERO);
 	} else {
 		FLAG_UNSET(ZERO);
 	}
 
-	if (READB(HL) > A)
+	if (READB(HL) > A_REG)
 	{
 		FLAG_SET(CRRY);
 	} else {
@@ -1118,9 +1118,9 @@ void m_cp_hl()
 	}
 
 #ifdef PREC23
-	if ((READB(HL) & 0xF) > (A & 0xF))
+	if ((READB(HL) & 0xF) > (A_REG & 0xF))
 #else
-	if ((READB(HL) & 0b00001111) > (A & 0b00001111))
+	if ((READB(HL) & 0b00001111) > (A_REG & 0b00001111))
 #endif
 	{
 		FLAG_SET(HALF);
@@ -1143,7 +1143,7 @@ void m_cp_hl()
 	Add 1 to SP and load the contents from the new memory location into the upper portion of BC.
 	By the end, SP should be 2 more than its initial value.
 */
-void m_pop_bc()
+void m_pop_bc(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mPOP BC\033[1;0m\n");
@@ -1151,7 +1151,7 @@ void m_pop_bc()
 
 	uint16_t m_val = POPW();
 
-	B = m_val >> 8;
+	B_REG = m_val >> 8;
 	C = m_val & 0xFF;
 
 	PC++;
@@ -1169,7 +1169,7 @@ void m_pop_bc()
 	to the lower-order byte of a16 (bits 0-7), and the third byte of the object code
 	corresponds to the higher-order byte (bits 8-15).
 */
-void m_jp_a16(uint16_t m_a16)
+void m_jp_a16(m_dmg_t *m_dmg, uint16_t m_a16)
 {
 	PC = m_a16;
 }
@@ -1186,7 +1186,7 @@ void m_jp_a16(uint16_t m_a16)
 	Subtract 2 from SP, and put the lower portion of register pair BC on the stack.
 	Decrement SP by 2.
 */
-void m_push_bc()
+void m_push_bc(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mPUSH BC\033[1;0m\n");
@@ -1212,7 +1212,7 @@ void m_push_bc()
 	incremented by 1 again. (THe value of SP is 2 larger than before instruction execution.)
 	The next instruction is fetched from the address specified by the content of PC (as usual).
 */
-void m_ret()
+void m_ret(m_dmg_t *m_dmg)
 {
 
 	/*
@@ -1264,7 +1264,7 @@ void m_ret()
 	The lower-order byte of a16 is placed in byte 2 of the object code,
 	and the higher-order byte is placed in byte 3.
 */
-void m_call(uint16_t m_addr)
+void m_call(m_dmg_t *m_dmg, uint16_t m_addr)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mCALL $%04X\033[1;0m\n", m_addr);
@@ -1307,13 +1307,13 @@ void m_call(uint16_t m_addr)
 	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
 	0xFFFF: Interrupt Enable Register
 */
-void m_ld_a8_a(uint8_t m_a8)
+void m_ld_a8_a(m_dmg_t *m_dmg, uint8_t m_a8)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD ($%04X), A\033[1;0m\n", m_a8);
 #endif
 
-	WRITEB((0xFF00 + m_a8), A);
+	WRITEB((0xFF00 + m_a8), A_REG);
 	PC += 2;
 }
 
@@ -1330,12 +1330,12 @@ void m_ld_a8_a(uint8_t m_a8)
 	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
 	0xFFFF: Interrupt Enable Registe
 */
-void m_ld_cpar_a()
+void m_ld_cpar_a(m_dmg_t *m_dmg)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD (C), A\033[1;0m\n");
 #endif
-	WRITEB((0xFF00 + C), A);
+	WRITEB((0xFF00 + C), A_REG);
 	PC += 1;
 }
 
@@ -1347,13 +1347,13 @@ void m_ld_cpar_a()
 
 	Store the contents of register A in the internal RAM or register specified by the 16-bit immediate operand a16.
 */
-void m_ld_a16_a(uint16_t m_a16)
+void m_ld_a16_a(m_dmg_t *m_dmg, uint16_t m_a16)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mLD ($%04X), A\033[1;0m\n", m_a16);
 #endif
 
-	WRITEB(m_a16, A);
+	WRITEB(m_a16, A_REG);
 
 	PC += 3;
 }
@@ -1371,9 +1371,9 @@ void m_ld_a16_a(uint16_t m_a16)
 	0xFF80-0xFFFE: Working & Stack RAM (127 bytes)
 	0xFFFF: Interrupt Enable Register
 */
-void m_ld_a_a8(uint8_t m_a8)
+void m_ld_a_a8(m_dmg_t *m_dmg, uint8_t m_a8)
 {
-	A = READB(0xFF00 + m_a8);
+	A_REG = READB(0xFF00 + m_a8);
 	PC += 2;
 }
 
@@ -1388,7 +1388,7 @@ void m_ld_a_a8(uint8_t m_a8)
 	Even if a DI instruction is executed in an interrupt routine, the IME flag is
 	set if a return is performed with a RETI instruction.
 */
-void m_di()
+void m_di(m_dmg_t *m_dmg)
 {
 	interrupts.m_master = 0;
 	PC++;
@@ -1407,7 +1407,7 @@ void m_di()
 	in effect if coontrol is returned from the interrupt routine by a RET instruction.
 	However, if an EI instruction is executed in the interrupt routine, control is returned with IME = 1.
 */
-void m_ei()
+void m_ei(m_dmg_t *m_dmg)
 {
 	interrupts.m_master = 1;
 	PC++;
@@ -1424,7 +1424,7 @@ void m_ei()
 
 	The execution of this instruction does not affect the contents of register A.
 */
-void m_cp_d8(uint8_t m_d8)
+void m_cp_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 #ifdef OPCODE_DEBUG
 	printf("\033[1;31mCP $%02X\033[1;0m\n", m_d8);
@@ -1432,14 +1432,14 @@ void m_cp_d8(uint8_t m_d8)
 
 	FLAG_SET(NGTV);
 
-	if (A == m_d8)
+	if (A_REG == m_d8)
 	{
 		FLAG_SET(ZERO);
 	} else {
 		FLAG_UNSET(ZERO);
 	}
 
-	if (m_d8 > A)
+	if (m_d8 > A_REG)
 	{
 		FLAG_SET(CRRY);
 	} else {
@@ -1447,9 +1447,9 @@ void m_cp_d8(uint8_t m_d8)
 	}
 
 #ifdef PREC23
-	if ((m_d8 & 0xF) > (A & 0xF))
+	if ((m_d8 & 0xF) > (A_REG & 0xF))
 #else
-	if ((m_d8 & 0b00001111) > (A & 0b00001111))
+	if ((m_d8 & 0b00001111) > (A_REG & 0b00001111))
 #endif
 	{
 		FLAG_SET(HALF);

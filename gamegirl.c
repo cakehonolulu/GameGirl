@@ -1,5 +1,4 @@
 #include <unistd.h>
-#include <SDL2/SDL.h>
 #include <debugger.h>
 #include <gamegirl.h>
 #include <mmu.h>
@@ -10,31 +9,15 @@
 #include <sys/time.h>
 #include <ppu.h>
 
-// Init MMU
-gb_mmu_t *mmu;
-
-// Declare the Registers
-gb_registers_t m_regs;
-
-// Declare both, Window and Renderer, to be used by SDL2
-SDL_Window   *m_window;
-SDL_Renderer *m_renderer;
-SDL_Texture *m_texture;
-
-// Declare an SDL2 Event Handler
-SDL_Event m_event;
-
-uint8_t prev_pc;
-
-struct timeval t1, t2;
-
-extern uint64_t m_cpu_ticks;
-
-unsigned int frames;
-bool m_speedhack;
-
 int main(int argc, char **argv)
 {
+	m_dmg_t m_dmg;
+
+	struct timeval t1, t2;
+
+	m_dmg.m_speedhack = false;
+
+
 	printf("GameGirl - A C-21 Multiplatform Game Boy Emulator\n");
 
 #if defined (__unix__) || defined (__APPLE__)
@@ -47,10 +30,10 @@ int main(int argc, char **argv)
 #endif
 
 	// Init MMU
-	mmu = mmu_init();
+	mmu_init(&m_dmg);
 
 	// Init Address Space
-	m_init_address_space();
+	m_init_address_space(&m_dmg);
 
 #if defined (__unix__) || defined (__APPLE__)
 	// Declare a char pointer with the names of the filenames to load
@@ -113,7 +96,7 @@ int main(int argc, char **argv)
 		else
 		if (!strcmp(argv[m_args], "-speedhack"))
 		{
-			m_speedhack = true;
+			m_dmg.m_speedhack = true;
 			printf("Speed Hack Enabled!\n");
 		}
 		else
@@ -167,15 +150,15 @@ int main(int argc, char **argv)
 		printf("BootROM Size: %d bytes\n", (unsigned int) m_bootromsz);
 		
 		// Load Bootrom
-		m_load_bootrom(m_bootrom_buf);
+		m_load_bootrom(&m_dmg, m_bootrom_buf);
 
-		mmu->m_in_bootrom = 1;
+		m_dmg.m_memory->m_in_bootrom = 1;
 #if defined (__unix__) || defined (__APPLE__)
 	}
 	else
 	{
 		printf("BootROM-less booting\n");
-		mmu->m_in_bootrom = 0;
+		m_dmg.m_memory->m_in_bootrom = 0;
 	}
 #endif
 
@@ -223,15 +206,15 @@ int main(int argc, char **argv)
 
 		printf("ROM size: %d bytes\n", (unsigned int) m_romsz);
 
-		m_load_rom(m_rom_buf, m_romsz);
+		m_load_rom(&m_dmg, m_rom_buf, m_romsz);
 #if defined (__unix__) || defined (__APPLE__)
 	}
 #endif
 
-	// Initialize Registers
-	m_init_registers();
+	m_ppu_init(&m_dmg);
 
-	m_regs.isUnimplemented = false;
+	// Initialize Registers
+	m_init_registers(&m_dmg);
 
 	// Init SDL2
 	// SDL_INIT_VIDEO automatically enables SDL2 Events, we can OR SDL_INIT_AUDIO and SDL_INIT_TIMER if needed in the future
@@ -242,36 +225,34 @@ int main(int argc, char **argv)
 	}
 
 	// Create a 160 x 144 (px) window
-	m_window = SDL_CreateWindow("GameGirl (SDL2)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	m_dmg.m_window = SDL_CreateWindow("GameGirl (SDL2)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 							  320, 288, SDL_WINDOW_SHOWN);
 
 	// Check if Window could be crafted
-	if (m_window == NULL)
+	if (m_dmg.m_window == NULL)
 	{
         printf("Could not create SDL2 Window: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
 
-    m_renderer = SDL_CreateRenderer(m_window, -1, 0);
+    m_dmg.m_renderer = SDL_CreateRenderer(m_dmg.m_window, -1, 0);
 
 	// Setup the texture trick that'll enable us to display emulator output
-	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 160, 144);
+	m_dmg.m_texture = SDL_CreateTexture(m_dmg.m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 160, 144);
 	
-	m_ppu_init();
-
 	while (true)
 	{
-		prev_pc = PC;
+		m_dmg.m_cpu->prev_pc = m_dmg.m_cpu->m_registers->pc;
 
-		while (SDL_PollEvent(&m_event))
+		while (SDL_PollEvent(&m_dmg.m_event))
 		{
-			if (m_event.type == SDL_QUIT)
+			if (m_dmg.m_event.type == SDL_QUIT)
 			{
 				goto exit;
 			}
 		}
 
-		if (!m_speedhack)
+		if (!m_dmg.m_speedhack)
 		{
 			// Start of operation
 			gettimeofday(&t1, NULL);
@@ -281,7 +262,7 @@ int main(int argc, char **argv)
 				This is calculated dividing the Frequency of the GameBoy's CPU
 				between the target frames per second (59.7)
 			*/
-			while (m_cpu_ticks < (4194304 / 59.7))
+			while (m_dmg.m_cpu->m_cpu_ticks < (4194304 / 59.7))
 			{
 				/*			
 					If the user has added a breakpoint, check if Program Counter is
@@ -289,28 +270,28 @@ int main(int argc, char **argv)
 
 					Else, if no debugging is enabled, execute the regular emulation loop
 				*/
-				if (PC == m_breakpoint)
+				if (m_dmg.m_cpu->m_registers->pc == m_breakpoint)
 				{
-					m_run_debugger();
+					m_run_debugger(&m_dmg);
 				}
 
-				prev_pc = PC;
+				m_dmg.m_cpu->prev_pc = m_dmg.m_cpu->m_registers->pc;
 				
 				// Start fetching & executing instructions
-				size_t m_cycles = m_exec();
+				size_t m_cycles = m_exec(&m_dmg);
 
 				// Execute the GPU Subsystem
-				m_ppu_step(m_cycles);
+				m_ppu_step(&m_dmg, m_cycles);
 
 				// Execute the Interrupt Subsystem
 				m_interrupt_check();
 			}
 			
 			// Set CPU Ticks back to 0
-			m_cpu_ticks = 0;
+			m_dmg.m_cpu->m_cpu_ticks = 0;
 
 			// Set GPU Ticks back to 0
-			ppu.m_ticks = 0;
+			m_dmg.ppu->m_ticks = 0;
 
 			// End of operation
 			gettimeofday(&t2, NULL);
@@ -331,15 +312,15 @@ int main(int argc, char **argv)
 			usleep(m_sleep);
 
 			// Update the SDL Texture only if LCDC's Display Enable Bit is on
-			if (ppu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen();
+			if (m_dmg.ppu->m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen(&m_dmg);
 		}
 		else
 		{
 			// Start fetching & executing instructions
-			m_exec();
+			m_exec(&m_dmg);
 
 			// Execute the GPU Subsystem
-			m_ppu_step(m_cpu_ticks);
+			m_ppu_step(&m_dmg, m_dmg.m_cpu->m_cpu_ticks);
 
 			// Execute the Interrupt Subsystem
 			m_interrupt_check();
@@ -348,7 +329,7 @@ int main(int argc, char **argv)
 
 exit:
 	// Free MMU data
-	mmu_halt();
+	mmu_halt(&m_dmg);
 
 	SDL_Quit();
 

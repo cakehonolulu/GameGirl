@@ -3,93 +3,94 @@
 #include <gamegirl.h>
 #include <render.h>
 
-m_ppu_t ppu;
-
-void m_ppu_init()
+void m_ppu_init(m_dmg_t *m_dmg)
 {
+
+	m_dmg->ppu = (m_ppu_t*)malloc(sizeof(m_ppu_t));
+
 #ifdef GAMEGIRL_DISPLAY_BW
-	ppu.colors[0] = 0xFFFFFFFF;
-    ppu.colors[1] = 0xFFC0C0C0;
-    ppu.colors[2] = 0xFF606060;
-    ppu.colors[3] = 0xFF000000;
+	m_dmg->ppu->colors[0] = 0xFFFFFFFF;
+    m_dmg->ppu->colors[1] = 0xFFC0C0C0;
+    m_dmg->ppu->colors[2] = 0xFF606060;
+    m_dmg->ppu->colors[3] = 0xFF000000;
 #else
-	ppu.colors[0] = 0x009BBC0F;
-    ppu.colors[1] = 0x008BAC0F;
-    ppu.colors[2] = 0x00306230;
-    ppu.colors[3] = 0x000F380F;
+	m_dmg->ppu->colors[0] = 0x009BBC0F;
+    m_dmg->ppu->colors[1] = 0x008BAC0F;
+    m_dmg->ppu->colors[2] = 0x00306230;
+    m_dmg->ppu->colors[3] = 0x000F380F;
 #endif
 }
 
-void m_ppu_update_palette(uint8_t m_data)
+void m_ppu_update_palette(m_dmg_t *m_dmg, uint8_t m_data)
 {
-	ppu.palette[3] = (m_data & 0xc0) >> 6;
-	ppu.palette[2] = (m_data & 0x30) >> 4;
-	ppu.palette[1] = (m_data & 0x0c) >> 2;
-	ppu.palette[0] = (m_data & 0x03);
+	m_dmg->ppu->palette[3] = (m_data & 0xc0) >> 6;
+	m_dmg->ppu->palette[2] = (m_data & 0x30) >> 4;
+	m_dmg->ppu->palette[1] = (m_data & 0x0c) >> 2;
+	m_dmg->ppu->palette[0] = (m_data & 0x03);
 }
 
-void m_ppu_step(size_t m_cycles)
+void m_ppu_step(m_dmg_t *m_dmg, size_t m_cycles)
 {
-	ppu.m_ticks += m_cycles;
+	m_dmg->ppu->m_ticks += m_cycles;
 	
-	switch (ppu.m_stat)
+	switch (m_dmg->ppu->m_stat)
 	{
 		case M_GPU_HBLANK:
-			if (ppu.m_ticks >= 204)
+			if (m_dmg->ppu->m_ticks >= 204)
 			{
-				ppu.m_scanline++;
+				m_dmg->ppu->m_scanline++;
 
-				if (ppu.m_scanline == 143)
+				if (m_dmg->ppu->m_scanline == 143)
 				{
-					if (m_speedhack) { if (ppu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen(); }
+					if (m_dmg->m_speedhack) { if (m_dmg->ppu->m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen(m_dmg); }
 					/*if (interrupts.m_enabled & INT_VBLANK)
 					{
 						interrupts.m_flags |= INT_VBLANK;*/
-						ppu.m_stat = M_GPU_VBLANK;
+						m_dmg->ppu->m_stat = M_GPU_VBLANK;
 					/*} else {
-						ppu.m_cppu_mode = M_GPU_OAM;
-						ppu.m_ticks -= 204;
+						m_dmg->ppu->m_cppu_mode = M_GPU_OAM;
+						m_dmg->ppu->m_ticks -= 204;
 					}*/
 				} else {
-					ppu.m_stat = M_GPU_OAM;
+					m_dmg->ppu->m_stat = M_GPU_OAM;
 				}
 
-				ppu.m_ticks -= 204;
+				m_dmg->ppu->m_ticks -= 204;
 			}
 			break;
 
 		case M_GPU_VBLANK:
-			if (ppu.m_ticks >= 456)
+			if (m_dmg->ppu->m_ticks >= 456)
 			{
-				ppu.m_scanline++;		
+				m_dmg->ppu->m_scanline++;		
 
-				if (ppu.m_scanline > 153)
+				if (m_dmg->ppu->m_scanline > 153)
 				{
-					ppu.m_scanline = 0;
-					ppu.m_stat = M_GPU_OAM;
+					m_dmg->ppu->m_scanline = 0;
+					m_dmg->ppu->m_stat = M_GPU_OAM;
 				}
 
-				ppu.m_ticks -= 456;
+				m_dmg->ppu->m_ticks -= 456;
 			}
 			break;
 
 		case M_GPU_OAM:
-			if (ppu.m_ticks >= 80)
+			if (m_dmg->ppu->m_ticks >= 80)
 			{
-				ppu.m_stat = M_GPU_VRAM;
+				m_dmg->ppu->m_stat = M_GPU_VRAM;
 				
-				ppu.m_ticks -= 80;
+				m_dmg->ppu->m_ticks -= 80;
 			}
 			break;
 
 		case M_GPU_VRAM:
-			if (ppu.m_ticks >= 172)
+			if (m_dmg->ppu->m_ticks >= 172)
 			{
-				ppu.m_stat = M_GPU_HBLANK;
+				m_dmg->ppu->m_stat = M_GPU_HBLANK;
 
-				if (ppu.m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_render_sc();
+				if (m_dmg->ppu->m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_render_sc(m_dmg);
 
-				ppu.m_ticks -= 172;
+				m_dmg->ppu->m_ticks -= 172;
 			}
 			break;
 
@@ -99,7 +100,7 @@ void m_ppu_step(size_t m_cycles)
 
 }
 
-void m_ppu_update_tile(uint16_t m_addr)
+void m_ppu_update_tile(m_dmg_t *m_dmg, uint16_t m_addr)
 {
 	m_addr &= 0x1FFE;
 
@@ -113,6 +114,6 @@ void m_ppu_update_tile(uint16_t m_addr)
 	{
 		bitIndex = 1 << (7 - x);
 
-		ppu.tileset[tile][x][y] = (((mmu->gb_mmap.vram[m_addr]) & bitIndex) ? 1 : 0) + (((mmu->gb_mmap.vram[m_addr + 1]) & bitIndex) ? 2 : 0);
+		m_dmg->ppu->tileset[tile][x][y] = (((m_dmg->m_memory->gb_mmap.vram[m_addr]) & bitIndex) ? 1 : 0) + (((m_dmg->m_memory->gb_mmap.vram[m_addr + 1]) & bitIndex) ? 2 : 0);
 	}
 }

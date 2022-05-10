@@ -1,4 +1,5 @@
-#include <alu.h>
+#include <gamegirl.h>
+#include <flags.h>
 
 /*
 	alu.c
@@ -9,7 +10,7 @@
 */
 
 // Register increment (Lone-pair-register exclusive)
-uint8_t increment(uint8_t m_register)
+uint8_t increment(m_dmg_t *m_dmg, uint8_t m_register)
 {
 	/*
 		Check if we need to enable half-carry bit
@@ -53,7 +54,7 @@ uint8_t increment(uint8_t m_register)
 }
 
 // Register decrement (Lone-pair-register exclusive)
-uint8_t decrement(uint8_t m_register)
+uint8_t decrement(m_dmg_t *m_dmg, uint8_t m_register)
 {
 	// Check if we need to enable half-carry bit
 #ifdef PREC23
@@ -90,7 +91,7 @@ uint8_t decrement(uint8_t m_register)
 	return m_register;
 }
 
-uint8_t addition(uint8_t *m_register, uint8_t m_value)
+uint8_t addition(m_dmg_t *m_dmg, uint8_t *m_register, uint8_t m_value)
 {
 	uint32_t m_result = *m_register + m_value;
 
@@ -132,11 +133,11 @@ uint8_t addition(uint8_t *m_register, uint8_t m_value)
 	return *m_register;
 }
 
-uint8_t or(uint8_t m_register)
+uint8_t or(m_dmg_t *m_dmg, uint8_t m_register)
 {
-	A |= m_register;
+	A_REG |= m_register;
 
-	if (A)
+	if (A_REG)
 	{
 		FLAG_UNSET(ZERO);
 	}

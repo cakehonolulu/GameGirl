@@ -1,28 +1,27 @@
 #include <SDL2/SDL.h>
 #include <gamegirl.h>
 #include <opcodes.h>
+#include <debugger.h>
 #include <cb_opcodes.h>
 #include <ppu.h>
-
-SDL_Event m_dbgevent;
 
 extern uint8_t m_boperand;
 extern uint16_t m_woperand;
 extern uint8_t m_opcode;
-extern uint8_t prev_pc;
 
-#define PREV_PC prev_pc
 #define NEXT_BYTE m_boperand
 #define NEXT_WORD m_woperand
 
-int m_run_debugger()
+int m_run_debugger(m_dmg_t *m_dmg)
 {
+	SDL_Event m_dbgevent;
+
 	printf("\e[1;1H\e[2J");
 	printf("\033[1;32mEntered Debugging Step Mode!\033[0;0m");
 
 	uint8_t m_dbgopc = READB(PC);
 
-	m_printregs();
+	m_printregs(m_dmg);
 	
 	printf("Legend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
 
@@ -34,30 +33,30 @@ int m_run_debugger()
 		{
 			if (m_gb_instr[m_opcode].m_operand == 0)
 			{
-				printf("\033[0;34m00:%04X  %02X   \033[0;0m       %s\n", PREV_PC, READB(PREV_PC), m_gb_instr[m_opcode].m_instr);
+				printf("\033[0;34m00:%04X  %02X   \033[0;0m       %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_opcode].m_instr);
 			}
 			else
 			if (m_gb_instr[m_opcode].m_operand == 1)
 			{
 				if ((m_opcode == 0x18) | (m_opcode == 0x20) | (m_opcode == 0x28))
 				{
-					printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%04X (%d)\n", PREV_PC, READB(PREV_PC), READB(PREV_PC + 1), m_gb_instr[m_opcode].m_instr, ((PREV_PC + 2) + (int8_t) READB(PREV_PC + 1)),(int8_t) READB(PREV_PC + 1));
+					printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%04X (%d)\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_opcode].m_instr, ((m_dmg->m_cpu->prev_pc + 2) + (int8_t) READB(m_dmg->m_cpu->prev_pc + 1)),(int8_t) READB(m_dmg->m_cpu->prev_pc + 1));
 				}
 				else
 				{
-					printf("\033[0;34m00:%04X  %02X         \033[0;0m %s\n", PREV_PC, READB(PREV_PC), m_gb_instr[m_opcode].m_instr);
+					printf("\033[0;34m00:%04X  %02X         \033[0;0m %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_opcode].m_instr);
 				}
 			}
 			else
 			if (m_gb_instr[m_opcode].m_operand == 2)
 			{
-				printf("\033[0;34m00:%04X  %02X %02X %02X\033[0;0m    %s$%04X\n", PREV_PC, READB(PREV_PC), READB(PREV_PC + 1), READB(PREV_PC + 2), m_gb_instr[m_opcode].m_instr, ((READB(PREV_PC + 2) << 8) | (READB(PREV_PC + 1))));
+				printf("\033[0;34m00:%04X  %02X %02X %02X\033[0;0m    %s$%04X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), READB(m_dmg->m_cpu->prev_pc + 2), m_gb_instr[m_opcode].m_instr, ((READB(m_dmg->m_cpu->prev_pc + 2) << 8) | (READB(m_dmg->m_cpu->prev_pc + 1))));
 			}
 		}
 		else
 		{
 			// Extended (0xCB) Opcode Handling
-			printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s\n", PREV_PC, READB(PREV_PC), READB(PREV_PC + 1), m_gb_instr_cb[READB(PREV_PC + 1)].m_instr);
+			printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr_cb[READB(m_dmg->m_cpu->prev_pc + 1)].m_instr);
 		}
 	}
 
@@ -108,13 +107,13 @@ int m_run_debugger()
 				{
 					printf("\e[1;1H\e[2J");
 
-					prev_pc = PC;
+					m_dmg->m_cpu->prev_pc = PC;
 
-					size_t m_cycles = m_exec();
-					m_ppu_step(m_cycles);
+					size_t m_cycles = m_exec(m_dmg);
+					m_ppu_step(m_dmg, m_cycles);
 					m_interrupt_check();
 
-					m_printregs();
+					m_printregs(m_dmg);
 
 					printf("Legend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
 
@@ -124,30 +123,30 @@ int m_run_debugger()
 					{
 						if (m_gb_instr[m_opcode].m_operand == 0)
 						{
-							printf("\033[0;34m00:%04X  %02X   \033[0;0m       %s\n", PREV_PC, READB(PREV_PC), m_gb_instr[m_opcode].m_instr);
+							printf("\033[0;34m00:%04X  %02X   \033[0;0m       %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_opcode].m_instr);
 						}
 						else
 						if (m_gb_instr[m_opcode].m_operand == 1)
 						{
 							if ((m_opcode == 0x18) | (m_opcode == 0x20) | (m_opcode == 0x28))
 							{
-								printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%04X (%d)\n", PREV_PC, READB(PREV_PC), READB(PREV_PC + 1), m_gb_instr[m_opcode].m_instr, ((PREV_PC + 2) + (int8_t) READB(PREV_PC + 1)),(int8_t) READB(PREV_PC + 1));
+								printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%04X (%d)\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_opcode].m_instr, ((m_dmg->m_cpu->prev_pc + 2) + (int8_t) READB(m_dmg->m_cpu->prev_pc + 1)),(int8_t) READB(m_dmg->m_cpu->prev_pc + 1));
 							}
 							else
 							{
-								printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%02X\n", PREV_PC, READB(PREV_PC), READB(PREV_PC + 1), m_gb_instr[m_opcode].m_instr, READB(PREV_PC + 1));
+								printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%02X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_opcode].m_instr, READB(m_dmg->m_cpu->prev_pc + 1));
 							}
 						}
 						else
 						if (m_gb_instr[m_opcode].m_operand == 2)
 						{
-							printf("\033[0;34m00:%04X  %02X %02X %02X\033[0;0m    %s$%04X\n", PREV_PC, READB(PREV_PC), READB(PREV_PC + 1), READB(PREV_PC + 2), m_gb_instr[m_opcode].m_instr, ((READB(PREV_PC + 2) << 8) | (READB(PREV_PC + 1))));
+							printf("\033[0;34m00:%04X  %02X %02X %02X\033[0;0m    %s$%04X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), READB(m_dmg->m_cpu->prev_pc + 2), m_gb_instr[m_opcode].m_instr, ((READB(m_dmg->m_cpu->prev_pc + 2) << 8) | (READB(m_dmg->m_cpu->prev_pc + 1))));
 						}
 					}
 					else
 					{
 						// Extended (0xCB) Opcode Handling
-						printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s\n", PREV_PC, READB(PREV_PC), READB(PREV_PC + 1), m_gb_instr_cb[READB(PREV_PC + 1)].m_instr);
+						printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr_cb[READB(m_dmg->m_cpu->prev_pc + 1)].m_instr);
 					}
 
 					if (m_dbgopc != 0xCB)
@@ -188,7 +187,7 @@ int m_run_debugger()
 
 exit:
 	// Free MMU data
-	mmu_halt();
+	mmu_halt(m_dmg);
 
 	SDL_Quit();
 

@@ -3,8 +3,6 @@
 #include <ppu.h>
 #include <interrupts.h>
 
-uint64_t m_cpu_ticks;
-
 const uint8_t m_ticks_by_opcode[256] = {
 	2, 6, 4, 4, 2, 2, 4, 4, 10, 4, 4, 4, 2, 2, 4, 4, // 0x0_
 	2, 6, 4, 4, 2, 2, 4, 4,  4, 4, 4, 4, 2, 2, 4, 4, // 0x1_
@@ -43,10 +41,13 @@ const uint8_t m_ticks_by_cbopcode[256] = {
 	8, 8, 8, 8, 8,  8, 12, 8,  8, 8, 8, 8, 8, 8, 12, 8  // 0xf_
 };
 
-void m_init_registers()
+void m_init_registers(m_dmg_t *m_dmg)
 {
+	m_dmg->m_cpu = (m_dmg_cpu*) malloc(sizeof(m_dmg_cpu));
+	m_dmg->m_cpu->m_registers = (gb_registers_t*) malloc(sizeof(gb_registers_t));
+
 	// If BootROM isn't loaded, bootstrap manually into cart area
-	if (!mmu->m_in_bootrom)
+	if (!m_dmg->m_memory->m_in_bootrom)
 	{
 		PC = 0x100;
 		AF = 0x01B0;
@@ -100,24 +101,24 @@ void m_init_registers()
 #if defined(PREC23) || defined(USE_GCC)
 		FLAGS = 0;
 #else
-		m_regs.m_flags.zero = 0;
-		m_regs.m_flags.ngtv = 0;
-		m_regs.m_flags.half = 0;
-		m_regs.m_flags.crry = 0;
+		m_dmg->m_cpu->m_registers->m_flags.zero = 0;
+		m_dmg->m_cpu->m_registers->m_flags.ngtv = 0;
+		m_dmg->m_cpu->m_registers->m_flags.half = 0;
+		m_dmg->m_cpu->m_registers->m_flags.crry = 0;
 #endif
 
 
 	// Set the CPU Ticks to 0
-	m_cpu_ticks = 0;
+	m_dmg->m_cpu->m_cpu_ticks = 0;
 
 	// Setup the PPU
-	ppu.m_scanline = 0;
-	ppu.m_verticalscroll = 0;
-	ppu.m_horitzontalscroll = 0;
+	m_dmg->ppu->m_scanline = 0;
+	m_dmg->ppu->m_verticalscroll = 0;
+	m_dmg->ppu->m_horitzontalscroll = 0;
 
 	// Set the current GPU Mode to HBLANK
-	ppu.m_lcdc = 0;
-	ppu.m_stat = M_GPU_HBLANK;
+	m_dmg->ppu->m_lcdc = 0;
+	m_dmg->ppu->m_stat = M_GPU_HBLANK;
 
 	// Setup Interrupts State (Disable Interrupts and Clear Interrupt's Flags)
 	interrupts.m_master = 0;
@@ -125,22 +126,22 @@ void m_init_registers()
 	interrupts.m_flags = 0;
 }
 
-uint8_t m_fetch()
+uint8_t m_fetch(m_dmg_t *m_dmg)
 {
-	if (mmu->m_in_bootrom && PC >= 0xFF)
+	if (m_dmg->m_memory->m_in_bootrom && PC >= 0xFF)
 	{
-		mmu->m_in_bootrom = 0;
+		m_dmg->m_memory->m_in_bootrom = 0;
 	}
 
 	return (uint8_t) READB(PC);
 }
 
-uint8_t m_fetchopbyte()
+uint8_t m_fetchopbyte(m_dmg_t *m_dmg)
 {
 	return (uint8_t) READB(PC + 1);
 }
 
-uint16_t m_fetchopword()
+uint16_t m_fetchopword(m_dmg_t *m_dmg)
 {
 	uint8_t m_rb = READB(PC + 1);
 
@@ -162,9 +163,9 @@ uint8_t m_opcode;
 uint8_t m_boperand;
 uint16_t m_woperand;
 
-size_t m_exec()
+size_t m_exec(m_dmg_t *m_dmg)
 {
-	m_opcode = m_fetch();
+	m_opcode = m_fetch(m_dmg);
 
 #ifdef OPCODE_DEBUG
 	printf("Current opcode: 0x%02X\n", m_opcode);
@@ -175,9 +176,9 @@ size_t m_exec()
 
 	if (m_gb_instr[m_opcode].m_operand == 1)
 	{
-		m_boperand = m_fetchopbyte();
+		m_boperand = m_fetchopbyte(m_dmg);
 	} else if (m_gb_instr[m_opcode].m_operand == 2) {
-		m_woperand = m_fetchopword();
+		m_woperand = m_fetchopword(m_dmg);
 	}
 
 	switch(m_gb_instr[m_opcode].m_operand)
@@ -186,10 +187,10 @@ size_t m_exec()
 			if (m_gb_instr[m_opcode].m_funct == NULL)
 			{
 				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
-				m_printregs();
+				m_printregs(m_dmg);
 				exit(EXIT_FAILURE);
 			} else {
-				((void (*)(void))m_gb_instr[m_opcode].m_funct)();
+				((void (*)(m_dmg_t *m_dmg))m_gb_instr[m_opcode].m_funct)(m_dmg);
 			}
 			break;
 		
@@ -197,14 +198,14 @@ size_t m_exec()
 			if (m_gb_instr[m_opcode].m_funct == NULL)
 			{
 				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
-				m_printregs();
+				m_printregs(m_dmg);
 				exit(EXIT_FAILURE);
 			} else {
 				if ((m_opcode == 0x18) | (m_opcode == 0x20) | (m_opcode == 0x28))
 				{
-					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((int8_t) m_boperand);
+					((void (*)(m_dmg_t *m_dmg, uint8_t))m_gb_instr[m_opcode].m_funct)(m_dmg, (int8_t) m_boperand);
 				} else {
-					((void (*)(uint8_t))m_gb_instr[m_opcode].m_funct)((uint8_t) m_boperand);
+					((void (*)(m_dmg_t *m_dmg, uint8_t))m_gb_instr[m_opcode].m_funct)(m_dmg, (uint8_t) m_boperand);
 				}
 			}
 			break;
@@ -213,10 +214,10 @@ size_t m_exec()
 			if (m_gb_instr[m_opcode].m_funct == NULL)
 			{
 				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
-				m_printregs();
+				m_printregs(m_dmg);
 				exit(EXIT_FAILURE);
 			} else {
-				((void (*)(uint16_t))m_gb_instr[m_opcode].m_funct)((uint16_t) m_woperand);
+				((void (*)(m_dmg_t *m_dmg, uint16_t))m_gb_instr[m_opcode].m_funct)(m_dmg, (uint16_t) m_woperand);
 			}
 			break;
 
@@ -226,22 +227,22 @@ size_t m_exec()
 
 	if (m_opcode == 0xCB)
 	{
-		if (!m_speedhack) { m_cpu_ticks += m_ticks_by_cbopcode[m_fetchopbyte()]; } else { m_cpu_ticks = m_ticks_by_cbopcode[m_fetchopbyte()]; }
-		return m_ticks_by_cbopcode[m_fetchopbyte()];
+		if (!m_dmg->m_speedhack) { m_dmg->m_cpu->m_cpu_ticks += m_ticks_by_cbopcode[m_fetchopbyte(m_dmg)]; } else { m_dmg->m_cpu->m_cpu_ticks = m_ticks_by_cbopcode[m_fetchopbyte(m_dmg)]; }
+		return m_ticks_by_cbopcode[m_fetchopbyte(m_dmg)];
 	}
 	else
 	{
-		if (!m_speedhack) { m_cpu_ticks += m_ticks_by_opcode[m_opcode]; } else { m_cpu_ticks = m_ticks_by_opcode[m_opcode]; }
+		if (!m_dmg->m_speedhack) { m_dmg->m_cpu->m_cpu_ticks += m_ticks_by_opcode[m_opcode]; } else { m_dmg->m_cpu->m_cpu_ticks = m_ticks_by_opcode[m_opcode]; }
 		return m_ticks_by_opcode[m_opcode];
 	}
 	
 }
 
-void m_printregs()
+void m_printregs(m_dmg_t *m_dmg)
 {
 	printf("\n\033[1;31mGeneral-Purpose Registers:\033[0m\n");
-	printf("\033[0;35mA:\033[0m 0x%02X, \033[0;35mF:\033[0m 0x%02X; \033[0;35mAF:\033[0m 0x%04X\n", A, F, AF);
-	printf("\033[0;35mB:\033[0m 0x%02X, \033[0;35mC:\033[0m 0x%02X; \033[0;35mBC:\033[0m 0x%04X\n", B, C, BC);
+	printf("\033[0;35mA:\033[0m 0x%02X, \033[0;35mF:\033[0m 0x%02X; \033[0;35mAF:\033[0m 0x%04X\n", A_REG, F, AF);
+	printf("\033[0;35mB:\033[0m 0x%02X, \033[0;35mC:\033[0m 0x%02X; \033[0;35mBC:\033[0m 0x%04X\n", B_REG, C, BC);
 	printf("\033[0;35mD:\033[0m 0x%02X, \033[0;35mE:\033[0m 0x%02X; \033[0;35mDE:\033[0m 0x%04X\n", D, E, DE);
 	printf("\033[0;35mH:\033[0m 0x%02X, \033[0;35mL:\033[0m 0x%02X; \033[0;35mHL:\033[0m 0x%04X\n\n", H, L, HL);
 
@@ -307,6 +308,6 @@ void m_printregs()
 		printf("\033[0m0   \n\n");
 	}
 
-	printf("\033[1;35mCurrent CPU Ticks:\033[0m %lu\n", m_cpu_ticks);
-	printf("\033[1;35mCurrent GPU Ticks:\033[0m %lu\n", ppu.m_ticks);
+	printf("\033[1;35mCurrent CPU Ticks:\033[0m %lu\n", m_dmg->m_cpu->m_cpu_ticks);
+	printf("\033[1;35mCurrent GPU Ticks:\033[0m %lu\n", m_dmg->ppu->m_ticks);
 }
