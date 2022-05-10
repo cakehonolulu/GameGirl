@@ -97,7 +97,7 @@ void m_init_registers()
 		SP = 0;
 	}
 
-#ifdef PREC23
+#if defined(PREC23) || defined(USE_GCC)
 		FLAGS = 0;
 #else
 		m_regs.m_flags.zero = 0;
@@ -151,7 +151,7 @@ uint16_t m_fetchopword()
 	return (uint16_t) m_w;
 }
 
-#ifdef PREC23
+#if defined(PREC23)
 bool m_is_bit_set(uint8_t m_register, size_t m_bit)
 {
 	return 1 == ((m_register >> m_bit) & 1);
@@ -257,10 +257,10 @@ void m_printregs()
 
 	printf("\033[1;35mZ: ");
 
-#ifdef PREC23
-	if (m_is_bit_set(FLAGS, ZERO))
-#else
+#if defined(PREC23) || !defined(USE_GCC)
 	if (FLAG_CHECK(ZERO))
+#else
+	if (m_is_bit_set(FLAGS, ZERO))
 #endif
 	{
 		printf("\033[0m1   ");
@@ -270,10 +270,10 @@ void m_printregs()
 
 	printf("\033[1;35mN: ");
 
-#ifdef PREC23
-	if (m_is_bit_set(FLAGS, NGTV))
-#else
+#if defined(PREC23) || !defined(USE_GCC)
 	if (FLAG_CHECK(NGTV))
+#else
+	if (m_is_bit_set(FLAGS, NGTV))
 #endif
 	{
 		printf("\033[0m1   \n");
@@ -283,10 +283,10 @@ void m_printregs()
 
 	printf("\033[1;35mH: ");
 
-#ifdef PREC23
-	if (m_is_bit_set(FLAGS, HALF))
-#else
+#if defined(PREC23) || !defined(USE_GCC)
 	if (FLAG_CHECK(HALF))
+#else
+	if (m_is_bit_set(FLAGS, HALF))
 #endif
 	{
 		printf("\033[0m1   ");
@@ -296,10 +296,10 @@ void m_printregs()
 
 	printf("\033[1;35mC: ");
 
-#ifdef PREC23
-	if (m_is_bit_set(FLAGS, CRRY))
-#else
+#if defined(PREC23) || !defined(USE_GCC)
 	if (FLAG_CHECK(CRRY))
+#else
+	if (m_is_bit_set(FLAGS, CRRY))
 #endif
 	{
 		printf("\033[0m1   \n\n");

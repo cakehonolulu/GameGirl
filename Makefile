@@ -1,11 +1,3 @@
-ifdef USE_GCC
-# Use GNU's GCC Compiler
-CC = gcc
-else
-# Use LLVM's frontend CLANG
-CC = clang
-endif
-
 # Setup the Windows Compiler (In this cross-compiling using mingw64)
 MINGW64 = x86_64-w64-mingw32-gcc-10-win32
 
@@ -14,6 +6,15 @@ MINGW64 = x86_64-w64-mingw32-gcc-10-win32
 CFLAGS := -Wall -Wextra -Iinclude/
 SDLFLAGS = `sdl2-config --cflags --libs`
 LDFLAGS = -lm
+
+ifdef USE_GCC
+# Use GNU's GCC Compiler
+CC = gcc
+CFLAGS += -DUSE_GCC -DPREC23
+else
+# Use LLVM's frontend CLANG
+CC = clang
+endif
 
 ifdef DBG_OPCODE
 CFLAGS += -DOPCODE_DEBUG

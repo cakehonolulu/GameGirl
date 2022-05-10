@@ -12,10 +12,10 @@
 
 typedef struct m_interrupt
 {
-#ifdef PREC23
-	uint8_t m_master;
-#else
+#if !defined(PREC23)
 	unsigned _BitInt(1) m_master;
+#else
+	uint8_t m_master;
 #endif
 	uint8_t m_enabled;
 	uint8_t m_flags;
