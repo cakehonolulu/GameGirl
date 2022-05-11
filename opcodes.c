@@ -1383,14 +1383,14 @@ void m_ld_a_a8(m_dmg_t *m_dmg, uint8_t m_a8)
 	Number of Bytes: 1
 	Number of Cycles: 1
 
-	Reset the interrupt master enable (IME) flag and prohibit maskable interrupts.
+	Reset the interrupt master enable (IME) flag and prohibit maskable m_dmg->m_cpu->interrupts->
 
 	Even if a DI instruction is executed in an interrupt routine, the IME flag is
 	set if a return is performed with a RETI instruction.
 */
 void m_di(m_dmg_t *m_dmg)
 {
-	interrupts.m_master = 0;
+	m_dmg->m_cpu->interrupts->m_master = 0;
 	PC++;
 }
 
@@ -1400,8 +1400,8 @@ void m_di(m_dmg_t *m_dmg)
 	Number of Bytes: 1
 	Number of Cycles: 1
 
-	Set the interrupt master enable (IME) flag and enable maskable interrupts.
-	This instruction can be used in an interrupt routine to enable higher-order interrupts.
+	Set the interrupt master enable (IME) flag and enable maskable m_dmg->m_cpu->interrupts->
+	This instruction can be used in an interrupt routine to enable higher-order m_dmg->m_cpu->interrupts->
 
 	The IME flag is reset immediately after an interrupt occurs. The IME flag reset remains
 	in effect if coontrol is returned from the interrupt routine by a RET instruction.
@@ -1409,7 +1409,7 @@ void m_di(m_dmg_t *m_dmg)
 */
 void m_ei(m_dmg_t *m_dmg)
 {
-	interrupts.m_master = 1;
+	m_dmg->m_cpu->interrupts->m_master = 1;
 	PC++;
 }
 

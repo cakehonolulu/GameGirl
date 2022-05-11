@@ -111,7 +111,7 @@ int m_run_debugger(m_dmg_t *m_dmg)
 
 					size_t m_cycles = m_exec(m_dmg);
 					m_ppu_step(m_dmg, m_cycles);
-					m_interrupt_check();
+					m_interrupt_check(m_dmg);
 
 					m_printregs(m_dmg);
 

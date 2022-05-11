@@ -45,6 +45,7 @@ void m_init_registers(m_dmg_t *m_dmg)
 {
 	m_dmg->m_cpu = (m_dmg_cpu*) malloc(sizeof(m_dmg_cpu));
 	m_dmg->m_cpu->m_registers = (gb_registers_t*) malloc(sizeof(gb_registers_t));
+	m_dmg->m_cpu->interrupts = (m_interrupts*) malloc(sizeof(m_interrupts));
 
 	// If BootROM isn't loaded, bootstrap manually into cart area
 	if (!m_dmg->m_memory->m_in_bootrom)
@@ -121,9 +122,9 @@ void m_init_registers(m_dmg_t *m_dmg)
 	m_dmg->ppu->m_stat = M_GPU_HBLANK;
 
 	// Setup Interrupts State (Disable Interrupts and Clear Interrupt's Flags)
-	interrupts.m_master = 0;
-	interrupts.m_enabled = 0;
-	interrupts.m_flags = 0;
+	m_dmg->m_cpu->interrupts->m_master = 0;
+	m_dmg->m_cpu->interrupts->m_enabled = 0;
+	m_dmg->m_cpu->interrupts->m_flags = 0;
 }
 
 uint8_t m_fetch(m_dmg_t *m_dmg)
@@ -252,7 +253,7 @@ void m_printregs(m_dmg_t *m_dmg)
 	printf("\033[1;32mProgram Flow Registers:\033[0:0m\n");
 	printf("\033[1;35mPC:\033[0m 0x%04X\n\n", PC);
 
-	printf("\033[1;34mInterrupts: \033[0m%d\n\n", (int) interrupts.m_master);
+	printf("\033[1;34mInterrupts: \033[0m%d\n\n", (int) m_dmg->m_cpu->interrupts->m_master);
 
 	printf("\033[1;35mFlags:\033[0:0m\n");
 

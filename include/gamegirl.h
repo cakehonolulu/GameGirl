@@ -254,9 +254,28 @@ typedef struct ppu_t
 } m_ppu_t;
 
 
+#define INT_VBLANK	(1 << 0)
+#define INT_LCD		(1 << 1)
+#define INT_TIMER	(1 << 2)
+#define INT_SERIAL	(1 << 3)
+#define INT_JOYPAD	(1 << 4)
+
+typedef struct m_interrupt
+{
+#if !defined(PREC23)
+	unsigned _BitInt(1) m_master;
+#else
+	uint8_t m_master;
+#endif
+	uint8_t m_enabled;
+	uint8_t m_flags;
+} m_interrupts;
+
 typedef struct m_sharp_lr35902 {
 
 	gb_registers_t *m_registers;
+
+	m_interrupts *interrupts;
 
 	uint64_t m_cpu_ticks;
 
@@ -284,6 +303,10 @@ typedef struct m_gb_state {
 
 // Declare the MMU
 extern m_dmg_t *m_dmg;
+
+#define IME (m_dmg->m_cpu->interrupts->m_master)
+#define IE (m_dmg->m_cpu->interrupts->m_enabled)
+#define IF (m_dmg->m_cpu->interrupts->m_flags)
 
 // Register defines with easier naming
 #define A_REG (m_dmg->m_cpu->m_registers->a)

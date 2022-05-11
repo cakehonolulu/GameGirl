@@ -135,7 +135,7 @@ uint8_t mmu_read_byte(m_dmg_t *m_dmg, uint16_t m_addr)
     }
     else if (m_addr == 0xFF0F)
     {
-        return interrupts.m_flags;
+        return m_dmg->m_cpu->interrupts->m_flags;
     }
     else if (m_addr == 0xFF40)
     {
@@ -167,7 +167,7 @@ uint8_t mmu_read_byte(m_dmg_t *m_dmg, uint16_t m_addr)
     }
     else if (m_addr == 0xFFFF)
     {
-        return interrupts.m_enabled;
+        return m_dmg->m_cpu->interrupts->m_enabled;
     }
 
     return 0;
@@ -286,11 +286,11 @@ uint8_t mmu_write_byte(m_dmg_t *m_dmg, uint16_t m_addr, uint8_t m_data)
     }
     else if (m_addr == 0xFF0F)
     {
-        return interrupts.m_flags = m_data;
+        return m_dmg->m_cpu->interrupts->m_flags = m_data;
     }
     else if (m_addr == 0xFFFF)
     {
-        return interrupts.m_enabled = m_data;
+        return m_dmg->m_cpu->interrupts->m_enabled = m_data;
     }
 
     return 0;

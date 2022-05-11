@@ -284,7 +284,7 @@ int main(int argc, char **argv)
 				m_ppu_step(&m_dmg, m_cycles);
 
 				// Execute the Interrupt Subsystem
-				m_interrupt_check();
+				m_interrupt_check(&m_dmg);
 			}
 			
 			// Set CPU Ticks back to 0
@@ -323,7 +323,7 @@ int main(int argc, char **argv)
 			m_ppu_step(&m_dmg, m_dmg.m_cpu->m_cpu_ticks);
 
 			// Execute the Interrupt Subsystem
-			m_interrupt_check();
+			m_interrupt_check(&m_dmg);
 		}
 	}
 
