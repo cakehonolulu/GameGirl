@@ -160,65 +160,61 @@ bool m_is_bit_set(uint8_t m_register, size_t m_bit)
 }
 #endif
 
-uint8_t m_opcode;
-uint8_t m_boperand;
-uint16_t m_woperand;
-
 size_t m_exec(m_dmg_t *m_dmg)
 {
-	m_opcode = m_fetch(m_dmg);
+	m_dmg->m_cpu->m_opcode = m_fetch(m_dmg);
 
 #ifdef OPCODE_DEBUG
-	printf("Current opcode: 0x%02X\n", m_opcode);
+	printf("Current opcode: 0x%02X\n", m_dmg->m_cpu->m_opcode);
 #endif
 
-	m_boperand = 0;
-	m_woperand = 0;
+	m_dmg->m_cpu->m_boperand = 0;
+	m_dmg->m_cpu->m_woperand = 0;
 
-	if (m_gb_instr[m_opcode].m_operand == 1)
+	if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand == 1)
 	{
-		m_boperand = m_fetchopbyte(m_dmg);
-	} else if (m_gb_instr[m_opcode].m_operand == 2) {
-		m_woperand = m_fetchopword(m_dmg);
+		m_dmg->m_cpu->m_boperand = m_fetchopbyte(m_dmg);
+	} else if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand == 2) {
+		m_dmg->m_cpu->m_woperand = m_fetchopword(m_dmg);
 	}
 
-	switch(m_gb_instr[m_opcode].m_operand)
+	switch(m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand)
 	{
 		case 0:
-			if (m_gb_instr[m_opcode].m_funct == NULL)
+			if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_funct == NULL)
 			{
-				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
+				printf("Unimplemented Opcode 0x%02X\n", m_dmg->m_cpu->m_opcode);
 				m_printregs(m_dmg);
 				exit(EXIT_FAILURE);
 			} else {
-				((void (*)(m_dmg_t *m_dmg))m_gb_instr[m_opcode].m_funct)(m_dmg);
+				((void (*)(m_dmg_t *m_dmg))m_gb_instr[m_dmg->m_cpu->m_opcode].m_funct)(m_dmg);
 			}
 			break;
 		
 		case 1:
-			if (m_gb_instr[m_opcode].m_funct == NULL)
+			if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_funct == NULL)
 			{
-				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
+				printf("Unimplemented Opcode 0x%02X\n", m_dmg->m_cpu->m_opcode);
 				m_printregs(m_dmg);
 				exit(EXIT_FAILURE);
 			} else {
-				if ((m_opcode == 0x18) | (m_opcode == 0x20) | (m_opcode == 0x28))
+				if ((m_dmg->m_cpu->m_opcode == 0x18) | (m_dmg->m_cpu->m_opcode == 0x20) | (m_dmg->m_cpu->m_opcode == 0x28))
 				{
-					((void (*)(m_dmg_t *m_dmg, uint8_t))m_gb_instr[m_opcode].m_funct)(m_dmg, (int8_t) m_boperand);
+					((void (*)(m_dmg_t *m_dmg, uint8_t))m_gb_instr[m_dmg->m_cpu->m_opcode].m_funct)(m_dmg, (int8_t) m_dmg->m_cpu->m_boperand);
 				} else {
-					((void (*)(m_dmg_t *m_dmg, uint8_t))m_gb_instr[m_opcode].m_funct)(m_dmg, (uint8_t) m_boperand);
+					((void (*)(m_dmg_t *m_dmg, uint8_t))m_gb_instr[m_dmg->m_cpu->m_opcode].m_funct)(m_dmg, (uint8_t) m_dmg->m_cpu->m_boperand);
 				}
 			}
 			break;
 
 		case 2:
-			if (m_gb_instr[m_opcode].m_funct == NULL)
+			if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_funct == NULL)
 			{
-				printf("Unimplemented Opcode 0x%02X\n", m_opcode);
+				printf("Unimplemented Opcode 0x%02X\n", m_dmg->m_cpu->m_opcode);
 				m_printregs(m_dmg);
 				exit(EXIT_FAILURE);
 			} else {
-				((void (*)(m_dmg_t *m_dmg, uint16_t))m_gb_instr[m_opcode].m_funct)(m_dmg, (uint16_t) m_woperand);
+				((void (*)(m_dmg_t *m_dmg, uint16_t))m_gb_instr[m_dmg->m_cpu->m_opcode].m_funct)(m_dmg, (uint16_t) m_dmg->m_cpu->m_woperand);
 			}
 			break;
 
@@ -226,15 +222,15 @@ size_t m_exec(m_dmg_t *m_dmg)
 			break;
 	}
 
-	if (m_opcode == 0xCB)
+	if (m_dmg->m_cpu->m_opcode == 0xCB)
 	{
 		if (!m_dmg->m_speedhack) { m_dmg->m_cpu->m_cpu_ticks += m_ticks_by_cbopcode[m_fetchopbyte(m_dmg)]; } else { m_dmg->m_cpu->m_cpu_ticks = m_ticks_by_cbopcode[m_fetchopbyte(m_dmg)]; }
 		return m_ticks_by_cbopcode[m_fetchopbyte(m_dmg)];
 	}
 	else
 	{
-		if (!m_dmg->m_speedhack) { m_dmg->m_cpu->m_cpu_ticks += m_ticks_by_opcode[m_opcode]; } else { m_dmg->m_cpu->m_cpu_ticks = m_ticks_by_opcode[m_opcode]; }
-		return m_ticks_by_opcode[m_opcode];
+		if (!m_dmg->m_speedhack) { m_dmg->m_cpu->m_cpu_ticks += m_ticks_by_opcode[m_dmg->m_cpu->m_opcode]; } else { m_dmg->m_cpu->m_cpu_ticks = m_ticks_by_opcode[m_dmg->m_cpu->m_opcode]; }
+		return m_ticks_by_opcode[m_dmg->m_cpu->m_opcode];
 	}
 	
 }

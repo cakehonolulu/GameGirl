@@ -158,7 +158,7 @@ void m_push_bc(m_dmg_t *m_dmg);
 void m_ret(m_dmg_t *m_dmg);
 
 // 0xCB
-extern void m_cb_ext(m_dmg_t *m_dmg);
+// CB_EXT
 
 // 0xCD
 void m_call(m_dmg_t *m_dmg, uint16_t m_addr);

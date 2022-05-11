@@ -1,4 +1,5 @@
 #include <opcodes.h>
+#include <cb_opcodes.h>
 
 // Operand Methodology Inspired by CTurt
 const struct m_sharp_lr35902_instr m_gb_instr[256] = {

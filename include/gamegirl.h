@@ -281,6 +281,10 @@ typedef struct m_sharp_lr35902 {
 
 	uint8_t prev_pc;
 
+	uint8_t m_opcode;
+	uint8_t m_boperand;
+	uint16_t m_woperand;
+
 } m_dmg_cpu;
 
 typedef struct m_gb_state {
@@ -300,9 +304,6 @@ typedef struct m_gb_state {
 
 	bool m_speedhack;
 } m_dmg_t;
-
-// Declare the MMU
-extern m_dmg_t *m_dmg;
 
 #define IME (m_dmg->m_cpu->interrupts->m_master)
 #define IE (m_dmg->m_cpu->interrupts->m_enabled)

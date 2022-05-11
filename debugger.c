@@ -5,12 +5,8 @@
 #include <cb_opcodes.h>
 #include <ppu.h>
 
-extern uint8_t m_boperand;
-extern uint16_t m_woperand;
-extern uint8_t m_opcode;
-
-#define NEXT_BYTE m_boperand
-#define NEXT_WORD m_woperand
+#define NEXT_BYTE m_dmg->m_cpu->m_boperand
+#define NEXT_WORD m_dmg->m_cpu->m_woperand
 
 int m_run_debugger(m_dmg_t *m_dmg)
 {
@@ -29,28 +25,28 @@ int m_run_debugger(m_dmg_t *m_dmg)
 	if (PC)
 	{
 		/* Enter Debug First Opcode (Previous) */
-		if (m_opcode != 0xCB)
+		if (m_dmg->m_cpu->m_opcode != 0xCB)
 		{
-			if (m_gb_instr[m_opcode].m_operand == 0)
+			if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand == 0)
 			{
-				printf("\033[0;34m00:%04X  %02X   \033[0;0m       %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_opcode].m_instr);
+				printf("\033[0;34m00:%04X  %02X   \033[0;0m       %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_dmg->m_cpu->m_opcode].m_instr);
 			}
 			else
-			if (m_gb_instr[m_opcode].m_operand == 1)
+			if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand == 1)
 			{
-				if ((m_opcode == 0x18) | (m_opcode == 0x20) | (m_opcode == 0x28))
+				if ((m_dmg->m_cpu->m_opcode == 0x18) | (m_dmg->m_cpu->m_opcode == 0x20) | (m_dmg->m_cpu->m_opcode == 0x28))
 				{
-					printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%04X (%d)\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_opcode].m_instr, ((m_dmg->m_cpu->prev_pc + 2) + (int8_t) READB(m_dmg->m_cpu->prev_pc + 1)),(int8_t) READB(m_dmg->m_cpu->prev_pc + 1));
+					printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%04X (%d)\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_dmg->m_cpu->m_opcode].m_instr, ((m_dmg->m_cpu->prev_pc + 2) + (int8_t) READB(m_dmg->m_cpu->prev_pc + 1)),(int8_t) READB(m_dmg->m_cpu->prev_pc + 1));
 				}
 				else
 				{
-					printf("\033[0;34m00:%04X  %02X         \033[0;0m %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_opcode].m_instr);
+					printf("\033[0;34m00:%04X  %02X         \033[0;0m %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_dmg->m_cpu->m_opcode].m_instr);
 				}
 			}
 			else
-			if (m_gb_instr[m_opcode].m_operand == 2)
+			if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand == 2)
 			{
-				printf("\033[0;34m00:%04X  %02X %02X %02X\033[0;0m    %s$%04X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), READB(m_dmg->m_cpu->prev_pc + 2), m_gb_instr[m_opcode].m_instr, ((READB(m_dmg->m_cpu->prev_pc + 2) << 8) | (READB(m_dmg->m_cpu->prev_pc + 1))));
+				printf("\033[0;34m00:%04X  %02X %02X %02X\033[0;0m    %s$%04X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), READB(m_dmg->m_cpu->prev_pc + 2), m_gb_instr[m_dmg->m_cpu->m_opcode].m_instr, ((READB(m_dmg->m_cpu->prev_pc + 2) << 8) | (READB(m_dmg->m_cpu->prev_pc + 1))));
 			}
 		}
 		else
@@ -119,28 +115,28 @@ int m_run_debugger(m_dmg_t *m_dmg)
 
 					uint8_t m_dbgopc = READB(PC);
 
-					if (m_opcode != 0xCB)
+					if (m_dmg->m_cpu->m_opcode != 0xCB)
 					{
-						if (m_gb_instr[m_opcode].m_operand == 0)
+						if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand == 0)
 						{
-							printf("\033[0;34m00:%04X  %02X   \033[0;0m       %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_opcode].m_instr);
+							printf("\033[0;34m00:%04X  %02X   \033[0;0m       %s\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), m_gb_instr[m_dmg->m_cpu->m_opcode].m_instr);
 						}
 						else
-						if (m_gb_instr[m_opcode].m_operand == 1)
+						if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand == 1)
 						{
-							if ((m_opcode == 0x18) | (m_opcode == 0x20) | (m_opcode == 0x28))
+							if ((m_dmg->m_cpu->m_opcode == 0x18) | (m_dmg->m_cpu->m_opcode == 0x20) | (m_dmg->m_cpu->m_opcode == 0x28))
 							{
-								printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%04X (%d)\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_opcode].m_instr, ((m_dmg->m_cpu->prev_pc + 2) + (int8_t) READB(m_dmg->m_cpu->prev_pc + 1)),(int8_t) READB(m_dmg->m_cpu->prev_pc + 1));
+								printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%04X (%d)\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_dmg->m_cpu->m_opcode].m_instr, ((m_dmg->m_cpu->prev_pc + 2) + (int8_t) READB(m_dmg->m_cpu->prev_pc + 1)),(int8_t) READB(m_dmg->m_cpu->prev_pc + 1));
 							}
 							else
 							{
-								printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%02X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_opcode].m_instr, READB(m_dmg->m_cpu->prev_pc + 1));
+								printf("\033[0;34m00:%04X  %02X %02X      \033[0;0m %s$%02X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), m_gb_instr[m_dmg->m_cpu->m_opcode].m_instr, READB(m_dmg->m_cpu->prev_pc + 1));
 							}
 						}
 						else
-						if (m_gb_instr[m_opcode].m_operand == 2)
+						if (m_gb_instr[m_dmg->m_cpu->m_opcode].m_operand == 2)
 						{
-							printf("\033[0;34m00:%04X  %02X %02X %02X\033[0;0m    %s$%04X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), READB(m_dmg->m_cpu->prev_pc + 2), m_gb_instr[m_opcode].m_instr, ((READB(m_dmg->m_cpu->prev_pc + 2) << 8) | (READB(m_dmg->m_cpu->prev_pc + 1))));
+							printf("\033[0;34m00:%04X  %02X %02X %02X\033[0;0m    %s$%04X\n", m_dmg->m_cpu->prev_pc, READB(m_dmg->m_cpu->prev_pc), READB(m_dmg->m_cpu->prev_pc + 1), READB(m_dmg->m_cpu->prev_pc + 2), m_gb_instr[m_dmg->m_cpu->m_opcode].m_instr, ((READB(m_dmg->m_cpu->prev_pc + 2) << 8) | (READB(m_dmg->m_cpu->prev_pc + 1))));
 						}
 					}
 					else
