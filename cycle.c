@@ -99,14 +99,10 @@ void m_init_registers(m_dmg_t *m_dmg)
 		SP = 0;
 	}
 
-#if defined(PREC23) || defined(USE_GCC)
-		FLAGS = 0;
-#else
-		m_dmg->m_cpu->m_registers->m_flags.zero = 0;
-		m_dmg->m_cpu->m_registers->m_flags.ngtv = 0;
-		m_dmg->m_cpu->m_registers->m_flags.half = 0;
-		m_dmg->m_cpu->m_registers->m_flags.crry = 0;
-#endif
+	m_dmg->m_cpu->m_registers->m_flags.zero = 0;
+	m_dmg->m_cpu->m_registers->m_flags.ngtv = 0;
+	m_dmg->m_cpu->m_registers->m_flags.half = 0;
+	m_dmg->m_cpu->m_registers->m_flags.crry = 0;
 
 
 	// Set the CPU Ticks to 0

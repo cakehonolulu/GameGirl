@@ -336,49 +336,15 @@ typedef struct m_gb_state {
 #define FLAGS (m_dmg->m_cpu->m_registers->m_flags)
 
 // Flag register flags
-#if defined(PREC23)
-#define ZERO 0x7 // 7th bit
-#else
-#define ZERO 4 // 4th bit
-#endif
-
-#if defined(PREC23)
-#define NGTV 0x6 // 6th bit
-#else
-#define NGTV 3 // 3rd bit
-#endif
-
-#if defined(PREC23)
-#define HALF 0x5 // 5th bit
-#else
-#define HALF 2 // 2nd bit
-#endif
-
-#if defined(PREC23)
-#define CRRY 0x4 // 4th bit
-#else
-#define CRRY 1 // 1st bit
-#endif
+#define ZERO 4
+#define NGTV 3
+#define HALF 2
+#define CRRY 1
 
 #include <flags.h>
 
-// Flag set-unset-check macros
-#if defined(PREC23)
-#define FLAG_SET(bit) BIT_SET(FLAGS, bit)
-#else
 #define FLAG_SET(flag) flag_set(m_dmg, flag)
-#endif
-
-#if defined(PREC23)
-#define FLAG_UNSET(bit) BIT_UNSET(FLAGS, bit)
-#else
 #define FLAG_UNSET(flag) flag_unset(m_dmg, flag)
-#endif
-
-#if defined(PREC23)
-#define FLAG_CHECK(bit) BIT_CHECK(FLAGS, bit)
-#else
 #define FLAG_CHECK(flag) flag_check(m_dmg, flag)
-#endif
 
 #endif
