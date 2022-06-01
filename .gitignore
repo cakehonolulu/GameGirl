@@ -3,6 +3,7 @@
 *.exe
 gamegirl
 *.dll
+*.o
 
 # ROM Files
 *.gb
