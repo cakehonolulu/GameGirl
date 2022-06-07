@@ -31,33 +31,33 @@ else
 CFLAGS += -std=c2x
 endif
 
-ifdef WIN32
-BINARY := gamegirl.exe
-endif
-
-ifdef UNIX
-BINARY := gamegirl
-endif
-
-ifdef UNIX
-SOURCES := $(shell find . -name '*.c')
-OBJECTS = $(SOURCES:.c=.o)
+ifeq ($(OS),Windows_NT)
+	BINARY := gamegirl.exe
+	HOST := Windows
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S), Linux)
+		HOST := Linux
+		BINARY := gamegirl
+		SOURCES := $(shell find . -name '*.c')
+		OBJECTS = $(SOURCES:.c=.o)
+    endif
 endif
 
 all: clean $(BINARY)
 
 $(BINARY): $(OBJECTS)
-	@echo "🚧 Building..."
-ifdef UNIX
+	@echo " 🚧 Linking..."
+ifeq ($(HOST), Linux)
 	@echo " \033[0;36mLD \033[0mgamegirl"
-	@$(CC) $(CFLAGS) $(SDLFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(SDLFLAGS) $^ -o $@ $(SDLFLAGS) $(LDFLAGS)
 endif
-ifdef WIN32
+ifeq ($(HOST), Windows)
 	$(MINGW64) $(CFLAGS) -I$(Win32SDL2Headers) -L$(Win32SDL2Libs) $^ -o $@ -lmingw32 -lSDL2main -lSDL2
 endif
 
 %.o: %.c
-	@$(CC) $(CFLAGS) $(SDLCFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo " \033[0;35mCC\033[0m $<"
 
 clean:
