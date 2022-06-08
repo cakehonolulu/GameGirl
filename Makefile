@@ -4,7 +4,8 @@ MINGW64 = x86_64-w64-mingw32-gcc-10-win32
 # Setup the basic compilation flags
 # Warn all, extra and compile for c2x
 CFLAGS := -Wall -Wextra -Iinclude/
-SDLFLAGS = `sdl2-config --cflags --libs`
+CFLAGS += `sdl2-config --cflags`
+SDLFLAGS = `sdl2-config --libs`
 LDFLAGS = -lm
 
 ifdef USE_GCC
