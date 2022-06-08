@@ -97,7 +97,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{"LD E, (HL)", 0, m_ld_e_parhl},		   // 0x5E
 	{"LD E, A", 0, m_ld_e_a},				   // 0x5F
 	{NULL, 0, NULL},                           // 0x60
 	{NULL, 0, NULL},                           // 0x00
@@ -928,6 +928,20 @@ void m_ld_d_a(m_dmg_t *m_dmg)
 {
 	D = A_REG;
 	PC += 1;
+}
+
+/*
+	LD E, (HL)
+    Opcode: 0x5E
+    Number of Bytes: 1
+    Number of Cycles: 2
+    
+	Load the 8-bit contents of memory specified by register pair HL into register E.
+*/
+void m_ld_e_parhl(m_dmg_t *m_dmg)
+{
+	E = READB(HL);
+	PC++;
 }
 
 /*
