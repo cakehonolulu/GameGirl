@@ -57,7 +57,6 @@ jobs:
         wget https://apt.llvm.org/llvm.sh
         chmod +x llvm.sh
         sudo ./llvm.sh 15
-        sudo apt-get update
         sudo apt-get -y install libsdl2-2.0-0 libsdl2-dev libsdl2-gfx-1.0-0 libsdl2-gfx-dev
         
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).

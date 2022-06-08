@@ -14,7 +14,7 @@ CC = gcc
 CFLAGS += -DUSE_GCC -DPREC23
 else
 # Use LLVM's frontend CLANG
-CC = clang
+CC = clang-15
 endif
 
 ifdef DBG_OPCODE
