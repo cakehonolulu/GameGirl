@@ -309,7 +309,11 @@ int main(int argc, char **argv)
 			uint64_t m_sleep = ceil(m_ttwait) * 10;
 
 			// Sleep that time slice
+#ifdef CODEQL
+			sleep(m_sleep);
+#else
 			usleep(m_sleep);
+#endif
 
 			// Update the SDL Texture only if LCDC's Display Enable Bit is on
 			if (m_dmg.ppu->m_lcdc & GPU_CONTROL_DISPLAYENABLE) m_sdl_draw_screen(&m_dmg);
