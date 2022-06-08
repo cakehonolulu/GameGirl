@@ -142,6 +142,9 @@ void m_ld_a_l(m_dmg_t *m_dmg);
 // 0x86
 void m_ld_a_phl(m_dmg_t *m_dmg);
 
+// 0x87
+void m_add_a_a(m_dmg_t *m_dmg);
+
 // 0x90
 void m_sub_b(m_dmg_t *m_dmg);
 
