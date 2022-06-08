@@ -50,7 +50,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x2C
 	{NULL, 0, NULL},                           // 0x2D
 	{"LD L, ", 1, m_ld_l_d8},                  // 0x2E
-	{NULL, 0, NULL},                           // 0x2F
+	{"CPL", 0, m_cpl},                           // 0x2F
 	{NULL, 0, NULL},							// 0x30
 	{"LD SP, ", 2, m_ld_sp_d16},			// 0x31
 	{"LD (HL-), A", 0, m_ld_hlminus_a},		// 0x32
@@ -660,9 +660,9 @@ void m_ld_hlplus_a(m_dmg_t *m_dmg)
 	printf("\033[1;31mLD (HL+), A\033[1;0m\n");
 #endif
 
-	m_dmg->m_cpu->m_registers->hl++;
+	HL++;
 
-	WRITEB(m_dmg->m_cpu->m_registers->hl, A_REG);
+	WRITEB(HL, A_REG);
 
 	PC++;
 }
@@ -756,6 +756,20 @@ void m_ld_l_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 }
 
 /*
+	CPL
+	Opcode: 0x2F
+	Number of Bytes: 1
+	Number of Cycles: 1
+
+	Take the one's complement (i.e., flip all bits) of the contents of register A.
+*/
+void m_cpl(m_dmg_t *m_dmg)
+{
+	A_REG = ~A_REG;
+	PC++;
+}
+
+/*
 	LD SP, d16
 	Opcode: 0x31
 	Number of Bytes: 3
@@ -796,8 +810,8 @@ void m_ld_hlminus_a(m_dmg_t *m_dmg)
 	printf("\033[1;31mLD (HL-), A\033[1;0m\n");
 #endif
 
-	WRITEB(m_dmg->m_cpu->m_registers->hl, m_dmg->m_cpu->m_registers->a);
-	m_dmg->m_cpu->m_registers->hl--;
+	WRITEB(HL, A_REG);
+	HL--;
 
 	PC += 1;
 }

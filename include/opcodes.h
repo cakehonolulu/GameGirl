@@ -91,6 +91,9 @@ void m_ld_a_hlplusp(m_dmg_t *m_dmg);
 // 0x2E
 void m_ld_l_d8(m_dmg_t *m_dmg, uint8_t m_d8);
 
+// 0x2F
+void m_cpl(m_dmg_t *m_dmg);
+
 // 0x31
 void m_ld_sp_d16(m_dmg_t *m_dmg, uint16_t m_d16);
 
