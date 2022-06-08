@@ -118,6 +118,9 @@ void m_ld_c_a(m_dmg_t *m_dmg);
 // 0x57
 void m_ld_d_a(m_dmg_t *m_dmg);
 
+// 0x5F
+void m_ld_e_a(m_dmg_t *m_dmg);
+
 // 0x67
 void m_ld_h_a(m_dmg_t *m_dmg);
 
