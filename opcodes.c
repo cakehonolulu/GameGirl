@@ -233,7 +233,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{"AND (d8) -> d8: ", 1, m_and_d8},		   // 0xE6
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xE9
@@ -1352,6 +1352,35 @@ void m_ld_cpar_a(m_dmg_t *m_dmg)
 #endif
 	WRITEB((0xFF00 + C), A_REG);
 	PC += 1;
+}
+
+/*
+	AND d8
+    Opcode: 0xE6
+    Number of Bytes: 2
+    Number of Cycles: 2
+
+	Take the logical AND for each bit of the contents of 8-bit immediate operand d8 and
+	the contents of register A, and store the results in register A.
+*/
+void m_and_d8(m_dmg_t *m_dmg, uint8_t m_d8)
+{
+	A_REG &= m_d8;
+	
+	FLAG_UNSET(CRRY);
+	FLAG_UNSET(NGTV);
+	FLAG_SET(HALF);
+
+	if(A_REG)
+	{
+		FLAG_UNSET(ZERO);
+	}
+	else
+	{
+		FLAG_SET(ZERO);
+	}
+
+	PC += 2;
 }
 
 /*

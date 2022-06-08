@@ -172,6 +172,9 @@ void m_ld_a8_a(m_dmg_t *m_dmg, uint8_t m_a8);
 // 0xE2
 void m_ld_cpar_a(m_dmg_t *m_dmg);
 
+// 0xE6
+void m_and_d8(m_dmg_t *m_dmg, uint8_t m_d8);
+
 // 0xEA
 void m_ld_a16_a(m_dmg_t *m_dmg, uint16_t m_a16);
 
