@@ -232,6 +232,9 @@ void m_di(m_dmg_t *m_dmg);
 // 0xF6
 void m_or_d8(m_dmg_t *m_dmg, uint8_t m_d8);
 
+// 0xFA
+void m_ld_a_par_a16(m_dmg_t *m_dmg, uint16_t m_a16);
+
 // 0xFB
 void m_ei(m_dmg_t *m_dmg);
 

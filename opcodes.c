@@ -253,9 +253,9 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xF9
-	{NULL, 0, NULL},                           // 0xFA
+	{"LD A, (a16)", 2, m_ld_a_par_a16},		   // 0xFA
 	{"EI", 0, m_ei},                           // 0xFB
-	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},		   // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{"CP ", 1, m_cp_d8},                       // 0xFE
 	{NULL, 0, NULL}                            // 0xFF
@@ -1722,6 +1722,20 @@ void m_di(m_dmg_t *m_dmg)
 void m_or_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 {
 	or(m_dmg, m_d8);
+	PC += 2;
+}
+
+/*
+	LD A, (a16)
+    Opcode: 0xFA
+    Number of Bytes: 3
+    Number of Cycles: 4
+
+	Load into register A the contents of the internal RAM or register specified by the 16-bit immediate operand a16.
+*/
+void m_ld_a_par_a16(m_dmg_t *m_dmg, uint16_t m_a16)
+{
+	A_REG = READB(m_a16);
 	PC += 2;
 }
 
