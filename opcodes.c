@@ -21,7 +21,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x0F
 	{NULL, 0, NULL},                           // 0x10
 	{"LD DE, ", 2, m_ld_de_d16},			   // 0x11
-	{NULL, 0, NULL},                           // 0x12
+	{"LD (DE), A", 0, m_ld_par_de_a},		   // 0x12
 	{"INC DE", 0, m_inc_de},				   // 0x13
 	{NULL, 0, NULL},                           // 0x14
 	{"DEC D", 0, m_dec_d},					   // 0x15
@@ -436,6 +436,19 @@ void m_ld_de_d16(m_dmg_t *m_dmg, uint16_t m_d16)
 
 	DE = m_d16;
 	PC += 3;
+}
+
+/*
+	LD (DE), A
+    Number of Bytes: 1
+    Number of Cycles: 2
+
+	Store the contents of register A in the memory location specified by register pair DE.
+*/
+void m_ld_par_de_a(m_dmg_t *m_dmg)
+{
+	WRITEB(DE, A_REG);
+	PC++;
 }
 
 /*

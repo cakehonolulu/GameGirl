@@ -43,6 +43,9 @@ void m_ld_c_d8(m_dmg_t *m_dmg, uint8_t m_d8);
 // 0x11
 void m_ld_de_d16(m_dmg_t *m_dmg, uint16_t m_d16);
 
+// 0x12
+void m_ld_par_de_a(m_dmg_t *m_dmg);
+
 // 0x13
 void m_inc_de(m_dmg_t *m_dmg);
 
