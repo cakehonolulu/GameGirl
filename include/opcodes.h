@@ -109,6 +109,9 @@ void m_dec_a(m_dmg_t *m_dmg);
 // 0x3E
 void m_ld_a_d8(m_dmg_t *m_dmg, uint8_t m_d8);
 
+// 0x47
+void m_ld_b_a(m_dmg_t *m_dmg);
+
 // 0x4F
 void m_ld_c_a(m_dmg_t *m_dmg);
 

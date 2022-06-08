@@ -74,7 +74,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x44
 	{NULL, 0, NULL},                           // 0x45
 	{NULL, 0, NULL},                           // 0x46
-	{NULL, 0, NULL},                           // 0x47
+	{"LD B, A", 0, m_ld_b_a},				   // 0x47
 	{NULL, 0, NULL},                           // 0x48
 	{NULL, 0, NULL},                           // 0x49
 	{NULL, 0, NULL},                           // 0x4A
@@ -866,6 +866,20 @@ void m_ld_a_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 
 	A_REG = m_d8;
 	PC += 2;
+}
+
+/*
+	LD B, A
+    Opcode: 0x47
+    Number of Bytes: 1
+    Number of Cycles: 1
+
+	Load the contents of register A into register B.
+*/
+void m_ld_b_a(m_dmg_t *m_dmg)
+{
+	B_REG = A_REG;
+	PC++;
 }
 
 /*
