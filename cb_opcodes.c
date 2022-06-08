@@ -1,4 +1,5 @@
 #include <cb_opcodes.h>
+#include <alu.h>
 
 const struct m_sharp_lr35902_instr_cb m_gb_instr_cb[256] = {
 	{NULL, NULL},							// 0x00
@@ -255,8 +256,8 @@ const struct m_sharp_lr35902_instr_cb m_gb_instr_cb[256] = {
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL}                           	// 0x00
+	{"SET 7, (HL)", m_set_7_parhl},			// 0xFD
+	{NULL, NULL}                           	// 0xFF
 };
 
 void m_cb_ext(m_dmg_t *m_dmg, uint8_t cb_instr)
@@ -375,5 +376,19 @@ void m_bit_7_h(m_dmg_t *m_dmg)
 #ifdef OPCODE_DEBUG
 	printf("Flags: 0x%02X\n", FLAGS);
 #endif
+	PC += 2;
+}
+
+/*
+	SET 7, (HL)
+    Opcode: 0xCBFE
+    Number of Bytes: 2
+    Number of Cycles: 4
+
+	Set bit 7 in the memory location specified by register pair HL to 1.
+*/
+void m_set_7_parhl(m_dmg_t *m_dmg)
+{
+	WRITEB(HL, set_bit(READB(HL), 0b10000000));
 	PC += 2;
 }

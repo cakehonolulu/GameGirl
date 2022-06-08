@@ -32,6 +32,9 @@ uint16_t word_addition(m_dmg_t *m_dmg, uint16_t *m_register, uint16_t m_value);
 // OR an 8-bit register contents
 uint8_t or(m_dmg_t *m_dmg, uint8_t m_register);
 
+// Set 'nth bit to 1 on a determinate variable
+uint8_t set_bit(uint8_t m_var, uint8_t m_bit);
+
 // Macros for easier working
 #define INC(reg) (reg = increment(m_dmg, reg))
 #define DEC(reg) (reg = decrement(m_dmg, reg))

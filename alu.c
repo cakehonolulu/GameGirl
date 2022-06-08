@@ -185,3 +185,9 @@ uint8_t or(m_dmg_t *m_dmg, uint8_t m_register)
 
 	return m_register;
 }
+
+uint8_t set_bit(uint8_t m_var, uint8_t m_bit)
+{
+	m_var |= m_bit; 
+	return m_var;
+}

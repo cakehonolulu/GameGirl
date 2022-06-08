@@ -20,3 +20,6 @@ void m_swap_a(m_dmg_t *m_dmg);
 
 // 0x7C
 void m_bit_7_h(m_dmg_t *m_dmg);
+
+// 0xFE
+void m_set_7_parhl(m_dmg_t *m_dmg);
