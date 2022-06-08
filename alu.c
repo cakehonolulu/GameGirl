@@ -133,6 +133,35 @@ uint8_t addition(m_dmg_t *m_dmg, uint8_t *m_register, uint8_t m_value)
 	return *m_register;
 }
 
+uint16_t word_addition(m_dmg_t *m_dmg, uint16_t *m_register, uint16_t m_value)
+{
+	uint64_t m_result = *m_register + m_value;
+
+	if (m_result & 0xffff0000)
+	{
+		FLAG_SET(CRRY);
+	}
+	else
+	{
+		FLAG_UNSET(CRRY);
+	}
+	
+	*m_register = (uint16_t) (m_result & 0xffff);
+	
+	if (((*m_register & 0x0f) + (m_value & 0x0f)) > 0x0f)
+	{
+		FLAG_SET(HALF);
+	}
+	else
+	{
+		FLAG_UNSET(HALF);
+	}
+	
+	FLAG_UNSET(NGTV);
+
+	return *m_register;
+}
+
 uint8_t or(m_dmg_t *m_dmg, uint8_t m_register)
 {
 	A_REG |= m_register;

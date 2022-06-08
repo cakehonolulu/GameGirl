@@ -26,6 +26,9 @@ uint8_t decrement(m_dmg_t *m_dmg, uint8_t m_register);
 // Add m_value to an 8-bit register
 uint8_t addition(m_dmg_t *m_dmg, uint8_t *m_register, uint8_t m_value);
 
+// Add m_value to a 16-bit register
+uint16_t word_addition(m_dmg_t *m_dmg, uint16_t *m_register, uint16_t m_value);
+
 // OR an 8-bit register contents
 uint8_t or(m_dmg_t *m_dmg, uint8_t m_register);
 
