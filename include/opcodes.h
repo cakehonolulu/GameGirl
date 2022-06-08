@@ -145,6 +145,9 @@ void m_sub_b(m_dmg_t *m_dmg);
 // 0xAF
 void m_xor_a(m_dmg_t *m_dmg);
 
+// 0xB0
+void m_or_b(m_dmg_t *m_dmg);
+
 // 0xB1
 void m_or_c(m_dmg_t *m_dmg);
 
