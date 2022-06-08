@@ -260,9 +260,12 @@ int main(int argc, char **argv)
 			/*
 				Run as many cycles as we possibly can before updating the screen
 				This is calculated dividing the Frequency of the GameBoy's CPU
-				between the target frames per second (59.7)
+				between the target frames per second (59.7).
+
+				Use 60 frames per second threshold in order to fix emulator stuttering
+				issues derived from the natural number division.
 			*/
-			while (m_dmg.m_cpu->m_cpu_ticks < (4194304 / 59.7))
+			while (m_dmg.m_cpu->m_cpu_ticks < (4194304 / 60))
 			{
 				/*			
 					If the user has added a breakpoint, check if Program Counter is
