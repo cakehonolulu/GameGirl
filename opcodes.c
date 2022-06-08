@@ -247,9 +247,9 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xF1
 	{NULL, 0, NULL},                           // 0xF2
 	{"DI", 0, m_di},						   // 0xF3
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0x00
+	{NULL, 0, NULL},                           // 0x04
+	{NULL, 0, NULL},                           // 0x05
+	{"OR d8 -> d8", 1, m_or_d8},			   // 0xF6
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0xF9
@@ -1694,6 +1694,22 @@ void m_di(m_dmg_t *m_dmg)
 {
 	m_dmg->m_cpu->interrupts->m_master = 0;
 	PC++;
+}
+
+/*
+	OR d8
+    Opcode: 0xF6
+    Number of Bytes: 2
+    Number of Cycles: 2
+    Flags: Z 0 0 0
+
+	Take the logical OR for each bit of the contents of the 8-bit immediate
+	operand d8 and the contents of register A, and store the results in register A.
+*/
+void m_or_d8(m_dmg_t *m_dmg, uint8_t m_d8)
+{
+	or(m_dmg, m_d8);
+	PC += 2;
 }
 
 /*
