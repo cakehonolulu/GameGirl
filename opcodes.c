@@ -236,7 +236,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"AND (d8) -> d8: ", 1, m_and_d8},		   // 0xE6
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0xE9
+	{"JP HL", 0, m_jp_hl},					   // 0xE9
 	{"LD (a16), A -> a16: ", 2, m_ld_a16_a},			   // 0xEA
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -1602,6 +1602,20 @@ void m_and_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 	}
 
 	PC += 2;
+}
+
+/*
+	JP HL
+    Opcode: 0xE9
+    Number of Bytes: 1
+    Number of Cycles: 1
+
+	Load the contents of register pair HL into the program counter PC.
+	The next instruction is fetched from the location specified by the new value of PC.
+*/
+void m_jp_hl(m_dmg_t *m_dmg)
+{
+	PC = HL;
 }
 
 /*
