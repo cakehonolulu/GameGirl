@@ -172,7 +172,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xA7
 	{NULL, 0, NULL},                           // 0xA8
 	{NULL, 0, NULL},                           // 0xA9
-	{NULL, 0, NULL},                           // 0xAA
+	{"XOR C", 0, m_xor_c},                           // 0xAA
 	{NULL, 0, NULL},                           // 0xAB
 	{NULL, 0, NULL},                           // 0xAC
 	{NULL, 0, NULL},                           // 0xAD
@@ -1064,6 +1064,43 @@ void m_sub_b(m_dmg_t *m_dmg)
 }
 
 /*
+	XOR C
+    Opcode: 0xA9
+    Number of Bytes: 1
+    Number of Cycles: 1
+
+	Take the logical exclusive-OR for each bit of the contents of register C
+	and the contents of register A, and store the results in register A.
+*/
+void m_xor_c(m_dmg_t *m_dmg)
+{
+#ifdef OPCODE_DEBUG
+	printf("\033[1;31mXOR C\033[1;0m\n");
+#endif
+
+	A_REG ^= C;
+
+	if (A_REG == 0)
+	{
+		FLAG_SET(ZERO);
+	}
+
+#ifdef OPCODE_DEBUG
+			printf("Flags: 0x%02X\n", FLAGS);
+#endif
+
+	FLAG_UNSET(HALF);
+	FLAG_UNSET(CRRY);
+	FLAG_UNSET(NGTV);
+
+#ifdef OPCODE_DEBUG
+			printf("Flags: 0x%02X\n", FLAGS);
+#endif
+
+	PC += 1;
+}
+
+/*
 	XOR A
 	Opcode: 0xAF
 	Number of Bytes: 1
@@ -1090,7 +1127,7 @@ void m_xor_a(m_dmg_t *m_dmg)
 			printf("Flags: 0x%02X\n", FLAGS);
 #endif
 
-	FLAG_UNSET(HALF);;
+	FLAG_UNSET(HALF);
 	FLAG_UNSET(CRRY);
 	FLAG_UNSET(NGTV);
 

@@ -142,6 +142,9 @@ void m_ld_a_phl(m_dmg_t *m_dmg);
 // 0x90
 void m_sub_b(m_dmg_t *m_dmg);
 
+// 0xA9
+void m_xor_c(m_dmg_t *m_dmg);
+
 // 0xAF
 void m_xor_a(m_dmg_t *m_dmg);
 
