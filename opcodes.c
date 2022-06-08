@@ -28,7 +28,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"LD D, ", 1, m_ld_d_d8},				   // 0x16
 	{"RLA", 0, m_rla},                         // 0x17
 	{"JR ", 1, m_jr_s8},                           // 0x18
-	{NULL, 0, NULL},                           // 0x19
+	{"ADD HL, DE", 0, m_add_hl_de},			   // 0x19
 	{"LD A, (DE)", 0, m_ld_a_de},              // 0x1A
 	{NULL, 0, NULL},                           // 0x1B
 	{NULL, 0, NULL},                           // 0x1C
@@ -540,6 +540,21 @@ void m_jr_s8(m_dmg_t *m_dmg, int8_t m_s8)
 {
 	PC += 2;
 	PC += (int8_t) m_s8;
+}
+
+/*
+	ADD HL, DE
+    Opcode: 0x19
+    Number of Bytes: 1
+    Number of Cycles: 2
+
+	Add the contents of register pair DE to the contents of register pair HL, and
+	store the results in register pair HL.
+*/
+void m_add_hl_de(m_dmg_t *m_dmg)
+{
+	word_addition(m_dmg, &HL, DE);
+	PC++;
 }
 
 /*

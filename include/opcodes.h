@@ -58,6 +58,9 @@ void m_rla(m_dmg_t *m_dmg);
 // 0x18
 void m_jr_s8(m_dmg_t *m_dmg, int8_t m_s8);
 
+// 0x19
+void m_add_hl_de(m_dmg_t *m_dmg);
+
 // 0x1A
 void m_ld_a_de(m_dmg_t *m_dmg);
 
