@@ -216,7 +216,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xD2
 	{NULL, 0, NULL},                           // 0xD3
 	{NULL, 0, NULL},                           // 0xD4
-	{NULL, 0, NULL},                           // 0xD5
+	{"PUSH DE", 0, m_push_de},				   // 0xD5
 	{NULL, 0, NULL},                           // 0xD6
 	{NULL, 0, NULL},                           // 0xD7
 	{NULL, 0, NULL},                           // 0xD8
@@ -1483,6 +1483,24 @@ void m_call(m_dmg_t *m_dmg, uint16_t m_addr)
 	PUSHW(PC);
 	
 	PC = m_addr;
+}
+
+/*
+	PUSH DE
+    Opcode: 0xD5
+    Number of Bytes: 1
+    Number of Cycles: 4
+
+	Push the contents of register pair DE onto the memory stack by doing the following:
+
+    Subtract 1 from the stack pointer SP, and put the contents of the higher portion of register pair DE on the stack.
+    Subtract 2 from SP, and put the lower portion of register pair DE on the stack.
+    Decrement SP by 2.
+*/
+void m_push_de(m_dmg_t *m_dmg)
+{
+	PUSHW(DE);
+	PC += 1;
 }
 
 /*
