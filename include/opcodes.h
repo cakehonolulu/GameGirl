@@ -187,6 +187,9 @@ void m_call(m_dmg_t *m_dmg, uint16_t m_addr);
 // 0xE0
 void m_ld_a8_a(m_dmg_t *m_dmg, uint8_t m_a8);
 
+// 0xE1
+void m_pop_hl(m_dmg_t *m_dmg);
+
 // 0xE2
 void m_ld_cpar_a(m_dmg_t *m_dmg);
 

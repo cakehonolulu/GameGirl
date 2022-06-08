@@ -228,7 +228,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xDE
 	{NULL, 0, NULL},                           // 0xDF
 	{"LD (a8), A -> a8: ", 1, m_ld_a8_a},	   // 0xE0
-	{NULL, 0, NULL},                           // 0xE1
+	{"POP HL", 0, m_pop_hl},				   // 0xE1
 	{"LD (C), A", 0, m_ld_cpar_a},			   // 0xE2
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -1454,6 +1454,29 @@ void m_ld_a8_a(m_dmg_t *m_dmg, uint8_t m_a8)
 
 	WRITEB((0xFF00 + m_a8), A_REG);
 	PC += 2;
+}
+
+/*
+	POP HL
+    Opcode: 0xE1
+    Number of Bytes: 1
+    Number of Cycles: 3
+    Flags: - - - -
+
+	Pop the contents from the memory stack into register pair into register pair HL by doing the following:
+
+    Load the contents of memory specified by stack pointer SP into the lower portion of HL.
+    Add 1 to SP and load the contents from the new memory location into the upper portion of HL.
+    By the end, SP should be 2 more than its initial value.
+*/
+void m_pop_hl(m_dmg_t *m_dmg)
+{
+	uint16_t m_val = POPW();
+
+	H = m_val >> 8;
+	L = m_val & 0xFF;
+
+	PC++;
 }
 
 /*
