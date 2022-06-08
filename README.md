@@ -3,6 +3,8 @@
   <img src="resources/banner.png"/>
 </p>
 
+[![CodeQL](https://github.com/cakehonolulu/GameGirl/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/cakehonolulu/GameGirl/actions/workflows/codeql-analysis.yml)
+
 `GameGirl` is a GameBoy (DMG-01) emulator written in C.
 
 It's prupose is to serve as a low-level learning experience for me.
