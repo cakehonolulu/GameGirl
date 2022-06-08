@@ -164,6 +164,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x9F
 	{NULL, 0, NULL},                           // 0xA0
+	{"AND C", 0, m_and_c},                     // 0xA1
 	{NULL, 0, NULL},                           // 0xA2
 	{NULL, 0, NULL},                           // 0xA3
 	{NULL, 0, NULL},                           // 0xA4
@@ -171,8 +172,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0xA6
 	{NULL, 0, NULL},                           // 0xA7
 	{NULL, 0, NULL},                           // 0xA8
-	{NULL, 0, NULL},                           // 0xA9
-	{"XOR C", 0, m_xor_c},                           // 0xAA
+	{"XOR C", 0, m_xor_c},                           // 0xA9
 	{NULL, 0, NULL},                           // 0xAB
 	{NULL, 0, NULL},                           // 0xAC
 	{NULL, 0, NULL},                           // 0xAD
@@ -1059,6 +1059,35 @@ void m_sub_b(m_dmg_t *m_dmg)
 	} else {
 		FLAG_SET(ZERO);
 	}
+
+	PC++;
+}
+
+/*
+	AND C
+    Opcode: 0xA1
+    Number of Bytes: 1
+    Number of Cycles: 1
+
+	Take the logical AND for each bit of the contents of register C and the
+	contents of register A, and store the results in register A.
+*/
+void m_and_c(m_dmg_t *m_dmg)
+{
+	A_REG &= C;
+	
+	if (A_REG)
+	{
+		FLAG_UNSET(ZERO);
+	}
+	else
+	{
+		FLAG_SET(ZERO);
+	}
+
+	FLAG_UNSET(NGTV);
+	FLAG_UNSET(CRRY);
+	FLAG_SET(HALF);
 
 	PC++;
 }
