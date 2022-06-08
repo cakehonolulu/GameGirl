@@ -124,7 +124,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{"LD (HL), A", 0, m_ld_hl_a},              // 0x77
 	{"LD A, B", 0, m_ld_a_b},				   // 0x78
-	{NULL, 0, NULL},                           // 0x00
+	{"LD A, C", 0, m_ld_a_c},				   // 0x79
 	{NULL, 0, NULL},                           // 0x00
 	{"LD A, E", 0, m_ld_a_e},                  // 0x7B
 	{"LD A, H", 0, m_ld_a_h},				   // 0x7C
@@ -242,7 +242,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{NULL, 0, NULL},                           // 0xEF
+	{"RST 5", 0, m_rst_5},					   // 0xEF
 	{"LD A, (a8) -> a8: ", 1, m_ld_a_a8},              // 0xF0
 	{NULL, 0, NULL},                           // 0xF1
 	{NULL, 0, NULL},                           // 0xF2
@@ -961,6 +961,20 @@ void m_ld_a_b(m_dmg_t *m_dmg)
 }
 
 /*
+	LD A, C
+    Opcode: 0x79
+    Number of Bytes: 1
+    Number of Cycles: 1
+
+	Load the contents of register C into register A.
+*/
+void m_ld_a_c(m_dmg_t *m_dmg)
+{
+	A_REG = C;
+	PC++;
+}
+
+/*
 	LD A, E
 	Opcode: 0x7B
 	Number of Bytes: 1
@@ -1496,6 +1510,29 @@ void m_ld_a16_a(m_dmg_t *m_dmg, uint16_t m_a16)
 	WRITEB(m_a16, A_REG);
 
 	PC += 3;
+}
+
+/*
+	RST 5
+    Opcode: 0xEF
+    Number of Bytes: 1
+    Number of Cycles: 4
+    
+	Push the current value of the program counter PC onto the memory stack, and load into PC the 6th byte of page 0
+	memory addresses, 0x28. The next instruction is fetched from the address specified by the new content of PC (as usual).
+
+	With the push, the contents of the stack pointer SP are decremented by 1, and the higher-order byte of PC is loaded
+	in the memory address specified by the new SP value. The value of SP is then again decremented by 1, and
+	the lower-order byte of the PC is loaded in the memory address specified by that value of SP.
+
+	The RST instruction can be used to jump to 1 of 8 addresses.
+	Because all ofthe addresses are held in page 0 memory, 0x00 is loaded in the higher-orderbyte
+	of the PC, and 0x28 is loaded in the lower-order byte.
+*/
+void m_rst_5(m_dmg_t *m_dmg)
+{
+	PUSHW(PC);
+	PC = 0x0028;
 }
 
 /*

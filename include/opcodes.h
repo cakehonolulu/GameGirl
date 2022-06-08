@@ -127,6 +127,9 @@ void m_ld_hl_a(m_dmg_t *m_dmg);
 // 0x78
 void m_ld_a_b(m_dmg_t *m_dmg);
 
+// 0x79
+void m_ld_a_c(m_dmg_t *m_dmg);
+
 // 0x7B
 void m_ld_a_e(m_dmg_t *m_dmg);
 
@@ -189,6 +192,9 @@ void m_and_d8(m_dmg_t *m_dmg, uint8_t m_d8);
 
 // 0xEA
 void m_ld_a16_a(m_dmg_t *m_dmg, uint16_t m_a16);
+
+// 0xEF
+void m_rst_5(m_dmg_t *m_);
 
 // 0xF0
 void m_ld_a_a8(m_dmg_t *m_dmg, uint8_t m_a8);
