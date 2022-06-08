@@ -15,5 +15,8 @@ void m_cb_ext(m_dmg_t *m_dmg, uint8_t cb_instr);
 // 0x11
 void m_rl_c(m_dmg_t *m_dmg);
 
+// 0x37
+void m_swap_a(m_dmg_t *m_dmg);
+
 // 0x7C
 void m_bit_7_h(m_dmg_t *m_dmg);

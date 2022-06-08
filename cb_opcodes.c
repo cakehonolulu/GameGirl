@@ -33,6 +33,8 @@ const struct m_sharp_lr35902_instr_cb m_gb_instr_cb[256] = {
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
+	{NULL, NULL},                           // 0x20
+	{NULL, NULL},                           // 0x21
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
@@ -41,22 +43,20 @@ const struct m_sharp_lr35902_instr_cb m_gb_instr_cb[256] = {
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
+	{NULL, NULL},                           // 0x2A
+	{NULL, NULL},                           // 0x00
+	{NULL, NULL},                           // 0x00
+	{NULL, NULL},                           // 0x00
+	{NULL, NULL},                           // 0x00
+	{NULL, NULL},                           // 0x00
+	{NULL, NULL},                           // 0x30
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
-	{NULL, NULL},                           // 0x00
+	{"SWAP A", m_swap_a},					// 0x37
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
 	{NULL, NULL},                           // 0x00
@@ -317,6 +317,36 @@ void m_rl_c(m_dmg_t *m_dmg)
 	FLAG_UNSET(NGTV);
 	FLAG_UNSET(HALF);
 	
+	PC += 2;
+}
+
+/*
+	SWAP A
+    Opcode: 0xCB37
+    Number of Bytes: 2
+    Number of Cycles: 2
+    Flags: Z 0 0 0
+
+	Shift the contents of the lower-order four bits (0-3) of register A to the higher-order four
+	bits (4-7) of the register, and shift the higher-order four bits to the lower-order four bits.
+*/
+void m_swap_a(m_dmg_t *m_dmg)
+{
+	A_REG = ((A_REG & 0xf) << 4) | ((A_REG & 0xf0) >> 4);
+	
+	if (A_REG)
+	{
+		FLAG_UNSET(ZERO);
+	}
+	else
+	{
+		FLAG_SET(ZERO);
+	}
+
+	FLAG_UNSET(NGTV);
+	FLAG_UNSET(HALF);
+	FLAG_UNSET(CRRY);
+
 	PC += 2;
 }
 
