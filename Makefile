@@ -50,6 +50,8 @@ else
     endif
 endif
 
+.PHONY: clean all
+
 all: clean $(BINARY)
 
 $(BINARY): $(OBJECTS)
@@ -68,5 +70,7 @@ endif
 
 clean:
 	@echo "🧹 Cleaning..."
-	-@rm -rf $(BINARY) ||:
-	-@rm -rf $(OBJECTS) ||:
+
+ifeq ($(filter $(BINARY), $(MAKECMDGOALS)),)
+    $(shell find . -name '*.o' -exec rm {} \;)
+endif
