@@ -187,6 +187,9 @@ void m_pop_bc(m_dmg_t *m_dmg);
 // 0xC3
 void m_jp_a16(m_dmg_t *m_dmg, uint16_t m_a16);
 
+// 0xC4
+void m_call_nz_a16(m_dmg_t *m_dmg, uint16_t m_a16);
+
 // 0xC5
 void m_push_bc(m_dmg_t *m_dmg);
 

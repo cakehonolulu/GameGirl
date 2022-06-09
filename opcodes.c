@@ -199,7 +199,8 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"POP BC", 0, m_pop_bc},                   // 0xC1
 	{NULL, 0, NULL},                           // 0xC2
 	{"JP ", 2, m_jp_a16},				   // 0xC3
-	{NULL, 0, NULL},                           // 0xC4
+	{NULL, 0, NULL},
+	{"CALL NZ, a16", 2, m_call_nz_a16},		   // 0xC4
 	{"PUSH BC", 0, m_push_bc},				   // 0xC5
 	{NULL, 0, NULL},                           // 0xC6
 	{NULL, 0, NULL},                           // 0xC7
@@ -1383,6 +1384,31 @@ void m_jp_a16(m_dmg_t *m_dmg, uint16_t m_a16)
 }
 
 /*
+	CALL NZ, a16
+    Opcode: 0xC4
+    Number of Bytes: 3
+    Number of Cycles: 6/3
+
+	If the Z flag is 0, the program counter PC value corresponding to the memory location of the instruction following
+	the CALL instruction is pushed to the 2 bytes following the memory byte specified by the stack pointer SP.
+	The 16-bit immediate operand a16 is then loaded into PC.
+
+	The lower-order byte of a16 is placed in byte 2 of the object code, and the higher-order byte is placed in byte 3.
+*/
+void m_call_nz_a16(m_dmg_t *m_dmg, uint16_t m_a16)
+{
+	if (!m_dmg->m_cpu->m_registers->m_flags.zero)
+	{
+		PUSHW(PC);
+		PC = m_a16;
+	}
+	else
+	{
+		printf("Flag contents: %d\n", m_dmg->m_cpu->m_registers->m_flags.zero);
+	}
+}
+
+/*
 	PUSH BC
 	Opcode: 0xC5
 	Number of Bytes: 1
@@ -1736,7 +1762,7 @@ void m_or_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 void m_ld_a_par_a16(m_dmg_t *m_dmg, uint16_t m_a16)
 {
 	A_REG = READB(m_a16);
-	PC += 2;
+	PC += 3;
 }
 
 /*
