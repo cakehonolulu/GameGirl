@@ -199,7 +199,6 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{"POP BC", 0, m_pop_bc},                   // 0xC1
 	{NULL, 0, NULL},                           // 0xC2
 	{"JP ", 2, m_jp_a16},				   // 0xC3
-	{NULL, 0, NULL},
 	{"CALL NZ, a16", 2, m_call_nz_a16},		   // 0xC4
 	{"PUSH BC", 0, m_push_bc},				   // 0xC5
 	{NULL, 0, NULL},                           // 0xC6
