@@ -1401,10 +1401,6 @@ void m_call_nz_a16(m_dmg_t *m_dmg, uint16_t m_a16)
 		PUSHW(PC);
 		PC = m_a16;
 	}
-	else
-	{
-		printf("Flag contents: %d\n", m_dmg->m_cpu->m_registers->m_flags.zero);
-	}
 }
 
 /*
