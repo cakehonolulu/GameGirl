@@ -297,7 +297,7 @@ void m_rl_c(m_dmg_t *m_dmg)
 	printf("\033[1;31mRL C\033[1;0m\n");
 #endif
 
-	uint8_t oldcarry = FLAG_CHECK(CRRY) ? 1 : 0;
+	uint8_t oldcarry = (uint8_t) FLAG_CHECK(CRRY);
 
 	if ((C >> 7) & 1)
 	{

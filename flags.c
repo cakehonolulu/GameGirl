@@ -1,7 +1,7 @@
 #include <gamegirl.h>
 
 // Flag set-unset-check macros
-void flag_set(m_dmg_t *m_dmg, uint8_t m_flag)
+void flag_set(m_dmg_t *m_dmg, m_cpu_flags m_flag)
 {
 	switch (m_flag)
 	{
@@ -22,11 +22,11 @@ void flag_set(m_dmg_t *m_dmg, uint8_t m_flag)
 			break;
 
 		default:
-			break;
+			__builtin_unreachable();
 	}
 }
 
-void flag_unset(m_dmg_t *m_dmg, uint8_t m_flag)
+void flag_unset(m_dmg_t *m_dmg, m_cpu_flags m_flag)
 {
 	switch (m_flag)
 	{
@@ -47,30 +47,35 @@ void flag_unset(m_dmg_t *m_dmg, uint8_t m_flag)
 			break;
 
 		default:
-			break;
+			__builtin_unreachable();
 	}
 }
 
-uint8_t flag_check(m_dmg_t *m_dmg, uint8_t m_flag)
+bool flag_check(m_dmg_t *m_dmg, m_cpu_flags m_flag)
 {
+	bool m_flag_status = false;
+
 	switch (m_flag)
 	{
 		case ZERO:
-			return m_dmg->m_cpu->m_registers->m_flags.zero;
+			m_flag_status = m_dmg->m_cpu->m_registers->m_flags.zero;
+			break;
 
 		case NGTV:
-			return m_dmg->m_cpu->m_registers->m_flags.ngtv;
+			m_flag_status = m_dmg->m_cpu->m_registers->m_flags.ngtv;
+			break;
 
 		case HALF:
-			return m_dmg->m_cpu->m_registers->m_flags.half;
+			m_flag_status = m_dmg->m_cpu->m_registers->m_flags.half;
+			break;
 
 		case CRRY:
-			return m_dmg->m_cpu->m_registers->m_flags.crry;
+			m_flag_status = m_dmg->m_cpu->m_registers->m_flags.crry;
+			break;
 
 		default:
-			break;
+			__builtin_unreachable();
 	}
 
-	// Error?
-	return 9;
+	return m_flag_status;
 }

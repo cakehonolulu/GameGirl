@@ -335,11 +335,12 @@ typedef struct m_gb_state {
 // Flags register (Most-Significant Nibble of a Byte is only used)
 #define FLAGS (m_dmg->m_cpu->m_registers->m_flags)
 
-// Flag register flags
-#define ZERO 4
-#define NGTV 3
-#define HALF 2
-#define CRRY 1
+typedef enum {
+	ZERO = 4,
+	NGTV = 3,
+	HALF = 2,
+	CRRY = 1	
+} m_cpu_flags;
 
 #include <flags.h>
 

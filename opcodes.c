@@ -518,7 +518,7 @@ void m_rla(m_dmg_t *m_dmg)
 	printf("\033[1;31mRLA\033[1;0m\n");
 #endif
 
-	uint8_t carry = FLAG_CHECK(CRRY) ? 1 : 0;
+	uint8_t carry = (uint8_t) FLAG_CHECK(CRRY);
 
 #ifdef PREC23
 	if (A_REG & 0x40)
