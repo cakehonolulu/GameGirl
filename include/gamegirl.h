@@ -336,10 +336,10 @@ typedef struct m_gb_state {
 #define FLAGS (m_dmg->m_cpu->m_registers->m_flags)
 
 typedef enum {
-	ZERO = 4,
-	NGTV = 3,
-	HALF = 2,
-	CRRY = 1	
+	ZERO = 7,
+	NGTV = 6,
+	HALF = 5,
+	CRRY = 4	
 } m_cpu_flags;
 
 #endif
