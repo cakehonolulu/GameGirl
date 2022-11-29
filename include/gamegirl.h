@@ -342,10 +342,4 @@ typedef enum {
 	CRRY = 1	
 } m_cpu_flags;
 
-#include <flags.h>
-
-#define FLAG_SET(flag) flag_set(m_dmg, flag)
-#define FLAG_UNSET(flag) flag_unset(m_dmg, flag)
-#define FLAG_CHECK(flag) flag_check(m_dmg, flag)
-
 #endif

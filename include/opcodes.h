@@ -5,6 +5,7 @@
 #include <interrupts.h>
 #include <alu.h>
 #include <stack.h>
+#include <flags.h>
 #include <gamegirl.h>
 
 extern struct m_sharp_lr35902_instr {
