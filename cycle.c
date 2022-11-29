@@ -51,7 +51,7 @@ void m_init_registers(m_dmg_t *m_dmg)
 	if (!m_dmg->m_memory->m_in_bootrom)
 	{
 		PC = 0x100;
-		AF = 0x01B0;
+		m_af_reg_set(m_dmg, 0x01B0);
 		BC = 0x0013;
 		DE = 0x00D8;
 		HL = 0x014D;
@@ -91,7 +91,7 @@ void m_init_registers(m_dmg_t *m_dmg)
 	}
 	else
 	{
-		AF = 0;
+		m_af_reg_set(m_dmg, 0);
 		BC = 0;
 		DE = 0;
 		HL = 0;
@@ -233,48 +233,8 @@ size_t m_exec(m_dmg_t *m_dmg)
 
 void m_printregs(m_dmg_t *m_dmg)
 {
-	uint8_t m_flags = 0;
-
-#if defined(PREC23) || !defined(USE_GCC)
-	if (FLAG_CHECK(ZERO))
-#else
-	if (m_is_bit_set(FLAGS, ZERO))
-#endif
-	{
-		m_flags |= 1 << 7;
-	}
-
-#if defined(PREC23) || !defined(USE_GCC)
-	if (FLAG_CHECK(NGTV))
-#else
-	if (m_is_bit_set(FLAGS, NGTV))
-#endif
-	{
-		m_flags |= 1 << 6;
-	}
-
-#if defined(PREC23) || !defined(USE_GCC)
-	if (FLAG_CHECK(HALF))
-#else
-	if (m_is_bit_set(FLAGS, HALF))
-#endif
-	{
-		m_flags |= 1 << 5;
-	}
-
-#if defined(PREC23) || !defined(USE_GCC)
-	if (FLAG_CHECK(CRRY))
-#else
-	if (m_is_bit_set(FLAGS, CRRY))
-#endif
-	{
-		m_flags |= 1 << 4;
-	}
-
-	uint16_t m_af = (A_REG << 8) | m_flags;
-	
 	printf("\n\033[1;31mGeneral-Purpose Registers:\033[0m\n");
-	printf("\033[0;35mA:\033[0m 0x%02X, \033[0;35mF:\033[0m 0x%02X; \033[0;35mAF:\033[0m 0x%04X\n", A_REG, m_flags, m_af);
+	printf("\033[0;35mA:\033[0m 0x%02X, \033[0;35mF:\033[0m 0x%02X; \033[0;35mAF:\033[0m 0x%04X\n", A_REG, F, AF);
 	printf("\033[0;35mB:\033[0m 0x%02X, \033[0;35mC:\033[0m 0x%02X; \033[0;35mBC:\033[0m 0x%04X\n", B_REG, C, BC);
 	printf("\033[0;35mD:\033[0m 0x%02X, \033[0;35mE:\033[0m 0x%02X; \033[0;35mDE:\033[0m 0x%04X\n", D, E, DE);
 	printf("\033[0;35mH:\033[0m 0x%02X, \033[0;35mL:\033[0m 0x%02X; \033[0;35mHL:\033[0m 0x%04X\n\n", H, L, HL);

@@ -311,8 +311,8 @@ typedef struct m_gb_state {
 
 // Register defines with easier naming
 #define A_REG (m_dmg->m_cpu->m_registers->a)
-#define F (m_dmg->m_cpu->m_registers->f)
-#define AF (m_dmg->m_cpu->m_registers->af)
+#define F (m_flags_get(m_dmg))
+#define AF (m_flags_combine_af(m_dmg))
 
 #define B_REG (m_dmg->m_cpu->m_registers->b)
 #define C (m_dmg->m_cpu->m_registers->c)
