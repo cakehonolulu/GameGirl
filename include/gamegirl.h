@@ -342,4 +342,7 @@ typedef enum {
 	CRRY = 4	
 } m_cpu_flags;
 
+/* Functions */
+void m_gamegirl_exit(int m_unused);
+
 #endif

@@ -9,12 +9,6 @@
 #define NEXT_BYTE m_dmg->m_cpu->m_boperand
 #define NEXT_WORD m_dmg->m_cpu->m_woperand
 
-void m_exit(int m_unused)
-{
-	(void) m_unused;
-	SDL_Quit();
-}
-
 int m_run_debugger(m_dmg_t *m_dmg)
 {
 	printf("\e[1;1H\e[2J");
@@ -26,7 +20,7 @@ int m_run_debugger(m_dmg_t *m_dmg)
 	
 	printf("Legend: \033[0;34mPrevious Instruction\033[0;0m, \033[0;33mCurrent Instruction\033[0;0m\n\n");
 
-	signal(SIGINT, m_exit);
+	signal(SIGINT, m_gamegirl_exit);
 
 	// Check if we're on the start of the BootROM (Don't print previous opcode as it doesn't exist)
 	if (PC)

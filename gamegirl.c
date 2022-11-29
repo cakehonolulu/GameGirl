@@ -9,9 +9,13 @@
 #include <sys/time.h>
 #include <ppu.h>
 
+uintptr_t *m_dmg_ptr;
+
 int main(int argc, char **argv)
 {
 	m_dmg_t m_dmg;
+
+	m_dmg_ptr = (uintptr_t *) &m_dmg;
 
 	struct timeval t1, t2;
 
@@ -153,6 +157,8 @@ int main(int argc, char **argv)
 		// Load Bootrom
 		m_load_bootrom(&m_dmg, m_bootrom_buf);
 
+		free(m_bootrom_buf);
+
 		m_dmg.m_memory->m_in_bootrom = 1;
 #if defined (__unix__) || defined (__APPLE__)
 	}
@@ -208,6 +214,9 @@ int main(int argc, char **argv)
 		printf("ROM size: %d bytes\n", (unsigned int) m_romsz);
 
 		m_load_rom(&m_dmg, m_rom_buf, m_romsz);
+		
+		free(m_rom_buf);
+
 #if defined (__unix__) || defined (__APPLE__)
 	}
 #endif
@@ -254,7 +263,8 @@ int main(int argc, char **argv)
 		{
 			if (m_dmg.m_event.type == SDL_QUIT)
 			{
-				goto exit;
+				m_gamegirl_exit(0);
+				return EXIT_SUCCESS;
 			}
 		}
 
@@ -339,12 +349,30 @@ int main(int argc, char **argv)
 			m_interrupt_check(&m_dmg);
 		}
 	}
+}
 
-exit:
+void m_gamegirl_exit(int m_unused)
+{
+	(void) m_unused;
+
 	// Free MMU data
-	mmu_halt(&m_dmg);
+	mmu_halt((m_dmg_t *) m_dmg_ptr);
+
+	m_dmg_t *m_dmg = (m_dmg_t *) m_dmg_ptr;
 
 	SDL_Quit();
 
-	return EXIT_SUCCESS;
+	if (m_dmg->m_cpu->m_registers != NULL)
+		free(m_dmg->m_cpu->m_registers);
+
+	if (m_dmg->m_cpu->interrupts != NULL)
+		free(m_dmg->m_cpu->interrupts);
+	
+	if (m_dmg->ppu != NULL)
+		free(m_dmg->ppu);
+
+	if (m_dmg->m_cpu != NULL)
+		free(m_dmg->m_cpu);
+
+	exit(1);
 }
