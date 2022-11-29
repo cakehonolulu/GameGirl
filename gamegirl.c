@@ -241,6 +241,11 @@ int main(int argc, char **argv)
 	// Setup the texture trick that'll enable us to display emulator output
 	m_dmg.m_texture = SDL_CreateTexture(m_dmg.m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 160, 144);
 	
+	if (m_breakpoint)
+	{
+		SDL_MinimizeWindow(m_dmg.m_window);
+	}
+
 	while (true)
 	{
 		m_dmg.m_cpu->prev_pc = m_dmg.m_cpu->m_registers->pc;
