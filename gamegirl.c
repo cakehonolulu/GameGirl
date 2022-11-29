@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 		printf("ROM size: %d bytes\n", (unsigned int) m_romsz);
 
 		m_load_rom(&m_dmg, m_rom_buf, m_romsz);
-		
+
 		free(m_rom_buf);
 
 #if defined (__unix__) || defined (__APPLE__)
@@ -339,6 +339,11 @@ int main(int argc, char **argv)
 		}
 		else
 		{
+			if (m_dmg.m_cpu->m_registers->pc == m_breakpoint)
+			{
+				m_run_debugger(&m_dmg);
+			}
+			
 			// Start fetching & executing instructions
 			m_exec(&m_dmg);
 
