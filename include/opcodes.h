@@ -156,7 +156,7 @@ void m_ld_a_h(m_dmg_t *m_dmg);
 void m_ld_a_l(m_dmg_t *m_dmg);
 
 // 0x86
-void m_ld_a_phl(m_dmg_t *m_dmg);
+void m_add_a_phl(m_dmg_t *m_dmg);
 
 // 0x87
 void m_add_a_a(m_dmg_t *m_dmg);

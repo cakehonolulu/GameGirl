@@ -57,11 +57,7 @@ uint8_t increment(m_dmg_t *m_dmg, uint8_t m_register)
 uint8_t decrement(m_dmg_t *m_dmg, uint8_t m_register)
 {
 	// Check if we need to enable half-carry bit
-#ifdef PREC23
-	if (m_register & 0xF)
-#else
-	if (m_register & 0b00001111)
-#endif
+	if (m_register & 0x0F)
 	{
 		// Clear the Half-Carry bit
 		FLAG_UNSET(HALF);
@@ -76,7 +72,7 @@ uint8_t decrement(m_dmg_t *m_dmg, uint8_t m_register)
 	m_register--;
 	
 	// Check if register value is not zero
-	if (m_register != 0)
+	if (m_register)
 	{
 		FLAG_UNSET(ZERO);
 	}
@@ -94,41 +90,29 @@ uint8_t decrement(m_dmg_t *m_dmg, uint8_t m_register)
 uint8_t addition(m_dmg_t *m_dmg, uint8_t *m_register, uint8_t m_value)
 {
 	uint32_t m_result = *m_register + m_value;
+	uint32_t m_bits = *m_register ^ m_value ^ m_result;
 
-#ifdef PREC23
-	if (m_result & 0xF0)
-#else
-	if (m_result & 0b11110000)
-#endif
-	{
-		FLAG_SET(CRRY);
-	}
-	else
-	{
-		FLAG_UNSET(CRRY);
-	}
+	*m_register = (uint8_t) (m_result & 0x00FF);
 
-	*m_register = (uint8_t) (m_result & 0xFF);
+	FLAG_UNSET(ZERO);
+	FLAG_UNSET(NGTV);
+	FLAG_UNSET(CRRY);
+	FLAG_UNSET(HALF);
 
-	if (*m_register)
-	{
-		FLAG_UNSET(ZERO);
-	}
-	else
+	if (*m_register == 0)
 	{
 		FLAG_SET(ZERO);
 	}
 
-	if (((*m_register & 0x0F) + (m_value & 0x0F)) > 0x0F)
+	if ((m_bits & 0x100) != 0)
+	{
+		FLAG_SET(CRRY);
+	}
+
+	if ((m_bits & 0x10) != 0)
 	{
 		FLAG_SET(HALF);
 	}
-	else
-	{
-		FLAG_UNSET(HALF);
-	}
-
-	FLAG_UNSET(NGTV);
 
 	return *m_register;
 }

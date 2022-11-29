@@ -137,7 +137,7 @@ const struct m_sharp_lr35902_instr m_gb_instr[256] = {
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
-	{"LD A, (HL)", 0, m_ld_a_phl},			   // 0x86
+	{"ADD A, (HL)", 0, m_add_a_phl},		   // 0x86
 	{"ADD A, A", 0, m_add_a_a},				   // 0x87
 	{NULL, 0, NULL},                           // 0x00
 	{NULL, 0, NULL},                           // 0x00
@@ -326,7 +326,7 @@ void m_dec_b(m_dmg_t *m_dmg)
 #endif
 	
 	// Decrement B register by 1
-	DEC(B_REG);
+	B_REG = DEC(B_REG);
 
 	PC++;
 }
@@ -1097,7 +1097,7 @@ void m_ld_a_l(m_dmg_t *m_dmg)
 
 	Add the contents of memory specified by register pair HL to the contents of register A, and store the results in register A.
 */
-void m_ld_a_phl(m_dmg_t *m_dmg)
+void m_add_a_phl(m_dmg_t *m_dmg)
 {
 	addition(m_dmg, &A_REG, READB(HL));
 	PC++;
@@ -1812,11 +1812,7 @@ void m_cp_d8(m_dmg_t *m_dmg, uint8_t m_d8)
 		FLAG_UNSET(CRRY);
 	}
 
-#ifdef PREC23
 	if ((m_d8 & 0xF) > (A_REG & 0xF))
-#else
-	if ((m_d8 & 0b00001111) > (A_REG & 0b00001111))
-#endif
 	{
 		FLAG_SET(HALF);
 	} else {
