@@ -102,7 +102,6 @@ int main(int argc, char **argv)
 		{
 			m_dmg.m_speedhack = true;
 			printf("Speed Hack Enabled!\n");
-			m_args++;
 		}
 		else
 		{
